@@ -1,6 +1,8 @@
 # Assuming previous rdhs libraries
 
-p_load(rdhs, stringr) 
+
+library(pacman)
+p_load(tidyverse, rdhs, stringr) 
 
 ### This code chunnk loads the DHS data
 
@@ -65,7 +67,7 @@ hr_raw2001 <- get_datasets(hr_raw2001)
 rm("avail_survys", "bd_fert", "fr_datasetsdef", "hr_datasetsdef", "pr_datasetsdef", "survey_list")
 
 
-### First start with fr_dataset and obtain labor force related data
+### First, work with the usual fr_dataset
 
 # list of all available variables from usual DHS
 
@@ -76,7 +78,7 @@ avail_frvars <- get_variable_labels(fr_dataset) %>% select(variable, description
 
 frvars <- avail_frvars %>% filter(grepl("v001|v002|v003|v008|v011|
                                         v107|v108|v133|v704|v714|v716|v719|v720|v702|v715|
-                                        v102|v103|v104|v105|v119|
+                                        v025|v102|v103|v104|v105|v119|
                                         v501|v503|v511|v312|v364|v602|v605|v621|v613|v627|v628|^b0_|^b3_|^b4_|^b5_|^b7_|
                                         v739|s626|s823a|s823b|s814|s826b|s812c|^w104|^w105|^s81|^v743
                                         v137|v130|v127|v128|v129", variable)) %>%
@@ -94,13 +96,29 @@ fr_data <- extract_dhs(temp_vars, add_geo = FALSE)
 
 fr_data <- bind_rows(fr_data)
 
+
+#Function to convert cmc to year
+cmc_year_conv <- function(x, na.rm = FALSE)(1900 + as.integer((x - 1)/12))
+
+
+fr_data <- fr_data %>%
+  mutate(v008 = cmc_year_conv(v008), v011 = cmc_year_conv(v011),  across(contains('b3'), ~cmc_year_conv(.))) %>%
+  mutate(id = as.integer(paste0(as.character(v008), formatC(v001, width=3, flag="0")))) %>%
+  mutate(hhid = as.integer(paste0(as.character(id), formatC(v002, width=3, flag="0")))) %>%
+  mutate(id_ind = as.character(paste0(as.character(hhid), formatC(v003, width=2, flag="0")))) %>%
+  filter(!is.na(hhid))
+
+
+fr_data <- fr_data[!duplicated(as.list(fr_data))]
+
+
 save(fr_data, file = "fr_data.RData")
 
 
 avail_prvars <- get_variable_labels(pr_dataset) %>% select(variable, description) %>% unique()
 
 
-prvars <- avail_prvars %>% filter(grepl("hv001|hv002|hv003|hv005|sh26i|sh25|sh31|^hv10|sh14|sh27a|sh19|hv116", variable)) %>%
+prvars <- avail_prvars %>% filter(grepl("hv001|hv002|hv003|hv005|hv008|sh26i|sh25|sh31|^hv10|sh14|sh27a|sh19|hv116", variable)) %>%
   select(variable) %>% unlist()
 
 
@@ -114,7 +132,15 @@ pr_data <- extract_dhs(temp_vars, add_geo = FALSE)
 
 pr_data <- bind_rows(pr_data)
 
-save(pr_data, file = "pr_data.RData")
+pr_data <- pr_data %>%
+  mutate(hv008 = cmc_year_conv(hv008)) %>%
+  mutate(id = as.integer(paste0(as.character(hv008), formatC(hv001, width=3, flag="0")))) %>%
+  mutate(hhid = as.integer(paste0(as.character(id), formatC(hv002, width=3, flag="0")))) %>%
+  filter(!is.na(hhid))
+  
+
+
+pr_data <- pr_data[!duplicated(as.list(pr_data))]
 
 
 ### GPS data
@@ -127,29 +153,29 @@ gps_data <- search_variables(names(fr_dataset), variables = gps_data, reformat=F
 
 gps_data <- extract_dhs(gps_data, add_geo = TRUE)
 
-
-gps_data <- bind_rows(gps_data)
-
-gps_data <- gps_data %>% select(-c(ALT_DEM, ADM1NAME, DHSREGNA, SurveyId))
-
-gps_data <- gps_data %>% filter(!is.na(LATNUM))
-
-
-
-
-#Function to convert cmc to year
-cmc_year_conv <- function(x, na.rm = FALSE)(1900 + as.integer((x - 1)/12))
+gps_data <- bind_rows(gps_data) %>% 
+  select(-c(ALT_DEM, ADM1NAME, DHSREGNA, SurveyId)) %>%
+  filter(!is.na(LATNUM))
 
 gps_data <- gps_data %>%
   mutate(v008 = cmc_year_conv(v008))  %>%
-  mutate(id = as.integer(paste0(as.character(v008), formatC(v001, width=3, flag="0")))) %>%
-  mutate(hhid = as.integer(paste0(as.character(id), formatC(v002, width=3, flag="0")))) %>%
-  mutate(id_ind = as.character(paste0(as.character(hhid), formatC(v003, width=2, flag="0")))) %>%
-  filter(!is.na(hhid)) # removes the one hhid is na observation
-
-
+  mutate(id = as.integer(paste0(as.character(v008), formatC(v001, width=3, flag="0"))))
+  
 gps_data <- gps_data %>% 
-  select(LATNUM, LONGNUM, id, v008) %>%
+  select(LATNUM, LONGNUM, id) %>%
   unique()
 
+fr_data <- left_join(fr_data, gps_data, by ="id")
+
+
+pr_data <- left_join(pr_data, gps_data, by ="id")
+
+save(fr_data, file = "fr_data.RData")
+
+save(pr_data, file = "pr_data.RData")
+
 save(gps_data, file = "gps_data.RData")
+
+save(avail_frvars, file = "avail_frvars.RDAta")
+
+save(avail_prvars, file = "avail_prvars.RDAta")
