@@ -77,11 +77,11 @@ avail_frvars <- get_variable_labels(fr_dataset) %>% select(variable, description
 # fourth are reproductive behavior, fifth are the autonomy variables, and sixth are various controls
 
 frvars <- avail_frvars %>% filter(grepl("v001|v002|v003|v008|v011|
-                                        v107|v108|v133|v704|v714|v716|v719|v720|v702|v715|
-                                        v025|v102|v103|v104|v105|v119|
-                                        v501|v503|v511|v312|v364|v602|v605|v621|v613|v627|v628|^b0_|^b3_|^b4_|^b5_|^b7_|
-                                        v739|s626|s823a|s823b|s814|s826b|s812c|^w104|^w105|^s81|^v743
-                                        v137|v130|v127|v128|v129", variable)) %>%
+                                        |v107|v108|v133|v704|v705|v714|v716|v717|v719|v720|v702|v715|
+                                        |v025|v102|v103|v104|v105|v119|
+                                        |v201|v212|v213|v313|v501|v503|v511|v312|v364|v604|v605|v621|v613|v627|v628|^b0_|^b3_|^b4_|^b5_|^b7_|
+                                        |v739|s626|s823a|s823b|s814|s826b|s812c|^w104|^w105|^s81|^v743|
+                                        |v137|v130|v127|v128|v129", variable)) %>%
                         select(variable) %>% unlist()
 
 ## Search
@@ -102,6 +102,7 @@ cmc_year_conv <- function(x, na.rm = FALSE)(1900 + as.integer((x - 1)/12))
 
 
 fr_data <- fr_data %>%
+  mutate(v008_cmc = v008, v011_cmc = v011) %>%
   mutate(v008 = cmc_year_conv(v008), v011 = cmc_year_conv(v011),  across(contains('b3'), ~cmc_year_conv(.))) %>%
   mutate(id = as.integer(paste0(as.character(v008), formatC(v001, width=3, flag="0")))) %>%
   mutate(hhid = as.integer(paste0(as.character(id), formatC(v002, width=3, flag="0")))) %>%
