@@ -11,6 +11,7 @@ output:
       highlightLines: true
       countIncrementalSlides: true
 ---
+
 ```{r setup, include=FALSE}
 
 knitr::opts_chunk$set(echo = FALSE)
@@ -30,7 +31,7 @@ grey_dark <- "grey20"
 opts_chunk$set(
   comment = "#>",
   fig.align = "center",
-  fig.height = 5,
+  fig.height = 4.5,
   fig.width = 8,
   warning = F,
   message = F
@@ -104,44 +105,12 @@ theme_axes <- theme_void() + theme(
 )
 ```
 
-# Research question
-
-To what extent does emergence of opportunities in the formal labor market influence:
-
-  1. The quantity and pattern of female labor force participation,
-  
-  2. Marriage formation and reproductive behavior,
-  
-  3. Human capital accumulation decisions and
-  
-  4. Decision making autonomy of women
-  
-
-In a low autonomy, low human capital accumulation and moderate fertility environment.
-
-- Focusing on the Ready Made Garments (Garments) industry in Bangladesh.
-
----
 class: inverse, middle, center
 
-# The context
+# Introduction
 
 ---
-# Four big changes: Expansion of Garments
-
-```{r out.width= "75%"}
-include_graphics("figures//exports.png" )
-```
-
-- .hi[60% of workers] in export oriented RMG industry are women.
-
-- Representing .hi[1.7 million workers] at a given time.
-
-- .hi[54% manufacturing employment of female]
-
----
-
-# Four big changes: Increasing FLFP
+# Against the grain: Bangladeshi FLFP
 
 ```{r}
 
@@ -168,10 +137,30 @@ geom_text_repel(
     )+
    labs(title="FLFP over time", y = "FLFP", caption = "World Bank (2021)") +theme(legend.position="bottom")
 ```
+- Labor force participation among 20-24 year olds stood at about 49% in 2015 (ADB 2016).
+
+---
+# Expansion of the garments industry
+
+```{r out.width= "70%"}
+
+read.csv("bgmea.csv") %>% 
+  ggplot(aes(x = year, y = export/1000))+
+  geom_bar(stat="identity", fill="light blue")+
+  labs(title="Garments Exports 1983-202O", y = "Exports(Billions)", caption = "BGMEA")
+```
+
+- More than 75% of Bangladesh's exports since 1997s.
+
+- .hi[About 60% of workers] in export oriented RMG industry are women.
+
+  - The share seems to be declining.
 
 ---
 
-# Four big changes: Declining fertility
+#Inter-related changes?
+
+## Declining fertility
 
 ```{r}
 
@@ -199,7 +188,9 @@ ggplot(fertility, aes(x = year, y = fertility)) +
 
 ---
 
-# Four big changes: Women at school
+#Inter-related changes?
+
+## Women at school
 
 Lower secondary (about middle school) completion rates in total female population  completion rate of __4.4% in 1981__ to .hi[41% in 2019.] (World Bank, 2020)
 
@@ -208,11 +199,17 @@ Literacy among .hi[15-24 age group exceeds 96 percentage in 2019.] (World Bank, 
 
 ---
 
-# Tying them together
+# Research question
 
-Large scale socio-economic changes in women's life in Bangladesh is concurrent with expansion of the RMG industry.
+   1. I start by examining whether the garments industry .hi[increased] and changed the .hi[pattern] of female labor force participation in Bangladesh.
+ 
+--
 
-** To what extent is the RMG industry driving these changeS?**
+   2. Labor force participation decisions maybe interrelated to .hi[marriage formation] and .hi[reproductive behavior], .hi[human capital investment on girls], and .hi[autonomy] of women.
+
+--
+
+    - I also examine whether the garments industry in Bangladesh changed the aforementioned dimensions of women's lives.
 
 ---
 
@@ -220,21 +217,161 @@ Large scale socio-economic changes in women's life in Bangladesh is concurrent w
 
 ## Heath and Mobarak (2015, JDE)
 
-- Survey of 1395 households in 60 regions, 44 in garments commuting zones and 16 away, surveyed in 2009.
+- Survey of 1395 households in 60 villages in four sub-districts of Bangladesh.
+
+  - 44 in garments commuting zones and 16 away, surveyed in 2009.
 
   - Average distance from capital is 1.8 KM for garment commuting zones, 6.8 KM for non-garments commuting zones.
+  
+--
 
-- They find  that girls exposed to the garment sector
-  - Decline in fertility by 29 pp
+- They found that girls exposed to the garment sector
+
   - Increases FLFP by 15 pp
-  - reduces gender education gap by 1.5 years.
-
+  - Decreases fertility by 29 pp
+  - Reduces gender education gap by 1.5 years.
+  
 ---
+
+# Prior research
+
+## Li (2018, JIE)
+
+- Uses Bartik-type instruments exploiting the variation in skill intensity of industries and spatial variation in industry specialization.
+
+  - Found that high skill export shock increased educational attainment China between 1990 to 2005.
+
+
+## Autor et. al (2019, AER:I)
+
+- Uses bartik-type instruments to find that:
+
+  - Trade shocks reduced employment by 2.6 pp for both sexes.
+  - Negative shocks to male-dominated industries reduce family formation and fertility, whereas negative shocks to female-dominated industries tend to increase family formation and fertility.
+  
+---
+
 class: inverse, middle
 
-# Data and Methodology
+# Data and Empirical Approach 
 
 ---
+# Factory data
+
+Factory data are primarily from **Mapped in Bangladesh Project.**
+
+  - Between 2017 and 2021, the project gathered information on all potentially existing factories from government and trade groups.
+  
+  - Processed the list and physically verified locations of 3805 factories.
+  
+  - But they did not have data on factories from export processing zone, which I obtained by scraping Bangladesh Garments Manufacturers and Exporters Association (BGMEA) website.
+
+---
+# Spatial Evolution of Factories
+
+```{r}
+
+# Obtaining factory data
+
+source("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/codes/00_factory_data.R", local = knitr::knit_global())
+```
+
+```{r}
+bd_full  <- "C:/Users/smshi/OneDrive/Documents/large_datasets/BD Geo-spatial/BD admin and roads/bgd_adm_bbs_20201113_shp/bgd_admbnda_adm0_bbs_20201113.shp"
+
+```
+
+
+
+```{r}
+
+bd_full  <- "C:/Users/smshi/OneDrive/Documents/large_datasets/BD Geo-spatial/BD admin and roads/bgd_adm_bbs_20201113_shp/bgd_admbnda_adm0_bbs_20201113.shp"
+
+bd_full <- st_read(bd_full, quiet = TRUE) %>% select(geometry)
+
+bd_full <- st_as_sf(bd_full) %>% st_transform(3106)
+
+factory_geo <- factory
+
+# Set coordinates
+coordinates(factory_geo) <- c("long", "lat")
+
+# Set projection string
+proj4string(factory_geo) <- CRS("+init=epsg:4326")
+
+# Convert to Sf and transform to Mercator Gulshan
+factory_geo <- st_as_sf(factory_geo) %>% st_transform(3106)
+
+ggplot(bd_full) +
+  geom_sf() +
+  geom_sf(data = filter(factory_geo, date_est<=1990), color = "black", size = 0.5) +
+  geom_sf(data = filter(factory_geo, date_est>1990 & date_est<=2000), color = "red") +
+  theme_map() + labs(title="Factories betwen 90-00")
+
+
+
+
+```
+
+
+---
+
+# Overview of the identification strategy
+
+I estimate regressions of the following form:
+
+\begin{align*}
+Y_{i,c,t}&= \beta_z Z + \beta X_{c,t} + \delta_t + \text{Birth Year}_{i,c,t} + \epsilon_{i,c,t}
+\end{align*}
+
+\begin{align*}
+Y_{i,c,t}&: \text{Outcome of person } i \text{ in catchment area } c \text{ at time } t.\\
+X_{c,t}&: \text{Measure of export exposure in} \text{ catchment area } c \text{ at time } t\\
+Z&: \text{is a vector of individual and location specific controls}\\
+\end{align*}
+
+---
+# Overview of the identification strategy
+
+**Key challenge:** Location of exporting firms are likely correlated with other variables that likely influence the outcome variables.
+
+--
+
+ - I restrict my analysis to a narrowly defined catchment area based on factory locations.
+ 
+--
+
+- Garment factories specialize in production of .hi[knit or woven type of garments. But many produce both.] 
+
+  - I make use of spatial variation in knit and woven specialization, and temporal variation in export of knit and woven products to estimate plausibly exogenous measures of export exposure.
+ 
+---
+# Catchment area
+
+- Based on minimum 
+
+
+Export exposure $X_{c,t}$ depends on levels of export originating from a location
+
+X_{r,t}     &= Export \space Shock_{r,t} \text{ and} \\
+Export \space Shock_{r,t} &= \frac{\alpha_{r,t}^{knit} * \Delta Knit \space Export_{t-T} + (1 - \alpha_{r,t}^{knit}) * \Delta Woven \space Export_{t-T}}{Population_{r,t}} \\
+
+
+\begin{align*}
+X_{r,t} &= Export \space Shock_{r,t} \\
+\textit{where } Export \space Shock_{r,t} &= \frac{\alpha_{r,t}^{knit} * \Delta Knit \space Export_{t-T} + (1 - \alpha_{r,t}^{knit}) * \Delta Woven \space Export_{t-T}}{Population_{r,t}} \\
+\textit{and } \alpha_{r,t}^{knit} &= \frac{Workers_{r,knit,t}}{Workers_{BD,t}}
+\end{align*}
+
+
+
+
+
+
+
+
+---
+
 # Data
 
 - DHS and MiB and Mapped in Bangladesh
@@ -243,15 +380,7 @@ class: inverse, middle
 
 
 ---
-# Methodology
-
 ## Overview of identification strategy
-
-I am using Bartik style exposure measures
-
-\begin{align}
-Y_{i,r,t} &= \beta_z Z_{i,r,t} + \beta X_{r,t} + \delta_t + \text{Birth Year}_{i,r,t} + \epsilon_{i, r,t}
-\end{align}
 
 Where,
 

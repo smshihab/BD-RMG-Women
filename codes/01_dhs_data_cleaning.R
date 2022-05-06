@@ -1,14 +1,35 @@
 
-# First we do the FLFP analysis
+#### Loading packages and data ####
 
-p_load(labelled)
+library(pacman)
+
+# Non-geo packages
+
+p_load(readxl, conflicted, openxlsx, devtools, plm, tidyverse, knitr, memoise, Rcpp, labelled, 
+       RhpcBLASctl, gridExtra, stargazer, broom, magick, cowplot, ggplot2, ggrepel)
+
+# geo packages
+p_load(sf, sp, raster, rgdal, ggmap, rgeos) 
+
+conflict_prefer("select", "dplyr")
+conflict_prefer("filter", "dplyr")
+conflict_prefer("lag", "dplyr")
+
+
+# First we clean up the FR data
 
 load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/fr_data.RData")
 
 fr_data <- fr_data %>%
-  filter(!is.na(LATNUM))
+  filter(!is.na(LATNUM)) %>% 
+  # Taking out Ws since they are all non-NAs
+    select(-starts_with("w"))
 
-# Keeping needed variables
+
+
+# Separating birth versus non-fertility data
+
+fr_birth <- fr_data %>% select(id_ind, v008_cmc, v011_cmc, starts_with("b"))
 
 dataflfp <- fr_data %>%
 
@@ -130,17 +151,20 @@ dataflfp <- dataflfp %>%
                                TRUE ~ 3)) 
 
 
+
 # Creating cluster level controls of electrification, wealth and industry structure
 
 temp <- dataflfp %>%
   group_by(id) %>%
   summarise(electrification_rate = mean(electricity, na.rm =T),
             local_wealth = mean(wealth_index, na.rm = T),
-            num = n())
+            mfg_share = sum(husb_worklocalgroup == 3) / n(), 
+            agro_share = sum(husb_worklocalgroup == 1) / n() )
 
 dataflfp <- left_join(dataflfp, temp, by = "id")
 
 rm(temp)
+
 
 
 #### Autonomy variables
@@ -164,13 +188,13 @@ data_autonomy_healthMove$s819[data_autonomy_healthMove$s819 %in% c(6, 8, 9)] <-N
 
 
 data_autonomy_healthMove <- data_autonomy_healthMove %>%
-  mutate(iter1 = case_when(is.na(s823a) ~ s823b,
-                           TRUE ~ s823a)) %>%
-  
-  mutate(iter2 = case_when(is.na(iter1) ~ s818,
-                           TRUE ~ iter1)) %>%
-  mutate(health_move_auto = case_when(is.na(iter2) ~ s819,
-                           TRUE ~ iter2)) %>%
+  # s823b and s819 is asking whether the person CAN go alone, in an ability sense
+    mutate(can_health_alone = case_when(is.na(s823b) ~ s819,
+                           TRUE ~ s823b)) %>%
+  # s823a and s818 is asking whether the person goes alone
+  mutate(does_health_alone = case_when(is.na(s819) ~ s818,
+                           TRUE ~ s819)) %>%
+  mutate(health_move_auto = can_health_alone + does_health_alone) %>%
   select(id_ind, health_move_auto)
 
 
@@ -192,48 +216,139 @@ data_autonomy_Move$s626a[data_autonomy_Move$s626a %in% c(6, 8, 9)] <-NA
 
 
 data_autonomy_Move <- data_autonomy_Move %>%
-  mutate(iter1 = case_when(is.na(s815) ~ s816,
-                           TRUE ~ s815)) %>%
-  
-  mutate(iter2 = case_when(is.na(iter1) ~ s626,
-                           TRUE ~ iter1)) %>%
-  mutate(move_auto = case_when(is.na(iter2) ~ s626a,
-                                      TRUE ~ iter2)) %>%
-  select(id_ind, move_auto)
+  # s626a and s816 is asking whether the person CAN go alone, in an ability sense
+  mutate(can_move_alone = case_when(is.na(s626a) ~ s816,
+                                      TRUE ~ s626a)) %>%
+  # s626 and s815 is asking whether the person goes alone
+  mutate(does_move_alone = case_when(is.na(s626) ~ s815,
+                                       TRUE ~ s626)) %>%
+  mutate(gen_move_auto = can_move_alone + does_move_alone) %>%
+  select(id_ind, gen_move_auto)
+
+move_auto <- left_join(data_autonomy_Move, data_autonomy_healthMove, by = "id_ind")
 
 
-final_say_data <- fr_data %>% select(id_ind, starts_with("s812"), starts_with("v74")) 
+rm(data_autonomy_Move, data_autonomy_healthMove)
 
-final_say_data <- remove_labels(final_say_data) 
+
+
+
+### Decision making autonomy
+
+final_say_data <- fr_data %>% select(id_ind, starts_with("s812"), starts_with("v74")) %>% 
+  remove_labels(final_say_data) 
+
+# own health care decision
 
 final_say_data$s812a[final_say_data$s812a %in% c(1)] <- 200
 final_say_data$s812a[final_say_data$s812a %in% c(3, 5)] <- 100
 final_say_data$s812a[final_say_data$s812a %in% c(2, 4)] <- 0
 final_say_data$s812a[final_say_data$s812a %in% c(6, 7, 8, 11, 12)] <-NA
 
+final_say_data$v743a[final_say_data$v743a %in% c(1)] <- 200
+final_say_data$v743a[final_say_data$v743a %in% c(2,3)] <- 100
+final_say_data$v743a[final_say_data$v743a %in% c(4,5)] <- 0
+final_say_data$v743a[final_say_data$v743a %in% c(6,9)] <- NA
+
+final_say_data <- final_say_data %>%
+  mutate(own_health_auto = (1/100)*case_when(is.na(s812a) ~ v743a,
+                                     TRUE ~ s812a)) %>% 
+  select(-c(s812a, v743a))
+
+# child health auto not added cause of many missing values
+
 final_say_data$s812b[final_say_data$s812b %in% c(1)] <- 200
 final_say_data$s812b[final_say_data$s812b %in% c(3, 5)] <- 100
 final_say_data$s812b[final_say_data$s812b %in% c(2, 4)] <- 0
 final_say_data$s812b[final_say_data$s812b %in% c(6, 7, 9, 21, 22)] <-NA
 
+# large purchase auto
+
+
 final_say_data$s812c[final_say_data$s812c %in% c(1)] <- 200
 final_say_data$s812c[final_say_data$s812c %in% c(3, 5)] <- 100
 final_say_data$s812c[final_say_data$s812c %in% c(2, 4)] <- 0
+
+final_say_data$v743b[final_say_data$v743b %in% c(1)] <- 200
+final_say_data$v743b[final_say_data$v743b %in% c(2,3)] <- 100
+final_say_data$v743b[final_say_data$v743b %in% c(4,5)] <- 0
+final_say_data$v743b[final_say_data$v743b %in% c(6,9)] <- NA
+
+
+final_say_data <- final_say_data %>%
+  mutate(larg_buy_auto = (1/100)*case_when(is.na(s812c) ~ v743b,
+                                             TRUE ~ s812c)) %>% 
+  select(-c(s812c, v743b))
+
+
+# small purchase auto
 
 final_say_data$s812d[final_say_data$s812d %in% c(1)] <- 200
 final_say_data$s812d[final_say_data$s812d %in% c(3, 5)] <- 100
 final_say_data$s812d[final_say_data$s812d %in% c(2, 4)] <- 0
 
+
+final_say_data$v743c[final_say_data$v743c %in% c(1)] <- 200
+final_say_data$v743c[final_say_data$v743c %in% c(2,3)] <- 100
+final_say_data$v743c[final_say_data$v743c %in% c(4,5)] <- 0
+final_say_data$v743c[final_say_data$v743c %in% c(6,9)] <- NA
+
+
+final_say_data <- final_say_data %>%
+  mutate(small_buy_auto = (1/100)*case_when(is.na(s812d) ~ v743c,
+                                           TRUE ~ s812d)) %>% 
+  select(-c(s812d, v743c))
+
+# visitor_auto
+
 final_say_data$s812e[final_say_data$s812e %in% c(1)] <- 200
 final_say_data$s812e[final_say_data$s812e %in% c(3, 5)] <- 100
 final_say_data$s812e[final_say_data$s812e %in% c(2, 4)] <- 0
+
+final_say_data$v743d[final_say_data$v743d %in% c(1)] <- 200
+final_say_data$v743d[final_say_data$v743d %in% c(2,3)] <- 100
+final_say_data$v743d[final_say_data$v743d %in% c(4,5)] <- 0
+final_say_data$v743d[final_say_data$v743d %in% c(6,9)] <- NA
+
+
+final_say_data <- final_say_data %>%
+  mutate(visitor_auto = (1/100)*case_when(is.na(s812e) ~ v743d,
+                                            TRUE ~ s812e)) %>% 
+  select(-c(s812e, v743d))
+
+# cooking auto
 
 final_say_data$s812f[final_say_data$s812f %in% c(1)] <- 200
 final_say_data$s812f[final_say_data$s812f %in% c(3, 5)] <- 100
 final_say_data$s812f[final_say_data$s812f %in% c(2, 4)] <- 0
 
 
-dataflfp <- left_join(dataflfp, shocks %>% select(region_id, year, knit_exposure1, knit_exposure3, wov_exposure1, wov_exposure3, export_exposure1, export_exposure3, population, density), by = c("region_id", "year"))
+final_say_data$v743e[final_say_data$v743e %in% c(1)] <- 200
+final_say_data$v743e[final_say_data$v743e %in% c(2,3)] <- 100
+final_say_data$v743e[final_say_data$v743e %in% c(4,5)] <- 0
+final_say_data$v743e[final_say_data$v743e %in% c(6,9)] <- NA
+
+
+final_say_data <- final_say_data %>%
+  mutate(cook_auto = (1/100)*case_when(is.na(s812f) ~ v743e,
+                                          TRUE ~ s812f)) %>% 
+  select(-c(s812f, v743e))
+
+
+final_say_data <- final_say_data %>% select(id_ind, contains("auto"))
+
+
+autonomy <- left_join(move_auto, final_say_data, by = "id_ind")
+
+dataflfp <- left_join(dataflfp, autonomy, by = "id_ind")
+
+rm(autonomy, final_say_data, move_auto)
+
+
+
+
+### Getting the PR data ready
+
 
 
 

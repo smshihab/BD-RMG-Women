@@ -6,7 +6,7 @@ library(pacman)
 # Non-geo packages
 
 library(conflicted)
-p_load(readxl, openxlsx, devtools, plm, tidyverse, knitr, memoise, Rcpp, RhpcBLASctl, gridExtra, stargazer, broom, magick, cowplot, ggplot2, ggrepel)
+p_load(readxl, openxlsx, devtools, plm, tidyverse, knitr, memoise, Rcpp, RhpcBLASctl, gridExtra, stargazer, broom, magick, cowplot, gganimate, ggplot2, ggrepel)
 
 # geo packages
 p_load(sf, sp, raster, rgdal, ggmap, rgeos) 
