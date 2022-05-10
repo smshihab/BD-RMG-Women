@@ -11,10 +11,10 @@ p_load(readxl, openxlsx, devtools, plm, tidyverse, knitr, memoise, Rcpp, RhpcBLA
 # geo packages
 p_load(sf, sp, raster, rgdal, ggmap, rgeos) 
 
+
 conflict_prefer("select", "dplyr")
 conflict_prefer("filter", "dplyr")
 conflict_prefer("lag", "dplyr")
-
 
 ### MiB does not have data on BEPZ garments, but BGMEA does. Here we combine them and fill in missing values. ###
 
@@ -181,3 +181,6 @@ factory_panel <- data.frame(factory_panel)
 names(factory_panel) <- c("fac_id", "year", "date_est", "long", "lat", "knit", "mworkers", "fworkers", "workers", "exist")
 
 rm(list = ls.str(mode = 'numeric'))
+
+save(factory, file = "factory.RData")
+save(factory_panel, file = "factory_panel.RData")

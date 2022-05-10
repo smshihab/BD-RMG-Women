@@ -3,7 +3,7 @@
   <head>
     <title>Ready Made Garments and Women in Bangladesh</title>
     <meta charset="utf-8" />
-    <meta name="author" content="05 May, 2022" />
+    <meta name="author" content="06 May, 2022" />
     <script src="nwdw_files/header-attrs/header-attrs.js"></script>
     <link href="nwdw_files/remark-css/default.css" rel="stylesheet" />
     <link href="nwdw_files/remark-css/metropolis.css" rel="stylesheet" />
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 
 # Ready Made Garments and Women in Bangladesh
 ## SM Shihab Siddiqui
-### 05 May, 2022
+### 06 May, 2022
 
 ---
 
@@ -117,6 +117,18 @@ Literacy among .hi[15-24 age group exceeds 96 percentage in 2019.] (World Bank, 
   
 ---
 
+# My expected contributions
+
+- Provide alternative estimates of the labor demand shock on FLFP and pattern of FLFP that rely on exploiting variation in knit versus woven specialization of a RMG producing region, and variation in aggregate knit and woven exports over time. 
+
+  - Controls for spatial development patterns better.
+  
+- Greater geographic and temporal coverage of data.
+
+- Explore additional topics related to lives of women in Bangladesh.
+  
+---
+
 class: inverse, middle
 
 # Data and Empirical Approach 
@@ -130,22 +142,52 @@ Factory data are primarily from **Mapped in Bangladesh Project.**
   
   - Processed the list and physically verified locations of 3805 factories.
   
-  - But they did not have data on factories from export processing zone, which I obtained by scraping Bangladesh Garments Manufacturers and Exporters Association (BGMEA) website.
+  - But they did not have data on factories from export processing zone, which I obtained by scraping Bangladesh Garments Manufacturers and Exporters Association **(BGMEA) website.**
 
 ---
 # Spatial Evolution of Factories
 
+&lt;img src="nwdw_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
 
+---
+# Factory catchment area
 
+- For each factory, we define a catchment area of 1.686 KM based on estimates of travel time of RMG workers and walking speed estimates.
 
+--
 
+- Agglomeration leads to overlap of catchment area, and exposure in intersecting areas are summed.
 
+&lt;img src="figures//catchment_area.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+# Outcome data
+
+- Outcome data is obtained from geo-coded **Bangladesh Demographic and Health Surveys** 2000-2018
+
+--
+
+  - Nationally representative HH survey data in 2962 clusters.
+  
+--
+
+  - .hi[Pros:] Allows us to ask questions about changes in reproductive behavior beyond fertility.
+  
+--
+
+  - .hi[Cons:] But geo-codes are randomly displaced to protect anonymity.
+  
+--
+
+  - Only locations within factory catchment areas is selected to avoid comparing areas with and without any factory.
+
+---
+# Selected Samples
 
 &lt;img src="nwdw_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
-
 # Overview of the identification strategy
 
 I estimate regressions of the following form:
@@ -176,84 +218,41 @@ Z&amp;: \text{is a vector of individual and location specific controls}\\
   - I make use of spatial variation in knit and woven specialization, and temporal variation in export of knit and woven products to estimate plausibly exogenous measures of export exposure.
  
 ---
-# Catchment area
-
-- Based on minimum 
+# Export exposure
 
 
-Export exposure `\(X_{c,t}\)` depends on levels of export originating from a location
-
-X_{r,t}     &amp;= Export \space Shock_{r,t} \text{ and} \\
-Export \space Shock_{r,t} &amp;= \frac{\alpha_{r,t}^{knit} * \Delta Knit \space Export_{t-T} + (1 - \alpha_{r,t}^{knit}) * \Delta Woven \space Export_{t-T}}{Population_{r,t}} \\
-
+I use a Bartik-type export exposure measure:
 
 `\begin{align*}
-X_{r,t} &amp;= Export \space Shock_{r,t} \\
-\textit{where } Export \space Shock_{r,t} &amp;= \frac{\alpha_{r,t}^{knit} * \Delta Knit \space Export_{t-T} + (1 - \alpha_{r,t}^{knit}) * \Delta Woven \space Export_{t-T}}{Population_{r,t}} \\
-\textit{and } \alpha_{r,t}^{knit} &amp;= \frac{Workers_{r,knit,t}}{Workers_{BD,t}}
+X_{c,t} &amp;= Export \space Shock_{c,t} \\
+\textit{where } Export \space Shock_{c,t} &amp;= \frac{\alpha_{c,t}^{knit} * \Delta Knit \space Export_{t-T}}{Population_{c,t}} \\
+&amp;+ \frac{(1 - \alpha_{c,t}^{knit}) * \Delta Woven \space Export_{t-T}}{Population_{c,t}} \\ \\
+\textit{and } \alpha_{c,t}^{knit} &amp;= \frac{Workers_{c,knit,t}}{Workers_{BD,t}}
 \end{align*}`
 
 
-
-
-
-
-
-
----
-
-# Data
-
-- DHS and MiB and Mapped in Bangladesh
-
-- Geo-spatial population data
-
-
----
-## Overview of identification strategy
-
-Where,
-
-&lt;img src="figures//equation.png" width="90%" style="display: block; margin: auto;" /&gt;
-
 - T = 3 in baseline specification, and
 
-- Shares are instrumented with 5-year lags.
+- Shares are instrumented with 3-year lags.
 
-- Use spatio temporal variation in knit versus woven origination and export to generate export shocks that are potentially exogenous to the object of study.
-
----
-# Spatial variation in knit and woven
-
-- Map
-
----
-# Temporal
-
-- Graph
-
----
-# Catchment area 1
-## Bangladesh is dense
-
-&lt;img src="figures//distance.png" width="60%" style="display: block; margin: auto;" /&gt;
-
-- Dhaka district density is 23,234 / sq. KM. Portland's density is 1,888.
-
-- Most garments workers commute &lt;1.7 KM to work.
-
----
-# Catchment area 2
-
-- Show graphically
 ---
 # Threats to identification
 
-- Firm exists are not accounted for.
-
 - Assumes orthogonality of knit and woven share to outcomes
+    
+  - Defensible since infrastructure, not labor related issues, seem to be the key factor in location choice of garments factories.
+  
+- Coordinates of sample clusters are randomly displaced.
+  
 
-- Coordinates are displaced.
+- Firm exits are not accounted for.
+
+  - For example, my dataset identifies about 1914 of 3548 firms in 2009.
+  
+  - One concern is if exists are geographically correlated.
+  
+  - Second concern is loss of variation.
+
 
 ---
 class:inverse, middle
@@ -261,41 +260,89 @@ class:inverse, middle
 # Results
 ---
 
-# My contributions
+# Conemporenaous influence on FLFP
 
-- Provide alternative estimates of the labor demand shock that rely on exploiting variation in knit versus woven specialization of a RMG producing region, and variation in aggregate knit and woven exports over time. 
 
-  - Controls for spatial development patterns better.
-  
-- Greater geographic and temporal coverage of data.
 
-- Explore additional topics related to lives of women in Bangladesh.
+
+&lt;img src="figures//contemp_flfp.png" width="90%" style="display: block; margin: auto;" /&gt;
+---
+
+# Medium term influence on FLFP
+
+&lt;img src="figures//three_flfp.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
-# Overview of (preliminary) results
+
+# Migrantion and FLFP
+
+&lt;img src="figures//mig_flfp.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+# Summarizing the FLFP results
 
 One thousand dollars worth of export shock per person:
 
-- 17-18 percentage point (pp) increase in RMG and adjacent occupations
-- 12 - 13 pp increase in non-traditional, low skilled occupations (which contains RMG adjacent occupations)
-- A decline of 1 - 1.4 pp of FLFP in traditional sectors
-- No change in high skilled occupations
+- 1.8 percentage point (pp), or 9.5 percent increase in RMG and adjacent occupations in the same year within this sample.
 
-- No changes in fertility
+- 18 percent increase relative to full Bangladeshi sample.
 
-- *In future, I will extend analysis to explore impact on education of woman, marraige age, and changes in preferences for fertility, and woman's autonomy.*
+--
+
+- 0.6 percentage point (pp), or 3 percent increase in RMG and adjacent occupations in three year horizons.
+
+--
+
+- Slightly larger increases in broader low skilled, non-modern occupation.
+
+  - Possibility of influence from allied industries
+
+--
+
+- Almost all of the increase is driven by new migrants into the area.
+
+---
+
+# Influence on autonomy
+
+&lt;img src="figures//autonomy.png" width="45%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Influence on fertility preferences
+
+&lt;img src="figures//preg_fertility.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 
 ---
-- In my estimates, at least .hi[11 million women] have been exposed to export oriented RMG manufacturing.
+# Education and marraige
+
+- Not presenting at this moment due to need for checking the data cleaning process.
+
+
+---
+
+# Conclusion
+
+- In my estimates, at least .hi[11 million women] have been exposed to increased labor demand from export oriented garment manufacturing.
 
   - About 14 % of all Bangladeshi women.
-
-- .hi[True exposure is likely much higher.]
-
-  - Does not take into account **supporting industries, exposure through peer effects, and movement of people**. 
   
-- In other contexts, exposure to manufacturing jobs at the onset of development have been well documented to increase woman's education, autonomy and reduced fertility.
+--
+
+- Results indicate that the garments industry provided opportunities for many of them to join manufacturing labor force. 
+
+  - The result seems to be driven by people moving into garment producing areas, rather than existing women changing their occupation.
+  
+--
+
+- No evidence in changes in autonomy or fertility behavior. Tentatively, no evidence on education  and marriage formation behavior either.
+
+--
+
+- Suggests that the changing conditions made the FLFP in formal settings possible, not the other way round.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

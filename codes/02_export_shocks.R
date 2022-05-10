@@ -63,8 +63,8 @@ shocks1686 <- temp %>%
 
 shocks3372 <- temp %>%
   mutate(fac_id = as.integer(fac_id)) %>%
-  mutate(knit_exposure1 = (knit_coef * ch_knit1)/population3372, 
-         wov_exposure1 = (wov_coef * ch_wov1)/population3372,
+  mutate(knit_exposure1 = (lag(knit_coef, 3) * ch_knit1)/population3372, 
+         wov_exposure1 = (ag(wov_coef, 3) * ch_wov1)/population3372,
          export_exposure1 = knit_exposure1 + wov_exposure1) %>%
   mutate(knit_exposure3 = (lag(knit_coef, 3) * ch_knit3) / population3372,
          wov_exposure3 = (lag(wov_coef, 3) * ch_wov3) / population3372,
