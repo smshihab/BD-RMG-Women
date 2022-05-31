@@ -142,3 +142,9 @@
 .remark-code {
   font-size: 70%;
 }
+
+@media print {
+  .has-continuation {
+    display: block !important;
+  }
+}

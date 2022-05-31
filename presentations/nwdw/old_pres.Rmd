@@ -1,0 +1,818 @@
+---
+title: "Ready Made Garments and Women in Bangladesh"
+subtitle: "SM Shihab Siddiqui"
+author: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'metropolis', 'metropolis-fonts', 'my-css.css']
+    # self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(htmltools.dir.version = FALSE)
+library(pacman)
+p_load(tidyverse, readxl, ggrepel, viridis, extrafont, gridExtra, knitr, sf, hrbrthemes, lwgeom, rnaturalearth, maps, mapdata, spData, leaflet, plotly, ggmap)
+# Non-geo packages
+p_load(readxl, openxlsx, devtools, tidyverse, knitr, memoise, Rcpp, RhpcBLASctl, gridExtra, stargazer, broom, magick, cowplot, gganimate, ggplot2, ggrepel)
+# geo packages
+p_load(sf, sp, raster, rgdal, ggmap, rgeos) 
+p_load(conflicted)
+conflict_prefer("select", "dplyr")
+conflict_prefer("filter", "dplyr")
+conflict_prefer("lag", "dplyr")
+# Define pink color
+red_pink <- "#e64173"
+turquoise <- "#20B2AA"
+grey_light <- "grey70"
+grey_mid <- "grey50"
+grey_dark <- "grey20"
+# Dark slate grey: #314f4f
+# Knitr options
+opts_chunk$set(
+  comment = "#>",
+  fig.align = "center",
+  fig.height = 4.5,
+  fig.width = 8,
+  warning = F,
+  message = F
+)
+opts_chunk$set(dev = "svg")
+options(device = function(file, width, height) {
+  svg(tempfile(), width = width, height = height)
+})
+# A blank theme for ggplot
+theme_empty <- theme_bw() + theme(
+  line = element_blank(),
+  rect = element_blank(),
+  strip.text = element_blank(),
+  axis.text = element_blank(),
+  plot.title = element_blank(),
+  axis.title = element_blank(),
+  plot.margin = structure(c(0, 0, -0.5, -1), unit = "lines", valid.unit = 3L, class = "unit"),
+  legend.position = "none"
+)
+theme_simple <- theme_bw() + theme(
+  line = element_blank(),
+  panel.grid = element_blank(),
+  rect = element_blank(),
+  strip.text = element_blank(),
+  axis.text.x = element_text(size = 18, family = "STIXGeneral"),
+  axis.text.y = element_blank(),
+  axis.ticks = element_blank(),
+  plot.title = element_blank(),
+  axis.title = element_blank(),
+  # plot.margin = structure(c(0, 0, -1, -1), unit = "lines", valid.unit = 3L, class = "unit"),
+  legend.position = "none"
+)
+theme_axes_math <- theme_void() + theme(
+  text = element_text(family = "MathJax_Math"),
+  axis.title = element_text(size = 22),
+  axis.title.x = element_text(hjust = .95, margin = margin(0.15, 0, 0, 0, unit = "lines")),
+  axis.title.y = element_text(vjust = .95, margin = margin(0, 0.15, 0, 0, unit = "lines")),
+  axis.line = element_line(
+    color = "grey70",
+    size = 0.25,
+    arrow = arrow(angle = 30, length = unit(0.15, "inches")
+  )),
+  plot.margin = structure(c(1, 0, 1, 0), unit = "lines", valid.unit = 3L, class = "unit"),
+  legend.position = "none"
+)
+theme_axes_serif <- theme_void() + theme(
+  text = element_text(family = "MathJax_Main"),
+  axis.title = element_text(size = 22),
+  axis.title.x = element_text(hjust = .95, margin = margin(0.15, 0, 0, 0, unit = "lines")),
+  axis.title.y = element_text(vjust = .95, margin = margin(0, 0.15, 0, 0, unit = "lines")),
+  axis.line = element_line(
+    color = "grey70",
+    size = 0.25,
+    arrow = arrow(angle = 30, length = unit(0.15, "inches")
+  )),
+  plot.margin = structure(c(1, 0, 1, 0), unit = "lines", valid.unit = 3L, class = "unit"),
+  legend.position = "none"
+)
+theme_axes <- theme_void() + theme(
+  text = element_text(family = "Fira Sans Book"),
+  axis.title = element_text(size = 18),
+  axis.title.x = element_text(hjust = .95, margin = margin(0.15, 0, 0, 0, unit = "lines")),
+  axis.title.y = element_text(vjust = .95, margin = margin(0, 0.15, 0, 0, unit = "lines")),
+  axis.line = element_line(
+    color = grey_light,
+    size = 0.25,
+    arrow = arrow(angle = 30, length = unit(0.15, "inches")
+  )),
+  plot.margin = structure(c(1, 0, 1, 0), unit = "lines", valid.unit = 3L, class = "unit"),
+  legend.position = "none"
+)
+```
+
+class: inverse, middle, center
+
+# Introduction
+
+---
+# Against the grain: Bangladeshi FLFP
+
+```{r}
+flfp <- read.csv("flfp.csv", check.names=FALSE) %>%
+    pivot_longer(-year, names_to="country", values_to="flfp")
+flfp_start <- flfp %>%
+  filter(year == 1990)
+flfp_end <- flfp %>%
+  filter(year == 2019)
+ggplot(flfp, aes(x = year, y = flfp)) +
+  geom_line(aes(col = country)) +
+  geom_line(data = subset(flfp, country =="Bangladesh"), color = "red", size =1.25) +
+geom_text_repel(
+    aes(label = round(flfp,1)), data = flfp_start,
+    fontface ="plain", color = "black", size = 2
+    ) +
+geom_text_repel(
+    aes(label = round(flfp,1)), data = flfp_end,
+    fontface ="plain", color = "black", size = 2
+    )+
+   labs(title="FLFP over time", y = "FLFP", caption = "World Bank (2021)") +theme(legend.position="bottom")
+```
+- Labor force participation among 20-24 year olds stood at about 49% in 2015 (ADB 2016).
+
+---
+# Expansion of the garments industry
+
+```{r out.width= "70%"}
+read.csv("bgmea.csv") %>% 
+  ggplot(aes(x = year, y = export/1000))+
+  geom_bar(stat="identity", fill="light blue")+
+  labs(title="Garments Exports 1983-202O", y = "Exports(Billions)", caption = "BGMEA")
+```
+
+- More than 75% of Bangladesh's exports since 1997s.
+
+- .hi[About 60% of workers] in export oriented RMG industry are women.
+
+  - The share seems to be declining.
+
+---
+
+#Inter-related changes?
+
+## Declining fertility
+
+```{r}
+fertility <- read.csv("fertility.csv", check.names=FALSE) %>%
+    pivot_longer(-year, names_to="country", values_to="fertility")
+fertility_start <- fertility %>%
+  filter(year == 1971)
+fertility_end <- fertility %>%
+  filter(year == 2018)
+ggplot(fertility, aes(x = year, y = fertility)) +
+  geom_line(aes(col = country)) +
+  geom_line(data = subset(fertility, country =="Bangladesh"), color = "red", size =1.25) + geom_text_repel(
+    aes(label = round(fertility,1)), data = fertility_start,
+    fontface ="plain", color = "black", size = 2
+    ) +
+  geom_text_repel(
+    aes(label = round(fertility,1)), data = fertility_end,
+    fontface ="plain", color = "black", size = 2
+    ) +
+   labs(title = "Trends in fertility", y = "Total Fertility Rates", caption = "World Bank (2021)") +theme(legend.position="bottom")
+```
+
+---
+
+#Inter-related changes?
+
+## Women at school
+
+Lower secondary (about middle school) completion rates in total female population  completion rate of __4.4% in 1981__ to .hi[41% in 2019.] (World Bank, 2020)
+
+Literacy among .hi[15-24 age group exceeds 96 percentage in 2019.] (World Bank, 2020)
+
+
+---
+
+# Research question
+
+   1. I start by examining whether the garments industry .hi[increased] and changed the .hi[pattern] of female labor force participation in Bangladesh.
+ 
+--
+
+   2. Labor force participation decisions maybe interrelated to .hi[marriage formation] and .hi[reproductive behavior], .hi[human capital investment on girls], and .hi[autonomy] of women.
+
+--
+
+    - I also examine whether the garments industry in Bangladesh changed the aforementioned dimensions of women's lives.
+
+---
+
+# Prior research
+
+## Heath and Mobarak (2015, JDE)
+
+- Survey of 1395 households in 60 villages in four sub-districts of Bangladesh.
+
+  - 44 in garments commuting zones and 16 away, surveyed in 2009.
+
+  - Average distance from capital is 1.8 KM for garment commuting zones, 6.8 KM for non-garments commuting zones.
+  
+--
+
+- They found that girls exposed to the garment sector
+
+  - Increases FLFP by 15 pp
+  - Decreases fertility by 29 pp
+  - Reduces gender education gap by 1.5 years.
+  
+---
+
+# Prior research
+
+## Li (2018, JIE)
+
+- Uses Bartik-type instruments exploiting the variation in skill intensity of industries and spatial variation in industry specialization.
+
+  - Found that high skill export shock increased educational attainment China between 1990 to 2005.
+
+
+## Autor et. al (2019, AER:I)
+
+- Uses bartik-type instruments to find that:
+
+  - Trade shocks reduced employment by 2.6 pp for both sexes.
+  - Negative shocks to male-dominated industries reduce family formation and fertility, whereas negative shocks to female-dominated industries tend to increase family formation and fertility.
+  
+---
+
+# My expected contributions
+
+- Provide alternative estimates of the labor demand shock on FLFP and pattern of FLFP that rely on exploiting variation in knit versus woven specialization of a RMG producing region, and variation in aggregate knit and woven exports over time. 
+
+  - Controls for spatial development patterns better.
+  
+- Greater geographic and temporal coverage of data.
+
+- Explore additional topics related to lives of women in Bangladesh.
+  
+---
+
+class: inverse, middle
+
+# Data and Empirical Approach 
+
+---
+# Factory data
+
+Factory data are primarily from **Mapped in Bangladesh Project.**
+
+  - Between 2017 and 2021, the project gathered information on all potentially existing factories from government and trade groups.
+  
+  - Processed the list and physically verified locations of 3805 factories.
+  
+  - But they did not have data on factories from export processing zone, which I obtained by scraping Bangladesh Garments Manufacturers and Exporters Association **(BGMEA) website.**
+
+---
+# Spatial Evolution of Factories
+
+```{r}
+# Obtaining factory data
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/factory.RData")
+bd_full  <- "C:/Users/smshi/OneDrive/Documents/large_datasets/BD Geo-spatial/BD admin and roads/bgd_adm_bbs_20201113_shp/bgd_admbnda_adm0_bbs_20201113.shp"
+bd_full <- st_read(bd_full, quiet = TRUE) %>% select(geometry)
+bd_full <- st_as_sf(bd_full) %>% st_transform(3106)
+factory_geo <- factory
+# Set coordinates
+coordinates(factory_geo) <- c("long", "lat")
+# Set projection string
+proj4string(factory_geo) <- CRS("+init=epsg:4326")
+# Convert to Sf and transform to Mercator Gulshan
+factory_geo <- st_as_sf(factory_geo) %>% st_transform(3106)
+p1 <- ggplot(bd_full) +
+  geom_sf() +
+  geom_sf(data = filter(factory_geo, date_est<=1990), color = "black") +
+  geom_sf(data = filter(factory_geo, date_est>1990 & date_est<=2000),  color=alpha("red",0.2), size = 0.5) +
+  theme_map() + labs(title="Established 90-00")
+p2 <- ggplot(bd_full) +
+  geom_sf() +
+  geom_sf(data = filter(factory_geo, date_est<=2000), color = "black") +
+  geom_sf(data = filter(factory_geo, date_est>2000 & date_est<=2010),  color=alpha("red",0.2), size = 0.5) +
+  theme_map() + labs(title="Established 00-10")
+p3 <- ggplot(bd_full) +
+  geom_sf() +
+  geom_sf(data = filter(factory_geo, date_est<=2010), color = "black") +
+  geom_sf(data = filter(factory_geo, date_est>2010 & date_est<=2020),  color=alpha("red",0.2), size = 0.5) +
+  theme_map() + labs(title="Established 10-20")
+p4 <- ggplot(bd_full) +
+  geom_sf() +
+  geom_sf(data = factory_geo %>% filter(!is.na(knitfac)) %>%
+            mutate(type = as.factor(knitfac)), aes(color = type), size = 0.10)+
+  theme_map() + labs(title="Regional Specialization?")
+grid.arrange(p1, p2, p3, p4, nrow =2)
+```
+
+---
+# Factory catchment area
+
+- For each factory, we define a catchment area of 1.686 KM based on estimates of travel time of RMG workers and walking speed estimates.
+
+--
+
+- Agglomeration leads to overlap of catchment area, and exposure in intersecting areas are summed.
+
+```{r out.width= "50%"}
+include_graphics("figures//catchment_area.png")
+```
+
+---
+# Outcome data
+
+- Outcome data is obtained from geo-coded **Bangladesh Demographic and Health Surveys** 2000-2018
+
+--
+
+  - Nationally representative HH survey data in 2962 clusters.
+  
+--
+
+  - .hi[Pros:] Allows us to ask questions about changes in reproductive behavior beyond fertility.
+  
+--
+
+  - .hi[Cons:] But geo-codes are randomly displaced to protect anonymity.
+  
+--
+
+  - Only locations within factory catchment areas is selected to avoid comparing areas with and without any factory.
+
+---
+# Selected Samples
+
+```{r}
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/gps_data.RData")
+# Set coordinates
+coordinates(gps_data) <- c("LONGNUM", "LATNUM")
+# Set projection string
+proj4string(gps_data) <- CRS("+init=epsg:4326")
+# Convert to Sf and transform to Mercator Gulshan
+gps_data <- st_as_sf(gps_data) %>% st_transform(3106)
+sample_clusters <- st_intersection(factory_geo %>% select(geometry) %>% st_buffer(1686),
+                               gps_data)
+sample_clusters <- sample_clusters %>% unique() %>%
+  mutate(year = as.numeric(substr(id, 1, 4))) %>% st_as_sf()
+ggplot(bd_full) +
+  geom_sf() +
+  geom_sf(data = sample_clusters, aes(color = year))+
+  theme_map() + labs(title="Selected Samples")
+```
+
+
+---
+# Overview of the identification strategy
+
+I estimate regressions of the following form:
+
+\begin{align*}
+Y_{i,c,t}&= \beta_z Z + \beta X_{c,t} + \delta_t + \text{Birth Year}_{i,c,t} + \epsilon_{i,c,t}
+\end{align*}
+
+\begin{align*}
+Y_{i,c,t}&: \text{Outcome of person } i \text{ in catchment area } c \text{ at time } t.\\
+X_{c,t}&: \text{Measure of export exposure in} \text{ catchment area } c \text{ at time } t\\
+Z&: \text{is a vector of individual and location specific controls}\\
+\end{align*}
+
+---
+# Overview of the identification strategy
+
+**Key challenge:** Location of exporting firms are likely correlated with other variables that likely influence the outcome variables.
+
+--
+
+ - I restrict my analysis to a narrowly defined catchment area based on factory locations.
+ 
+--
+
+- Garment factories specialize in production of .hi[knit or woven type of garments. But many produce both.] 
+
+  - I make use of spatial variation in knit and woven specialization, and temporal variation in export of knit and woven products to estimate plausibly exogenous measures of export exposure.
+ 
+---
+# Export exposure
+
+
+I use a Bartik-type export exposure measure:
+
+\begin{align*}
+X_{c,t} &= Export \space Shock_{c,t} \\
+\textit{where } Export \space Shock_{c,t} &= \frac{\alpha_{c,t}^{knit} * \Delta Knit \space Export_{t-T}}{Population_{c,t}} \\
+&+ \frac{(1 - \alpha_{c,t}^{knit}) * \Delta Woven \space Export_{t-T}}{Population_{c,t}} \\ \\
+\textit{and } \alpha_{c,t}^{knit} &= \frac{Workers_{c,knit,t}}{Workers_{BD,t}}
+\end{align*}
+
+
+- T = 3 in baseline specification, and
+
+- Shares are instrumented with 3-year lags.
+
+---
+# Threats to identification
+
+- Assumes orthogonality of knit and woven share to outcomes
+    
+  - Defensible since infrastructure, not labor related issues, seem to be the key factor in location choice of garments factories.
+  
+- Coordinates of sample clusters are randomly displaced.
+  
+
+- Firm exits are not accounted for.
+
+  - For example, my dataset identifies about 1914 of 3548 firms in 2009.
+  
+  - One concern is if exists are geographically correlated.
+  
+  - Second concern is loss of variation.
+
+
+---
+class:inverse, middle
+
+# Results
+---
+
+# Conemporenaous influence on FLFP
+
+```{r, include=FALSE}
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/factory_panel.RData")
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/shocks1686.RData")
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/shocks3372.RData")
+# Set coordinates
+coordinates(shocks1686) <- c("long", "lat")
+# Set projection string
+proj4string(shocks1686) <- CRS("+init=epsg:4326") 
+# Convert to Sf and transform to Mercator Gulshan
+shocks1686 <- st_as_sf(shocks1686) %>% st_transform(3106)
+sample_temp <- sample_clusters %>% filter(year == 1999)
+shock_temp <- shocks1686 %>% filter(year <=1999) %>%
+  select(export_exposure1, export_exposure3, density1686)
+temp_data <- st_join(st_buffer(sample_temp, 1686), shock_temp)
+shocks <- temp_data %>% data.frame() %>% select(-geometry)  %>%
+  group_by(id) %>%
+  summarize(export_exposure1 = sum(export_exposure1, na.rm = T), 
+            export_exposure3 = sum(export_exposure3, na.rm = T),
+            density = mean(density1686))
+for(i in c(2000, 2004, 2007, 2011, 2014, 2017, 2018)){
+  
+  sample_temp <- sample_clusters %>% filter(year == i)
+  shock_temp <- shocks1686 %>% filter(year <=i) %>%
+    select(export_exposure1, export_exposure3, density1686)
+  temp_data <- st_join(st_buffer(sample_temp, 1686), shock_temp)
+  temp_data <- temp_data %>% data.frame() %>% select(-geometry)  %>%
+    group_by(id) %>%
+    summarize(export_exposure1 = sum(export_exposure1, na.rm = T), 
+              export_exposure3 = sum(export_exposure3, na.rm = T),
+              density = mean(density1686))
+  
+  shocks <- bind_rows(shocks, temp_data)
+}
+# First we clean up the FR data
+p_load(labelled)
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/fr_data.RData")
+fr_data <- fr_data %>%
+  filter(!is.na(LATNUM)) %>% 
+  # Taking out Ws since they are all non-NAs
+    select(-starts_with("w"))
+# Separating birth versus non-fertility data
+fr_birth <- fr_data %>% select(id_ind, v008_cmc, v011_cmc, starts_with("b"))
+dataflfp <- fr_data %>%
+  # Keeping below defined variables
+  select(id, hhid, id_ind, LATNUM, LONGNUM, v008, v011, v025, v104, v105, v119, v127, v128, v129, v130, v133, v137, v201, v212, v213, v503, v511, v605, v621,
+         v501, v704, v714, v715, v716, v717, v719, v720) %>%
+  # Rename
+  
+  rename(year = v008, birth_year = v011, rural = v025, years_lived = v104, prev_place_type = v105, 
+         electricity = v119, floor = v127, wall = v128, roof = v129, religion = v130, educ = v133, 
+         num_child5 = v137, num_child = v201, preg_survey = v213, married = v501, age_mar = v511, fert_pref = v605,
+         fert_pref_hus = v621, husb_worklocalgroup = v704, work = v714, husb_educ = v715, work_localgroup = v716, 
+         work_stdgroup = v717, work_for_fam = v719, earn_cash = v720) 
+    
+# Basic data cleaning
+# Codes with 9, 99, 999 and other nineties represent missing values
+# For floor, wall and roof - 96 is other, do not know so do not count. 97 represents not a household member. 99 is not in question.
+dataflfp <- remove_labels(dataflfp)
+dataflfp$floor[dataflfp$floor %in% c(96, 97, 99)] <- NA 
+dataflfp$floor[dataflfp$wall %in% c(96, 97, 99)] <- NA # 96 is other, do not know so do not count. 97 represents not a household member. 99 is not in question.
+dataflfp$floor[dataflfp$roof %in% c(96, 97, 99)] <- NA # 96 is other, do not know so do not count. 97 represents not a household member. 99 is not in question.
+dataflfp$years_lived[dataflfp$years_lived %in% c(96, 97, 98)] <- NA
+dataflfp <- dataflfp %>%
+  mutate(prev_place_type = as_factor(prev_place_type))
+# 7 represents not a household member, making them NA
+dataflfp$electricity[dataflfp$electricity %in% c(7,9)] <- NA
+# 97 and 99 are NA in educ
+dataflfp$educ[dataflfp$educ %in% c(99, 98)] <- NA 
+# Husband's education educ
+dataflfp$husb_educ[dataflfp$husb_educ %in% c(99, 98)] <- NA 
+dataflfp$educ[dataflfp$educ %in% c(99)] <- NA 
+# Religion - coding 1 is islam, 0 otherwise
+dataflfp$religion[dataflfp$religion %in% c(2,3,4,96)] <- 0
+# Fertility preference
+# 1 means wants a child within two years
+dataflfp <- dataflfp %>% mutate(fert_pref = case_when(fert_pref %in% c(1) ~ 1,
+                                                       TRUE ~ 0))
+dataflfp$work[dataflfp$work == 9] <- NA
+# removing unknown local work types for females and their husbands
+dataflfp$work_localgroup[dataflfp$work_localgroup %in% c(9,96,98,99,999,99999)] <- NA 
+dataflfp$husb_worklocalgroup[dataflfp$husb_worklocalgroup %in% c(0,61, 62, 64, 65, 96, 98, 99998, 99999)] <- NA # removing unknown local work types 
+dataflfp <- dataflfp %>% 
+  
+  # creating a wealth index by house characteristics in terms of floor, roof and wall. In each category, finished or better is 30 or more, giving a value of 1. So wealthiest is 3, poorest is 0. 
+  mutate(floor = ifelse(floor <30, 0, 1), 
+         wall = ifelse(wall <30, 0, 1), 
+         roof = ifelse(roof <30, 0, 1)) %>%
+  mutate(wealth_index = floor + wall + roof) %>% # removing the now redundant variable
+  select(-c(floor, wall, roof)) %>% 
+  
+  # recoding to make rural = 1
+  
+  mutate(rural = rural -1 ) %>% 
+  
+  mutate(age = year - birth_year) %>%
+  
+  # working out dummy based on local (BD) occupation groups 16 - handicrafts, 23 factory, 31 includes tailoring, 54 is small business 
+  
+  mutate(flfp_garments = as.integer(work_localgroup %in% c(16, 21, 23,31,52))) %>%
+  
+  # working out in agriculture and domestic 
+  
+  mutate(flfp_trad = as.integer(work_stdgroup %in% c(4, 5, 6))) %>%
+  
+  #working out dummy based on standard occupation groups services, manual skilled and unskilled manual
+  
+  mutate(flfp_poor_nontrad = as.integer(work_stdgroup %in% c(7,8,9))) %>%
+  
+  mutate(flfp_highskilled = as.integer(work_stdgroup %in% c(1,2,3))) %>%
+  
+  #coding husbands occupation groups
+  
+  mutate(husb_worklocalgroup
+         = case_when(husb_worklocalgroup %in% c(11, 12, 13, 14, 15, 22) ~ 1, # agriculture
+                     husb_worklocalgroup %in% c(21, 52) ~ 2, # service
+                     husb_worklocalgroup %in% c(16, 23, 31) ~ 3, # manufcaturing
+                     husb_worklocalgroup %in% c(41, 51) ~ 4)) %>% # richer places
+  
+  select(-c(work_localgroup, work_stdgroup)) %>% #ever divorced dummy = 1, if div and no longer living together
+  
+  
+  mutate(age_group = case_when(age >=40 ~ 0,
+                               age >=30 & age <40 ~ 1,
+                               age <=30 & age > 20 ~ 2,
+                               TRUE ~ 3)) 
+# Creating cluster level controls of electrification, wealth and industry structure
+temp <- dataflfp %>%
+  group_by(id) %>%
+  summarise(electrification_rate = mean(electricity, na.rm =T),
+            local_wealth = mean(wealth_index, na.rm = T),
+            mfg_share = sum(husb_worklocalgroup == 3) / n(), 
+            agro_share = sum(husb_worklocalgroup == 1) / n() )
+dataflfp <- left_join(dataflfp, temp, by = "id")
+rm(temp)
+#### Autonomy variables
+### health move auto
+data_autonomy_healthMove <- fr_data %>% select(id_ind, s823a, s823b, s818, s819) %>% remove_labels()
+#823a
+data_autonomy_healthMove$s823a[data_autonomy_healthMove$s823a %in% c(2, 3, 4)] <- 0
+data_autonomy_healthMove$s823a[data_autonomy_healthMove$s823a %in% c(6, 8, 9)] <-NA
+#823b
+data_autonomy_healthMove$s823b[data_autonomy_healthMove$s823b %in% c(2, 3, 4)] <- 0
+data_autonomy_healthMove$s823b[data_autonomy_healthMove$s823b %in% c(6, 8, 9)] <-NA
+# 818
+data_autonomy_healthMove$s818[data_autonomy_healthMove$s818 %in% c(2, 3, 4)] <- 0
+data_autonomy_healthMove$s818[data_autonomy_healthMove$s818 %in% c(6, 8, 9)] <-NA
+#819
+data_autonomy_healthMove$s819[data_autonomy_healthMove$s819 %in% c(2, 3, 4)] <- 0
+data_autonomy_healthMove$s819[data_autonomy_healthMove$s819 %in% c(6, 8, 9)] <-NA
+data_autonomy_healthMove <- data_autonomy_healthMove %>%
+  # s823b and s819 is asking whether the person CAN go alone, in an ability sense
+    mutate(can_health_alone = case_when(is.na(s823b) ~ s819,
+                           TRUE ~ s823b)) %>%
+  # s823a and s818 is asking whether the person goes alone
+  mutate(does_health_alone = case_when(is.na(s819) ~ s818,
+                           TRUE ~ s819)) %>%
+  mutate(health_move_auto = can_health_alone + does_health_alone) %>%
+  select(id_ind, health_move_auto)
+# General movement auto
+data_autonomy_Move <- fr_data %>% select(id_ind, s626a, s626, s815, s816) %>% remove_labels()
+#815
+data_autonomy_Move$s815[data_autonomy_Move$s815 %in% c(2, 3, 4)] <- 0
+data_autonomy_Move$s815[data_autonomy_Move$s815 %in% c(6, 8, 9)] <-NA
+#816
+data_autonomy_Move$s816[data_autonomy_Move$s816 %in% c(2, 3, 4)] <- 0
+data_autonomy_Move$s816[data_autonomy_Move$s816 %in% c(6, 8, 9)] <-NA
+#s626 and s626a
+data_autonomy_Move$s626[data_autonomy_Move$s626 %in% c(2, 3, 4)] <- 0
+data_autonomy_Move$s626[data_autonomy_Move$s626 %in% c(6, 8, 9)] <-NA
+data_autonomy_Move$s626a[data_autonomy_Move$s626a %in% c(2, 3, 4)] <- 0
+data_autonomy_Move$s626a[data_autonomy_Move$s626a %in% c(6, 8, 9)] <-NA
+data_autonomy_Move <- data_autonomy_Move %>%
+  # s626a and s816 is asking whether the person CAN go alone, in an ability sense
+  mutate(can_move_alone = case_when(is.na(s626a) ~ s816,
+                                      TRUE ~ s626a)) %>%
+  # s626 and s815 is asking whether the person goes alone
+  mutate(does_move_alone = case_when(is.na(s626) ~ s815,
+                                       TRUE ~ s626)) %>%
+  mutate(gen_move_auto = can_move_alone + does_move_alone) %>%
+  select(id_ind, gen_move_auto)
+move_auto <- left_join(data_autonomy_Move, data_autonomy_healthMove, by = "id_ind")
+rm(data_autonomy_Move, data_autonomy_healthMove)
+### Decision making autonomy
+final_say_data <- fr_data %>% select(id_ind, starts_with("s812"), starts_with("v74")) %>% 
+  remove_labels(final_say_data) 
+# own health care decision
+final_say_data$s812a[final_say_data$s812a %in% c(1)] <- 200
+final_say_data$s812a[final_say_data$s812a %in% c(3, 5)] <- 100
+final_say_data$s812a[final_say_data$s812a %in% c(2, 4)] <- 0
+final_say_data$s812a[final_say_data$s812a %in% c(6, 7, 8, 11, 12)] <-NA
+final_say_data$v743a[final_say_data$v743a %in% c(1)] <- 200
+final_say_data$v743a[final_say_data$v743a %in% c(2,3)] <- 100
+final_say_data$v743a[final_say_data$v743a %in% c(4,5)] <- 0
+final_say_data$v743a[final_say_data$v743a %in% c(6,9)] <- NA
+final_say_data <- final_say_data %>%
+  mutate(own_health_auto = (1/100)*case_when(is.na(s812a) ~ v743a,
+                                     TRUE ~ s812a)) %>% 
+  select(-c(s812a, v743a))
+# child health auto not added cause of many missing values
+final_say_data$s812b[final_say_data$s812b %in% c(1)] <- 200
+final_say_data$s812b[final_say_data$s812b %in% c(3, 5)] <- 100
+final_say_data$s812b[final_say_data$s812b %in% c(2, 4)] <- 0
+final_say_data$s812b[final_say_data$s812b %in% c(6, 7, 9, 21, 22)] <-NA
+# large purchase auto
+final_say_data$s812c[final_say_data$s812c %in% c(1)] <- 200
+final_say_data$s812c[final_say_data$s812c %in% c(3, 5)] <- 100
+final_say_data$s812c[final_say_data$s812c %in% c(2, 4)] <- 0
+final_say_data$v743b[final_say_data$v743b %in% c(1)] <- 200
+final_say_data$v743b[final_say_data$v743b %in% c(2,3)] <- 100
+final_say_data$v743b[final_say_data$v743b %in% c(4,5)] <- 0
+final_say_data$v743b[final_say_data$v743b %in% c(6,9)] <- NA
+final_say_data <- final_say_data %>%
+  mutate(larg_buy_auto = (1/100)*case_when(is.na(s812c) ~ v743b,
+                                             TRUE ~ s812c)) %>% 
+  select(-c(s812c, v743b))
+# small purchase auto
+final_say_data$s812d[final_say_data$s812d %in% c(1)] <- 200
+final_say_data$s812d[final_say_data$s812d %in% c(3, 5)] <- 100
+final_say_data$s812d[final_say_data$s812d %in% c(2, 4)] <- 0
+final_say_data$v743c[final_say_data$v743c %in% c(1)] <- 200
+final_say_data$v743c[final_say_data$v743c %in% c(2,3)] <- 100
+final_say_data$v743c[final_say_data$v743c %in% c(4,5)] <- 0
+final_say_data$v743c[final_say_data$v743c %in% c(6,9)] <- NA
+final_say_data <- final_say_data %>%
+  mutate(small_buy_auto = (1/100)*case_when(is.na(s812d) ~ v743c,
+                                           TRUE ~ s812d)) %>% 
+  select(-c(s812d, v743c))
+# visitor_auto
+final_say_data$s812e[final_say_data$s812e %in% c(1)] <- 200
+final_say_data$s812e[final_say_data$s812e %in% c(3, 5)] <- 100
+final_say_data$s812e[final_say_data$s812e %in% c(2, 4)] <- 0
+final_say_data$v743d[final_say_data$v743d %in% c(1)] <- 200
+final_say_data$v743d[final_say_data$v743d %in% c(2,3)] <- 100
+final_say_data$v743d[final_say_data$v743d %in% c(4,5)] <- 0
+final_say_data$v743d[final_say_data$v743d %in% c(6,9)] <- NA
+final_say_data <- final_say_data %>%
+  mutate(visitor_auto = (1/100)*case_when(is.na(s812e) ~ v743d,
+                                            TRUE ~ s812e)) %>% 
+  select(-c(s812e, v743d))
+# cooking auto
+final_say_data$s812f[final_say_data$s812f %in% c(1)] <- 200
+final_say_data$s812f[final_say_data$s812f %in% c(3, 5)] <- 100
+final_say_data$s812f[final_say_data$s812f %in% c(2, 4)] <- 0
+final_say_data$v743e[final_say_data$v743e %in% c(1)] <- 200
+final_say_data$v743e[final_say_data$v743e %in% c(2,3)] <- 100
+final_say_data$v743e[final_say_data$v743e %in% c(4,5)] <- 0
+final_say_data$v743e[final_say_data$v743e %in% c(6,9)] <- NA
+final_say_data <- final_say_data %>%
+  mutate(cook_auto = (1/100)*case_when(is.na(s812f) ~ v743e,
+                                          TRUE ~ s812f)) %>% 
+  select(-c(s812f, v743e))
+final_say_data <- final_say_data %>% select(id_ind, contains("auto"))
+autonomy <- left_join(move_auto, final_say_data, by = "id_ind")
+dataflfp <- left_join(dataflfp, autonomy, by = "id_ind")
+rm(autonomy, final_say_data, move_auto)
+dataflfp <- left_join(shocks, dataflfp, by = "id")
+dataflfp <- dataflfp %>% 
+  mutate(export_exposure1 = export_exposure1/1000, export_exposure3 = export_exposure3/1000)%>%
+  mutate(more_child = num_child - num_child5,
+         mig = case_when(years_lived >= 10 ~ 0,
+                         years_lived %in% c(4,5,6,7,8,9) ~ 0.5,
+                         TRUE ~ 1))
+save(dataflfp, file = "C:/Users/smshi/Dropbox/Research/BD-RMG-Women/dataflfp.RData")
+```
+
+
+```{r out.width= "90%"}
+include_graphics("figures//contemp_flfp.png")
+```
+---
+
+# Medium term influence on FLFP
+
+```{r out.width= "80%"}
+include_graphics("figures//three_flfp.png")
+```
+
+---
+
+# Migrantion and FLFP
+
+```{r out.width= "70%"}
+include_graphics("figures//mig_flfp.png")
+```
+
+---
+
+
+# Summarizing the FLFP results
+
+One thousand dollars worth of export shock per person:
+
+- 1.8 percentage point (pp), or 9.5 percent increase in RMG and adjacent occupations in the same year within this sample.
+
+- 18 percent increase relative to full Bangladeshi sample.
+
+--
+
+- 0.6 percentage point (pp), or 3 percent increase in RMG and adjacent occupations in three year horizons.
+
+--
+
+- Slightly larger increases in broader low skilled, non-modern occupation.
+
+  - Possibility of influence from allied industries
+
+--
+
+- Almost all of the increase is driven by new migrants into the area.
+
+---
+
+# Influence on autonomy
+
+```{r out.width= "45%"}
+include_graphics("figures//autonomy.png")
+```
+
+---
+
+# Influence on fertility preferences
+
+```{r out.width= "50%"}
+include_graphics("figures//preg_fertility.png")
+```
+
+
+---
+# Education and marraige
+
+- Not presenting at this moment due to need for checking the data cleaning process.
+
+
+---
+
+# Conclusion
+
+- In my estimates, at least .hi[11 million women] have been exposed to increased labor demand from export oriented garment manufacturing.
+
+  - About 14 % of all Bangladeshi women.
+  
+--
+
+- Results indicate that the garments industry provided opportunities for many of them to join manufacturing labor force. 
+
+  - The result seems to be driven by people moving into garment producing areas, rather than existing women changing their occupation.
+  
+--
+
+- No evidence in changes in autonomy or fertility behavior. Tentatively, no evidence on education  and marriage formation behavior either.
+
+--
+
+- Suggests that the changing conditions made the FLFP in formal settings possible, not the other way round.
+
+
+```{r}
+
+p1 <- ggdraw() + draw_image("figures//map_facs.png")
+p2 <- ggdraw() + draw_image("figures//region_assignment_chit.png")
+
+p3 <- ggdraw() + draw_image("figures//regions_chit.png")
+p4 <- ggdraw() + draw_image("figures//regions_bd.png")
+
+plot_grid(p1, p2, p3, p4, nrow = 2,
+          scale = c(1.2, .8, .8, 1.2),
+          align = "hv", axis = "l",
+          labels = c('Panel A. Factory Locations', 
+                     'Panel B. Grouping Factories', 
+                     'Panel C. Creation of Borders', 
+                     'Panel D. Final Regions'), 
+          label_size = 8, vjust = 1)
+```
