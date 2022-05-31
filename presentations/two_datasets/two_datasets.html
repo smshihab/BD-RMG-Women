@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Ready Made Garments, FLFP, Fertility and Human Capital in Bangladesh</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="13 September, 2022" />
+    <script src="two_datasets_files/header-attrs/header-attrs.js"></script>
+    <link href="two_datasets_files/remark-css/default.css" rel="stylesheet" />
+    <link href="two_datasets_files/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="two_datasets_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="my-css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Ready Made Garments, FLFP, Fertility and Human Capital in Bangladesh
+]
+.subtitle[
+## SM Shihab Siddiqui
+]
+.author[
+### 13 September, 2022
+]
+
+---
+
+
+
+
+---
+# Empirical specification
+
+`\begin{align*}
+\Delta Export \space Exposure_{s,t} =&amp; \alpha_{s,t-10}^{knit} * \Delta Knit \space Export_{t-10} + \\
+&amp;\alpha_{s,t-10}^{Woven} * \Delta Woven \space Export_{t-10} \\
+\textit{and } \alpha_{s,t-10}^{knit} =&amp; \frac{Machines_{s,knit,t-10}}{Machines_{BD-Knit,t-10}},\\
+\alpha_{s,t-10}^{Woven} =&amp; \frac{Machines_{s,woven,t-10}}{Machines_{BD-Woven,t-10}},
+\end{align*}`
+
+
+---
+
+# Identification
+
+- **Goldsmith-Pinkham et al 2020:** The regional industry shares are exogenous to the **changes** in outcomes, not levels.
+
+--
+
+- **Borusyak et al 2022**: The shifts are exogenous.
+
+--
+
+  - Or, there are many shifts which cancel each other out to some extent, so the combination is exogenous.
+
+--
+
+- A combination of all of above.
+
+--
+
+My argument is that the shares are exogenous to changes in this context. The shifts, maybe?
+
+
+---
+# Some additional factory data issues
+
+- I do not have a true panel of factories, and do not observe dropouts.
+
+--
+
+- I am panelizing the data based on i) establishment date, and based on the assumption that factories do not grow  much, or that factories do not change their production in a really meaningful way.
+
+---
+
+# Factory data soruces
+
+- .hi[With Mapped in Bangladesh (MiB) project.] All factory data is observed between 2017-2021. Does not account for exiting factories.
+
+--
+
+- BGMEA data from directory 2000-01 and directory 2009-10.
+
+  - Does not have some data needed for the panelization.
+  
+--
+
+- BGMEA data from 2015.
+  
+  - Cannot be authenticated.
+  
+---
+# Findings from BGMEA directory
+
+
+
+
+
+
+## Rate of exit
+
+- 18 exits over 24 years.
+
+- 499 exit over 10 years. Or, 50 a year `\(\implies 1.55 \%\)` a year.
+
+  - BTE paper finds that 96.4 percent of firms keep exporting between `\(t\)` and `\(t-1\)` in 2004-2009 period.
+  
+--
+## Who exits?
+
+
+```
+#&gt; # A tibble: 2 x 2
+#&gt;   remainer Machine
+#&gt;      &lt;int&gt;   &lt;dbl&gt;
+#&gt; 1        0    121.
+#&gt; 2        1    184.
+```
+
+
+---
+# Changes within factory
+## Growth
+
+- median growth is zero
+
+
+---
+# Comparision of date of establishment
+
+&lt;img src="two_datasets_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+# Results
+
+## Old regression
+
+&lt;img src="figures//regs1.png" width="1548" style="display: block; margin: auto;" /&gt;
+
+## New
+
+&lt;img src="figures//regs1a.png" width="1548" style="display: block; margin: auto;" /&gt;
+
+# Interpretations
+
+- Mean values imparts very similar impact 3.17 pp versus 1.44 in overlall FLFP
+- 3.36 pp in industrial FLFP for younger cohorts against 2.24 pp in earlier cases
+
+- Compared to Heath and Mubarak (2015), 3.17 makes sense.
+
+  - Mean urban share is 0.45 and median is 0.23. Savar (one of their surveyed upazila) had an urbanization rate of 0.21, which leads to a impact of about 3.15 pp increase.
+  
+--- 
+# Next steps
+
+- A bit confused about how to make the case using the - **Goldsmith-Pinkham et al 2020:** The regional industry shares are exogenous to the **changes** in outcomes, not levels.
+
+- Let me show you the data I have.
+
+--
+
+knit_share = f( ? ) 
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
