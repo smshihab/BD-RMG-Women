@@ -1,11 +1,17 @@
 library(pacman)
 p_load(tidyverse)
 
+<<<<<<< HEAD
 
 load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/upazila_data_combined.RData")
 
 data <- upazila_data_combined %>%
   rename(population = pop) %>%
+=======
+load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH data/IPUMS-I/upazila_data_combined.RData")
+
+data <- upazila_data_combined %>%
+>>>>>>> 8d92329b7bf54d969581ed2d68abd710b4a7e1c6
   arrange(ipum1991, year) %>%
   group_by(ipum1991) %>%
   mutate(
@@ -13,6 +19,10 @@ data <- upazila_data_combined %>%
     #lagged controls
     
     urban_lag = dplyr::lag(urban_share),
+<<<<<<< HEAD
+=======
+    density_lag = dplyr::lag(density),
+>>>>>>> 8d92329b7bf54d969581ed2d68abd710b4a7e1c6
     elec_lag = dplyr::lag(electrification),
     age_1564_lag = dplyr::lag(age_1564),
     m_educ_lag = dplyr::lag(m_educ),
@@ -35,7 +45,10 @@ data <- upazila_data_combined %>%
     f39_ind_share_lag = dplyr::lag(f39_ind_share),
     
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> 8d92329b7bf54d969581ed2d68abd710b4a7e1c6
     knit_exposure1 = (knit_coefL1 * (knit - dplyr::lag(knit))),
     knit_exposure2 = (knit_coefL2 * (knit - dplyr::lag(knit))),
     knit_exposure3 = (knit_coefL3 * (knit - dplyr::lag(knit))),
@@ -75,8 +88,15 @@ data <- upazila_data_combined %>%
     f39_ind_share2_diff = f39_ind_share2 - f39_ind_share2_lag,
     f39_ind_share_diff = f39_ind_share - f39_ind_share_lag,
     f39_lfp_diff = f39_lfp - f39_lfp_lag,
+<<<<<<< HEAD
     fertility_39_diff = fertility_39 - dplyr::lag(fertility_39),
     fertility_25_diff = fertility_25 - dplyr::lag(fertility_25)) %>%
   ungroup()
 
 save(data, file = "C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/final_data.RData")
+=======
+    fertility_39_diff = fertility_39 - dplyr::lag(fertility_39)) %>%
+  ungroup()
+
+save(data, file = "C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH data/IPUMS-I/final_data.RData")
+>>>>>>> 8d92329b7bf54d969581ed2d68abd710b4a7e1c6
