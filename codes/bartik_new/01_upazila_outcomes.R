@@ -1,11 +1,16 @@
+library(pacman)
+p_load(tidyverse, conflicted, janitor, sf, sp)
 
+conflict_prefer("select", "dplyr")
+conflict_prefer("filter", "dplyr")
+conflict_prefer("lag", "dplyr")
 
-load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/upazilas.RData")
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/00_upazilas.RData")
 
-
-load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data_full.Rdata")
-
-
+load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data_full.Rdata") %>%
+  clean_names() %>%
+  select(year, sample, serial, hhwt, urban, geo3_bd1991, geo3_bd2001, geo3_bd2011, ownership, electric, toilet, perwt, momloc, poploc, sploc, parrule, sprule,
+         famsize, nchild, nchlt5, age, sex, marst, religion, school, yrschool, empstat, labforce, ind)
 
 # samples to select from IPUMS data
 
@@ -13,14 +18,13 @@ ninetyone_sample <- factory_upazilas$ipum1991
 twentyone_sample <- factory_upazilas$ipum2001
 twenty11_sample <-  factory_upazilas$ipum2011
 
+### Upazila data in 1991
 
-####
+### Gets you general values
 
 # Load IPUMs
 
-
-
-## Selecting sample
+# Selecting sample
 
 fac_up_sample <- data_full %>%
   filter(GEO3_BD1991 %in% ninetyone_sample | GEO3_BD2001 %in% twentyone_sample  | GEO3_BD2011 %in% twenty11_sample) %>%
