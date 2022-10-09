@@ -1,4 +1,5 @@
 library(pacman)
+
 p_load(tidyverse, conflicted)
 
 conflict_prefer("select", "dplyr")
@@ -44,6 +45,25 @@ factory %>%
 
 rm(list = setdiff(ls(), c("factory", "shares_autor", "usual_bartik_shares")))
 
----
-  
+
+## Find Factory numbers per upazila and date of establishment
+
+
+upaz81_data <- read_csv("C:/Users/smshi/OneDrive/Documents/large_datasets/BBS reports/Census reports/Census 1981/upaz81.csv")
+
+upaz81_data %>%
+  mutate(mfg_share = occ_mfg81 / (occ_hh81 + occ_culti81 + occ_mfg81),
+         road_metal_share = metalledroad81 / kutcha81,
+         madrasa_prev = madrasa81 / primary81,
+         density81 = pop81 / nonRiverareaSQKM,
+         family_size = pop81 / hh81,
+         urban_rate = urbanpop81 / pop81,
+         wealth_index = (roof_bamboo81 + agrolandowner81)/(2*pop81)) -> upaz81_data
+
+p_load(broom)   
+
+lm(factory ~ literacy81 + urban_rate, upaz81_data) %>% summary()
+
+
+
 
