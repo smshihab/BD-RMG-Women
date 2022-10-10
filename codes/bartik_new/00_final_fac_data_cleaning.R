@@ -68,9 +68,12 @@ matched_data_01 %>%
 
 rm(missing_upz01)
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> fd6d7f289af1d170e60372d3e9d2940a7d32928b
 # geo-coding missing upzaila data for 09 and combining them to original
 
 coordinates(missing_upz09) <- c("Longitude", "Latitude")
@@ -146,6 +149,7 @@ has_date %>% select(-c(predicted_year, exist91_pred, exist00_pred)) %>%
 
 rm(has_date, has_no_date, reg_date)
 
+<<<<<<< HEAD
 # removing  3 remaining ambigious fac_types and the two mistaken dates
 
 matched_data_01 %>%
@@ -153,6 +157,12 @@ matched_data_01 %>%
 
 
 matched_data_01 <- matched_data_01 %>% filter(date_est < 2002)
+=======
+# removing  3 remaining ambigious fac_types
+
+matched_data_01 %>%
+  filter(!is.na(fac_type)) -> matched_data_01 
+>>>>>>> fd6d7f289af1d170e60372d3e9d2940a7d32928b
 
 # Next, fix upazila to have congruence with the 2011 names
 

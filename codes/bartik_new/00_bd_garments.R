@@ -195,6 +195,12 @@ keep = c("all_matched_data_01", "bgmea_01", "bgmea_09", "bgmea_21", "updated_bgm
 rm(list = setdiff(ls(), keep))
 
 
+<<<<<<< HEAD
+=======
+write.csv(all_matched_data_01, "~/large_datasets/BD Garments/03_all_matched_data_01.csv", row.names = F) 
+
+
+>>>>>>> fd6d7f289af1d170e60372d3e9d2940a7d32928b
 #### Working with factory data
 
 
@@ -237,6 +243,7 @@ match_09_21 %>%
 
 all_matched_data_09 <- rbind(match_09_21, matches_09)
 
+<<<<<<< HEAD
 rm(list = setdiff(ls(), c("all_matched_data_01", "all_matched_data_09")))
 
 
@@ -257,5 +264,7 @@ all_matched_data_01 <- rbind(all_matched_data_01,
   
 
 write.csv(all_matched_data_01, "~/large_datasets/BD Garments/03_all_matched_data_01.csv", row.names = F) 
+=======
+>>>>>>> fd6d7f289af1d170e60372d3e9d2940a7d32928b
 
 write.csv(all_matched_data_09, "~/large_datasets/BD Garments/03_all_matched_data_09.csv", row.names = F)
