@@ -5,12 +5,45 @@ conflict_prefer("select", "dplyr")
 conflict_prefer("filter", "dplyr")
 conflict_prefer("lag", "dplyr")
 
+# Loading upazila data and the outcome data in census
+
 load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/00_upazilas.RData")
+
+load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data.Rdata")
+
+### Unfortunately, upazila codes are not sufficient, need IPUMS code as well.]
+
+
+
+
+
+data <- data %>% clean_names() %>%
+  select(year, urban, geo3_bd1991, geo3_bd2001, geo3_bd2011, ownership, electric, toilet, perwt, momloc, poploc, sploc, parrule, sprule,
+       famsize, nchild, nchlt5, age, sex, marst, religion, school, yrschool, empstat, labforce, ind)
+
+vars <- names(data) %>% as.data.frame()
+
+data[1:1000,] -> temp
+
+data %>%
+  select(year, )
+  filter(labforce > 2) %>% mutate(labforce = labforce - 1) %>%
+  mutate(across(urban, ) = na_if(urban, 9)) %>%
+  mutate(0, 9 for ownership, )
+age 999
+marst 9
+lit 0 9
+yrschool > 18
+ind
+lit_mom 9
+lit_sp 9
+labforce_sp > 2
+
+data$labforce_sp %>% unique() 
 
 load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data_full.Rdata") %>%
   clean_names() %>%
-  select(year, sample, serial, hhwt, urban, geo3_bd1991, geo3_bd2001, geo3_bd2011, ownership, electric, toilet, perwt, momloc, poploc, sploc, parrule, sprule,
-         famsize, nchild, nchlt5, age, sex, marst, religion, school, yrschool, empstat, labforce, ind)
+  
 
 # samples to select from IPUMS data
 

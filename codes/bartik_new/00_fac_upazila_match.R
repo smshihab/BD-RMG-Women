@@ -13,7 +13,7 @@ factory_upazilas11 <- st_read(factory_upazilas11, quiet = TRUE)
 
 # Convert to Sf and transform to Mercator Gulshan
 factory_upazilas11 <- st_as_sf(factory_upazilas11) %>% st_transform(3106) %>%
-  select(ADMIN_NAME, contains("UP"), PARENT) %>%
+  select(ADMIN_NAME, contains("UP"), contains("IP"), PARENT) %>%
   clean_names() %>%
   mutate_if(is.character,tolower) %>%
   mutate(area11 = st_area(geometry) %>% drop_units()) %>%
@@ -46,7 +46,7 @@ factory_upazilas01 <- st_read(factory_upazilas01, quiet = TRUE)
 
 # Convert to Sf and transform to Mercator Gulshan
 factory_upazilas01 <- st_as_sf(factory_upazilas01) %>% st_transform(3106) %>%
-  select(ADMIN_NAME, contains("UP"), PARENT) %>%
+  select(ADMIN_NAME, contains("UP"), contains("IP"), PARENT) %>%
   clean_names() %>%
   mutate_if(is.character,tolower) %>%
   rename(upazila01 = admin_name) %>%
