@@ -6,24 +6,24 @@ conflict_prefer("select", "dplyr")
 conflict_prefer("filter", "dplyr")
 conflict_prefer("lag", "dplyr")
 
-factory01 <- read.csv("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/04_final_data_01.csv") %>%
-  select(-c(capacity, bgmea_num, parent)) 
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fac_upazilas.Rdata") 
 
-factory09 <- read.csv("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/04_final_data_09.csv") %>%
-  select(-c(capacity, bgmea_num, parent)) %>% filter(date_est < 2006)
+factory_upazilas %>%
+  mutate(upaz2011 = as.numeric(upaz2011), upaz2001 =as.numeric(upaz2001), 
+         upaz1991 = as.numeric(upaz1991)) -> factory_upazilas
 
-load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/00_upazilas.Rdata")
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/factories.Rdata")
 
-factory01 <- factory01 %>% 
+matched_data_01 <- matched_data_01 %>% 
   left_join(factory_upazilas %>% select(upaz2011, upaz2001, upaz1991))
 
-factory09 <- factory09 %>% 
+matched_data_09 <- matched_data_09 %>% 
   left_join(factory_upazilas %>% select(upaz2011, upaz2001, upaz1991))
 
 
 ## First, shares in knit versus woven importance in an area way
 
-factory01 %>% group_by(upaz1991) %>%
+matched_data_01 %>% group_by(upaz1991) %>%
   summarise(
     total91 = sum(machine*exist91, na.rm = T),
     total01 = sum(machine*exist01, na.rm = T),
@@ -38,7 +38,7 @@ factory01 %>% group_by(upaz1991) %>%
   mutate_all(~replace(., is.nan(.), 0)) -> usual_bartik_shares01
 
 
-factory09 %>% group_by(upaz1991) %>%
+matched_data_09 %>% group_by(upaz1991) %>%
   summarise(
     total05 = sum(machine*exist05, na.rm = T),
     knit05 = sum(machine*exist05*fac_type, na.rm = T),
@@ -53,13 +53,13 @@ bartik_shares <- full_join(usual_bartik_shares05, usual_bartik_shares01, by ="up
 rm("usual_bartik_shares05", "usual_bartik_shares01")
 
 ## Autor et al way of share
-total_knit91 <- sum(factory01$machine*factory01$fac_type*factory01$exist91)
-total_knit01 <- sum(factory01$machine*factory01$fac_type*factory01$exist01)
-total_wove91 <- sum(factory01$machine*(-factory01$fac_type+1)*factory01$exist91)
-total_wove01 <- sum(factory01$machine*(-factory01$fac_type+1)*factory01$exist01)
+total_knit91 <- sum(matched_data_01$machine*matched_data_01$fac_type*matched_data_01$exist91)
+total_knit01 <- sum(matched_data_01$machine*matched_data_01$fac_type*matched_data_01$exist01)
+total_wove91 <- sum(matched_data_01$machine*(-matched_data_01$fac_type+1)*matched_data_01$exist91)
+total_wove01 <- sum(matched_data_01$machine*(-matched_data_01$fac_type+1)*matched_data_01$exist01)
 
 
-factory01 %>%
+matched_data_01 %>%
   group_by(upaz1991) %>%
   summarise(knit91_share = (sum(machine*fac_type*exist91))/total_knit91,
             wove91_share = (sum(machine*(-fac_type+1)*exist91))/total_wove91,
@@ -67,10 +67,10 @@ factory01 %>%
             wove01_share = (sum(machine*(-fac_type+1)*exist01))/total_wove01) -> autor_shares01
 
 
-total_knit05 <- sum(factory09$machine*factory09$fac_type*factory09$exist05)
-total_wove05 <- sum(factory09$machine*(-factory09$fac_type+1)*factory09$exist05)
+total_knit05 <- sum(matched_data_09$machine*matched_data_09$fac_type*matched_data_09$exist05)
+total_wove05 <- sum(matched_data_09$machine*(-matched_data_09$fac_type+1)*matched_data_09$exist05)
 
-factory09 %>%
+matched_data_09 %>%
   group_by(upaz1991) %>%
   summarise(knit05_share = (sum(machine*fac_type*exist05))/total_knit91,
             wove05_share = (sum(machine*(-fac_type+1)*exist05))/total_wove05) -> autor_shares05
