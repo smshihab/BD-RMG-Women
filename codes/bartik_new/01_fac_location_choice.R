@@ -129,7 +129,32 @@ rm(list = setdiff(ls(), c("data01", "data09")))
 
 
 
+<<<<<<< HEAD
 
+=======
+## What drives FLFP
+
+#load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data.Rdata")
+
+vars <- names(data) %>% as.data.frame()
+
+data %>% filter(sex == 2 & age > 14) -> data
+
+data %>%
+  filter(labforce > 2) %>% mutate(labforce = labforce - 1) %>%
+  mutate(across(urban, ) = na_if(urban, 9)) %>%
+  mutate(0, 9 for ownership, )
+age 999
+marst 9
+lit 0 9
+yrschool > 18
+ind
+lit_mom 9
+lit_sp 9
+labforce_sp > 2
+
+data$labforce_sp %>% unique() 
+>>>>>>> be010827697b7ac1da4e3ecec3050901b4afb4d6
   
 
 ## Are factories locating in areas with more favorable labor supply?
