@@ -68,12 +68,7 @@ matched_data_01 %>%
 
 rm(missing_upz01)
 
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> fd6d7f289af1d170e60372d3e9d2940a7d32928b
 # geo-coding missing upzaila data for 09 and combining them to original
 
 coordinates(missing_upz09) <- c("Longitude", "Latitude")
@@ -104,65 +99,9 @@ rm(missing_upz09)
 matched_data_09 %>%
   filter(!is.na(upazila)) -> matched_data_09
 
-
-## estimating date of establishment
-
-matched_data_01 %>% filter(!is.na(date_est)) -> has_date
-
-matched_data_01 %>% filter(is.na(date_est)) -> has_no_date
-
-
-### OLS for prediction
-
-reg_date <- lm(date_est ~ bgmea_num, has_date)
-
-
-has_date$predicted_year <- round(reg_date$fitted.values, digits = 0)
-
-
-has_date %>%
-  mutate(exist91 = case_when(date_est <1992 ~ 1,
-                             TRUE ~ 0),
-         exist00 = case_when(date_est <2001 ~ 1,
-                             TRUE ~ 0),
-         exist91_pred = case_when(predicted_year <1992 ~ 1,
-                                  TRUE ~ 0),
-         exist00_pred = case_when(predicted_year <2001 ~ 1,
-                                  TRUE ~ 0)) -> has_date
-
-# obtaining exisrtance estimation error rate.
-
-#(sum(abs(has_date$exist91 - has_date$exist91_pred)) + sum(abs(has_date$exist00 - has_date$exist00_pred))) / (2*2161)
-
-# providing the predicted values
-has_no_date$date_est <- round(predict(reg_date, has_no_date), digits = 0)
-
-# existence value creator
-has_no_date %>%
-  mutate(exist91 = case_when(date_est <1992 ~ 1,
-                             TRUE ~ 0),
-         exist00 = case_when(date_est <2001 ~ 1,
-                             TRUE ~ 0)) -> has_no_date
-
-has_date %>% select(-c(predicted_year, exist91_pred, exist00_pred)) %>%
-  rbind(has_no_date) -> matched_data_01
-
-rm(has_date, has_no_date, reg_date)
-
-<<<<<<< HEAD
-# removing  3 remaining ambigious fac_types and the two mistaken dates
-
 matched_data_01 %>%
-  filter(!is.na(fac_type)) -> matched_data_01
+  filter(!is.na(upazila)) -> matched_data_01
 
-
-matched_data_01 <- matched_data_01 %>% filter(date_est < 2002)
-=======
-# removing  3 remaining ambigious fac_types
-
-matched_data_01 %>%
-  filter(!is.na(fac_type)) -> matched_data_01 
->>>>>>> fd6d7f289af1d170e60372d3e9d2940a7d32928b
 
 # Next, fix upazila to have congruence with the 2011 names
 
@@ -200,6 +139,7 @@ matched_data_01$upazila[matched_data_01$upazila == "pallbi"] <- "pallabi"
 matched_data_01$upazila[matched_data_01$upazila == "shahbagh"] <- "shahbag"
 
 matched_data_01$upazila[matched_data_01$upazila == "tejgaon ind. area"] <- "tejgaon industrial area"
+matched_data_01$upazila[matched_data_01$upazila == "tejgoan ind. area"] <- "tejgaon industrial area"
 
 matched_data_01$upazila[matched_data_01$upazila == "kadamtali"] <- "kadam tali"
 
@@ -220,10 +160,10 @@ matched_data_09$upazila[matched_data_09$upazila == "pallbi"] <- "pallabi"
 matched_data_09$upazila[matched_data_09$upazila == "shahbagh"] <- "shahbag"
 
 matched_data_09$upazila[matched_data_09$upazila == "tejgaon ind. area"] <- "tejgaon industrial area"
+matched_data_09$upazila[matched_data_09$upazila == "tejgoan ind. area"] <- "tejgaon industrial area"
 
 matched_data_09$upazila[matched_data_09$upazila == "kadamtali"] <- "kadam tali"
-
-
+matched_data_09$upazila[matched_data_09$upazila == "shabujbagh"] <- "sabujbagh"
 
 matched_data_01 %>%
   select(upazila) %>% unique() %>%
@@ -249,7 +189,6 @@ rm("upaz01", "upaz91")
 
 fac_upaz %>%
   filter(!upaz2011 %in% c("555239", "552769", "408747", "404433", "406552", "405094", "405566", "405595")) -> fac_upaz
-
 
 left_join(matched_data_01, fac_upaz) %>%
   mutate(across(c(upaz2011, parent), as.integer)) -> matched_data_01
