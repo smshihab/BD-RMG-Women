@@ -9,7 +9,7 @@ conflict_prefer("lag", "dplyr")
 
 
 ### eexports
-trade <- read_csv("comtrade.csv") %>%
+trade <- read_csv("./data/comtrade.csv") %>%
   clean_names() %>%
   group_by(year, commodity_code, trade_flow) %>%
   summarise(value = sum(trade_value_us)) %>%
@@ -43,60 +43,109 @@ exports <- exports %>%
 
 rm(list = setdiff(ls(), "exports"))
 
-load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/factory_panel.RData")
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/upazila_data.RData")
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/shares.RData")
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fac_upazilas.RData")
 
-factory_panel <- factory_panel %>%
-  mutate(knit = as.integer(knit), date_est = as.integer(date_est), exist = existence)
+autor_shares[is.na(autor_shares)] <- 0
+bartik_shares[is.na(bartik_shares)] <- 0
 
-# Using factory panel from before
-factory_panel <- factory_panel %>%
-  mutate(woven = 1-knit)
+autor_shares <- read.csv("hi_autor.csv")
+bartik_shares <- read.csv("hi_bartik.csv")
 
-# Estimating shocks to areas
-
-temp <- factory_panel %>% filter(year >=1985 & year <=2011)
-
-# Estimating total knit and woven capacity in BD
-
-bd_capacity <- temp %>%
-  data.frame() %>%
-  group_by(year) %>%
-  summarise(
-    knit_bd = sum(machines*knit*exist, na.rm = T),
-    wov_bd = sum(machines*woven*exist, na.rm = T)) %>%
-  ungroup()
-
-# Estimating a region's share of knit and woven
-
-  
-temp_data <- temp %>%
-  group_by(ipum1991, year) %>%
-  summarize(knit_machines = sum(exist*machines*knit, na.rm = T), 
-            wov_machines = sum(exist*machines*woven, na.rm = T)) %>% ungroup()
-
-temp_data <- left_join(temp_data, bd_capacity, by = "year")
-
-temp_data <- temp_data %>% mutate(knit_coef = knit_machines/knit_bd,
-                                  wov_coef = wov_machines/wov_bd)
-
-temp_data <- temp_data %>%
+data <- upazila_data %>%
+arrange(ipum1991, year) %>%
   group_by(ipum1991) %>%
   mutate(
-    knit_coefL1 = dplyr::lag(knit_coef, 1),
-    knit_coefL2 = dplyr::lag(knit_coef, 2),
-    knit_coefL3 = dplyr::lag(knit_coef, 3),
-    knit_coefL4 = dplyr::lag(knit_coef, 4),
-    knit_coefL5 = dplyr::lag(knit_coef, 5),
-    wov_coefL1 = dplyr::lag(wov_coef, 1),
-    wov_coefL2 = dplyr::lag(wov_coef, 2),
-    wov_coefL3 = dplyr::lag(wov_coef, 3),
-    wov_coefL4 = dplyr::lag(wov_coef, 4),
-    wov_coefL5 = dplyr::lag(wov_coef, 5)) %>% ungroup()
+    
+    #lagged controls
+    
+    urban_lag = dplyr::lag(urban_share),
+#    density_lag = dplyr::lag(density),
+    elec_lag = dplyr::lag(electrification),
+    age_1564_lag = dplyr::lag(age_1564),
+    m_educ_lag = dplyr::lag(m_educ),
+    f_educ_lag = dplyr::lag(f_educ),
+    f39_educ_lag = dplyr::lag(f39_educ),
+    
+    
+    # lag outcomes
+    
+    m_ind_share_lag = dplyr::lag(m_ind_share),
+    m_ind_share2_lag = dplyr::lag(m_ind_share2),
+    m_lfp_lag = dplyr::lag(m_lfp),
+    f_ind_share2_lag = dplyr::lag(f_ind_share2),
+    f_ind_share_lag = dplyr::lag(f_ind_share) ,
+    school15_m_lag = dplyr::lag(school15_m),
+    school15_f_lag = dplyr::lag(school15_f),
+    f_lfp_lag = dplyr::lag(f_lfp),
+    f39_ind_share2_lag = dplyr::lag(f39_ind_share2),
+    f39_lfp_lag = dplyr::lag(f39_lfp),
+    f39_ind_share_lag = dplyr::lag(f39_ind_share)) %>%
+  mutate(
+    
+    # first diff
+    
+    m_ind_share2_diff = m_ind_share2 - m_ind_share2_lag,
+    m_ind_share_diff = m_ind_share - m_ind_share_lag,
+    m_lfp_diff = m_lfp - m_lfp_lag,
+    f_ind_share2_diff = f_ind_share2 - f_ind_share2_lag,
+    f_ind_share_diff = f_ind_share2 - f_ind_share_lag,
+    school15_m_diff = school15_m - school15_f_lag,
+    school15_f_diff = school15_f - school15_f_lag,
+    f_lfp_diff = f_lfp - f_lfp_lag,
+    f39_ind_share2_diff = f39_ind_share2 - f39_ind_share2_lag,
+    f39_ind_share_diff = f39_ind_share - f39_ind_share_lag,
+    f39_lfp_diff = f39_lfp - f39_lfp_lag,
+    fertility_39_diff = fertility_39 - dplyr::lag(fertility_39),
+    fertility_25_diff = fertility_25 - dplyr::lag(fertility_25)) %>%
+  ungroup()
+
+autor_shares <- left_join(autor_shares, exports)
+
+autor_shares <- left_join(autor_shares, factory_upazilas %>%
+                            mutate(ipum1991 = as.numeric(ipum1991),
+                                   upaz1991 = as.integer(upaz1991)) %>%
+                            select(ipum1991, upaz1991))
+
+data_autor <- left_join(data, autor_shares, by = c("year", "ipum1991"))
 
 
-load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/upazila_data.RData")
+data_autor <- data_autor %>%
+  mutate(autor_knit = knit_share*(knit - dplyr::lag(knit)),
+         autor_wove = wove_share*(woven - dplyr::lag(woven)),
+         autor_instrume = (autor_knit + autor_wove)/(1000000*age_1564))
 
-temp_data <- left_join(temp_data, exports %>% select(year, knit, woven), by = "year")
+####
+
+p_load(broom)
+
+lm(f_lfp_diff ~ autor_instrume + m_lfp_lag + urban_lag, data_autor) %>%
+  tidy()
+
+
+
+bartik_shares <- left_join(bartik_shares, exports)
+
+bartik_shares <- left_join(bartik_shares, factory_upazilas %>%
+                            mutate(ipum1991 = as.numeric(ipum1991),
+                                   upaz1991 = as.integer(upaz1991)) %>%
+                            select(ipum1991, upaz1991))
+
+data_bartik <- left_join(data, bartik_shares, by = c("year", "ipum1991"))
+
+
+data_bartik <- data_bartik %>%
+  mutate(bartik_knit = knit_share*(knit - dplyr::lag(knit)),
+         bartik_wove = wove_share*(woven - dplyr::lag(woven)),
+         bartik_instrume = (bartik_knit + bartik_wove)/(1000000*age_1564))
+
+
+lm(bartik_instrume ~ m_lfp, data_bartik) %>%
+  glance()
+
+
+
 
 
 upazila_data_combined <- left_join(upazila_data, temp_data, by = c("ipum1991","year"))
