@@ -1,0 +1,533 @@
+---
+title: "Untitled"
+author: "SM Shihab Siddiqui"
+date: "2022-10-15"
+output: html_document
+---
+
+Abstract
+
+In this paper, I analyze of the impact of Ready Made Garments (RMG) factories on Bangladeshi women  in two ways. First, I use datasets with a  broader range of geographic and temporal coverage relative to previous literature. Second, I exploit spatial variation in Knit and Woven exports to estimate the Female Labor Force Participation (FLFP) response, ameliorating some of the concerns related to unobserved location characteristics. I find strong evidence of increases in FLFP, and changes in composition of FLFP due to exposure to RMG factories. However, I find no impact on fertility.
+
+
+\section{Conclusion}
+
+This paper investigates the impact of exposure to RMG factories on FLFP, and fertility. Exploiting changes in export exposure, I find strong evidence that exposure to RMG has increased FLFP in RMG adjacent as well as non-traditional low skilled work. It also decreases traditional employment of women. However, I do not find any evidence of changes in fertility behavior due to RMG exposure. This is surprising since @HM2015 finds that RMG exposure of about 6 years reduces hazard of first birth in sample year by about 30 percent. However, length of exposure could be correlated with age and development process - leading to overestimation of fertility response to RMG exposure. I do find a strong association between FLFP and and having child at home, as seen elsewhere [@bloom]. Taking the results at face value, this seems to indicate fertility transition in Bangladesh is somewhat independent of RMG exposure. Indeed, it is possible that it is the lower fertility that has allowed women to engage in the labor force. 
+
+|       One aspect that remains to be explored is the role of changes in norms surrounding women due to peer effects. As long as  people from RMG exposed clusters and control clusters interact directly and indirectly, norms regarding FLFP, marriage, reproduction and education that evolves as a result of exposure to RMG factories could transmit to control clusters. Under such social mechanisms, similar to those explored in @Raq and @fogli in context of US FLFP, the impact of long run exposure is underestimated in this paper. An exploration of the importance of such mechanisms in Bangladesh is left for future work. Further exploration of education and other reproductive behavior will also be part of an update to this research.
+
+
+
+
+
+
+. __By my calculation, the RMG industry accounted for about 12-16 percent of female employment in Bangladesh in 2017.^[Calculated as $\frac{\text{Fraction Female} \times \text{Total Employment in RMG}}{\text{Female Population (15-64)} \times \text{FLFP Rate (15-64)}} \times 100$]__ 
+
+
+ @HM2015 argue that exposure to RMG factories also increases returns to education and skills. Thus, there is a possibility of a direct impact of RMG factories on education attainment of women. I will explore this in future. In addition, this also implies a possibility of reduction in fertility and desired fertility due to increasing opportunity cost of child bearing [@Aaronson]. Another possibility is that this decreases fertility at younger ages when women are more employable [@ILO2020] but keeps the overall fertility same by delaying child birth. Additionally, @Anderson find that the increased outside employment is positively associated with female empowerment in Bangladesh. In addition, @ILO2020 reports a greater incidence of divorces among female RMG workers than what my sample suggests.
+
+
+
+|       In this paper, I estimate the impact of RMG factories on FLFP and fertility of women in Bangladesh. As an update to this research, I will explore the impact of RMG factories on fertility preference, marriage formation and education decisions of women. Doing this serves three purposes. First, it adds to the documentation of the role of RMG factories in fostering gender equality in Bangladesh. Second, it adds to the literature discussing the mechanisms of manufacturing-led development path. This is particularly relevant given concerns about structural transformation bypassing the manufacturing sector in many of the currently developing countries as discussed in @Rodrik2015. Third, it adds to the literature examining the impact of exposure to trade on lives of workers (see for example, @Autor2013, @Autor2019 and   @Li2018)
+
+|       @HM2015 investigated the impact of the RMG industry on FLFP, fertility and education outcomes in Bangladesh. In 2009, they surveyed 1395 households in 60 villages. 44 of these villages were within commuting zones (CZs) of RMG factories, while the remainder were not.^[@HM2015 determined whether villages were in RMG factory CZs or not in consultation with officials from the Bangladesh Garments Manufacturers and Exporters Association.] They reported that the bulk of the women employed in RMG factories were below 30 years old. Using a difference-in-difference estimator, they first documented that women in villages near RMG factory villages were about 15 percentage point (pp hereafter) more likely to have worked outside of home. Moreover, the effect was stronger among women exposed to RMG factories during critical exposure period (ages 10 - 23) by an additional 12 pp.
+
+|       Using total years of exposure to capture the overall impact of RMG factories on marriage and child-bearing decision, @HM2015 found that 6.4 years of RMG exposure (mean in their sample) reduced the probability of getting married and having first children by about 0.3 and 0.23 pp. Comparing it to the full sample probabilities, this represents a 28 percent and 29 percent decrease in probability of marriage and first birth for women. However, they found no effect on men. By using the same measure of exposure to RMG factory, [@HM2015] also found increases in educational attainment for women and men by 0.22 and 0.26 years respectively. However, they did  not find strong evidence suggesting increases in enrollment. The findings in @HM2015 are consistent with @Amin98 and @NS who found an association between the RMG industry and increased FLFP, education and declining fertility in Bangladesh. However, in the context of Mexico, @Atkin2012 found that the availability of industrial sewing jobs induced older children to work instead of attending school.
+
+|        The methodology of this paper takes inspiration from  @Autor2013, @Autor2019 and @Li2018. @Autor2013 and @Autor2019 exploited differences in the spatial and gender patterns of specialization in US manufacturing to estimate the impact of increased exposure to Chinese imports on US workers. @Autor2019 found that one unit of import exposure, roughly equivalent to the average decade level exposure between 1990-2000, reduced manufacturing employment as a share of the population for both sexes by 1.06 pp. Sex-specific trade shocks reduced employment by 2.6 pp for both sexes. In addition, the authors also found a strong negative impact on male idleness, mortality rate, and absence. Lastly, they also find that shocks to male-dominated industries reduce family formation and fertility, whereas shocks to female-dominated industries tend to increase family formation and fertility. In the Chinese context, @Li2018 exploited variation in skill intensity of industries and spatial variation in industry specialization and found that high (low) skill export shock increased (decreased) high school and college enrollment in China between 1990 to 2005.
+
+|       In addition to the direct impacts, it is possible that the opportunity to formal employment changes norms regarding women's work, education and reproductive decisions [@Amin98; @Baudin2010; @Shankha2012]. About 90 percent of the women working in RMG factories are younger than 40 years old, gaining first experience of paid employment in the RMG sector [@ILO2020]. Indeed, the findings of @Munshi2006 that information about modern contraception and its usage spreads between, rather than across, religious groups, even though each group may be cohabiting in densely populated places, suggests a strong role of spread of changing norms within similar groups of people.
+
+|       The objective of this research project is to estimate the impact of RMG factories on FLFP and fertility. I plan on extending the analysis to fertility preference, marriage formation and education decisions of women. However, here I present estimates of impact of RMG factories on FLFP and fertility only. I make use of the Demographic Health Survey (DHS) dataset. The DHS dataset contains information about sector of work of husband, and of wife, age at marriage, realized fertility, desired number of children, preference for male over female children, among other variables. This will allow me to shed light on the channel of cultural change surrounding gender-development in Bangladesh that precipitated from advent of the RMG industry. The DHS data was collected in 8 different years between 1999-2018. In addition, the factory dataset consists of data on nearly all of surviving export oriented RMG factories in Bangladesh. The use of these two dataset provides a much broader spatial and temporal variation in observations relative to @HM2015.
+
+
+|       The rest of the paper is organized as follows - Section 2 describes the empirical approach, Section 3 describes the data, Section 4 discusses the results and Section 5 concludes the paper.
+
+\section{Empirical Approach}
+
+\subsection{Overview of the Identification Strategies}
+
+```{r, knitandwoven, fig.cap = "Knit and Woven Exports Over the Years", fig.align='center', out.width="80%" }
+export_data <- read_excel("C:/Users/smshi/Dropbox/Research/Data/BD RMG factory data/exports_bgmea.xlsx")%>%
+  select(year, knit, woven) %>%
+  pivot_longer(-year, names_to = "Type", values_to = "Exports")
+
+ggplot(export_data, aes(x=year, y = Exports)) +
+  geom_line(aes(col = Type))+
+  labs(y = "Billions of USD", caption = "Using Data from BGMEA (2021)")
+
+rm(export_data)
+```
+
+
+The Bangladeshi economy has been growing at an average rate of about 5.6 percent over 1990-2018. In addition to improvement in fertility, education and FLFP conditions of women discussed in the introduction; this period also saw a doubling of available workforce, rapid urbanization and improvements in infrastructure. For example, electrification rate increased from about 15 percent in 1991 to over 90 percent by 2018 [@WB2021]. Quality of infrastructure and utilities have been found to be the key drivers of RMG factory location choice, whereas access to educated workforce is not a concern for most factory owners [@Kagy]. The primary concern for identification in this context of is that placement of factories are correlated with location-specific infrastructure conditions. This may independently change FLFP, fertility and education outcomes and may encourage selective in-migration.
+
+|       To overcome these challenges, I construct Bartik-style measures of demand for labor coming from the RMG industry. Specifically,  I estimate the impact of exposure to RMG factories on FLFP and fertility by exploiting the variation in exposure generated by differences in knit versus woven specialization across different factory-regions, and the temporal differences in knit and woven exports from Bangladesh (see Figure 2). This identification avoids comparing FLFP and fertility among people living in locations exposed to RMG factories with people living in locations that are not exposed to RMG factories. Therefore, some concerns regarding unobserved differences in locations that maybe correlated with the FLFP and fertility choices is ameliorated. However, this identification strategy assumes that there is no difference between places varying in degree of knit specialization. I account for time trends using birth year fixed effects, and year of survey fixed effects. I also use population density at the region level as a proxy control for the level of development and urbanization in the regions of interest. Further controls are regression specific and discussed below.
+
+
+|       The algorithm first groups factories into different regions based on the distance constraints. Panel B shows the grouping of factories into different regions in South Eastern Bangladesh. Afterwards, regions boundaries are created based on the constrained that workers are likely to live within 1.686 KMs from a factory. Panel C shows an example of the regions generated in the South Eastern Bangladesh. The process generated 119 regions. Panel D shows all of the generated regions. The regions  were then overlapped with population density raster files of Bangladesh for 1990, 1995, 2000, 2005, 2010, 2015, 2020 from [@gpw3; @gpw4]. These provides estimates of population density at approximately 5 KM grids. The projections are matched to the United Nation's World Population Prospects. Brief overview of the regions are below.
+
+```{r summaryregions, message = FALSE, warnings = FALSE, fig.cap = "Region Characteristics", fig.align='center', out.width="80%"}
+
+include_graphics("figures//region_stats1.png")
+
+```
+
+|       Judging by the distribution of area (left panel), about 40 of the regions created seem to be the result of single, or agglomeration of a small number of factories. The remainder of the regions seems to display varying area. On the other hand, there is also a large variation in the estimated population density of the regions in 1990 (right panel). This may be taken to indicate a varying degree of initial levels of urbanization in the different regions.
+
+\subsection{Female Labor Force Participation}
+
+The results presented in this paper is plausible only if the DHS sample contains women who are exposed to export-oriented RMG factories. I do not have data on whether an interviewed woman was working in an RMG factory. Hence, I first document whether export exposure increases female participation in occupation groups such as handicraft producers, factory workers, tailoring, and small business owners. The choices are motivated by findings that alumnus of a RMG job training project tended to be employed in these occupation classes [@nari2019]. Then, I document the impact of export exposure on i) traditional occupation categories (agricultural, household and domestic paid work), ii) low-skilled non-traditional sectors (services and manual labor), and iii) high-skilled non-traditional sectors (sales, professional / technical, clerical). I investigate whether greater exposure to RMG export increases propensity of married women to work outside of their home by estimating Probability Models of the following form:
+
+\begin{align}
+Y_{i,r,t} &= \beta_z Z_{i,r,t} + \beta X_{r,t} + \delta_t + \text{Birth Year}_{i,r,t} + \epsilon_{i, r,t}
+\end{align}
+
+where $Y_{i,r,t}$ is an indicator variable capturing whether an interviewed woman $i$ is working in some selected occupation in a region $r$ at time $t$. Changes in RMG factory exposure is measured as follows:
+
+\begin{align*}
+X_{r,t} &= Export \space Shock_{r,t} \\
+\textit{where } Export \space Shock_{r,t} &= \frac{\alpha_{r,t}^{knit} * \Delta Knit \space Export_{t-T} + (1 - \alpha_{r,t}^{knit}) * \Delta Woven \space Export_{t-T}}{Population_{r,t}} \\
+\textit{and } \alpha_{r,t}^{knit} &= \frac{Workers_{r,knit,t}}{Workers_{BD,t}}
+\end{align*}
+
+|       $\alpha_{r,t}^{knit}$ measures the share of knit exports of Bangladesh attributable to region $r$ in time $t$. When $T = 1$, $\Delta Knit_{t-1} \text{ and } \Delta Woven_{t-1}$ measures the change in knit and woven exports from Bangladesh over the last year period from time $t$. In the first case, the measure $X_{r,t}$ then measures the total exports originating from a region's factories in the year before the date of survey. Thus, $X_{r,t}$ then measures the contemporaneous export exposure of a region $r$ in time $t$. To estimate the medium term effect, I also estimate the regressions with $T = 3$. $\Delta Knit_{t-3} \text{ and } \Delta Woven_{t-3}$ are the changes in knit and woven export over a three year period. In addition, to ameliorate potential simultaneity bias, I instrument $\alpha^{knit}_{r,t}$ with $\alpha^{knit}_{r,5}$.
+
+|       In eq (1) $Z_{i,r,t}$ are the control variables. Cluster level controls include rural dummy and electrification rate; and individual level controls including education level, age, square of age, religion, pregnancy status at the time of survey, and number of children at home. I also control from husband's education and industry of employment to account for possible marriage market sorting behavior. $\delta_t$ are time fixed effects, and $\text{Birth Year}_{i,r,t}$ are birth cohort fixed effects. $X_{r,t}$ measures the changes in exposure to RMG factory at the cluster level.I also use population density of the region as a proxy control for the level of development and urbanization in the regions of interest. @HM2015 and @ILO2020 find that younger women are more likely to be employed in RMG factories. This leads to the expectation that export shocks would induce younger women to enter the work force at higher rates. Thus, I restrict my data to include only women 35 years and younger. 
+
+|       Factory location is possibly an outcome of an optimization process of the RMG entrepreneurs based on unobservables that could be correlated with the outcome variables. By exploiting the knit versus woven variation, I control for the unobserved location characteristics that maybe correlated with both the existence of a factory nearby and the outcome variables. Thus, $\beta$ estimates the impact of differences in export exposure within factory-exposed regions, ameliorating some of the concerns about unobserved location characteristics by avoiding comparison between clusters near a factory, and further from a factory.
+
+|       @Autor2019 use a similar measure of import exposure to study the impact of Chinese imports in US labor markets. In their specification, CZ level labor market shock is calculated as a weighted average change in Chinese import penetration, where the weights are each industry's share in initial employment in a CZ. They measure each industry's import penetration as the growth of Chinese import. My measure differs from theirs primarily because a shorter time frame in my case means that levels, instead of growth rates, better capture the influence on female labor market. Additionally, their regressand is CZ level outcome variables. Since I do not have reliable measures of region level outcome variables, I use individual level outcome variables as my regressand.
+
+
+\subsection{Fertility Behavior}
+
+Next, I estimate the impact of exposure to RMG factory on fertility  behavior of women. This is done by estimating an equation of the following form:
+
+\begin{align}
+Y_{i,r,t} &= \beta_z Z_{i,r,t} + \beta X_{r,t} + \delta_t + \gamma \text{Birth Year}_{i,t,y} + \epsilon_{i, r,t}
+\end{align}
+
+where $Y_{i,r,t}$ is pregnancy indicator, or the total births till survey date of an interviewed woman $i$ is working in some selected occupation in a region $r$ at time $t$. In addition to the controls in FLFP regression, I also control for the age of marriage in the fertility regressions.
+
+
+
+\section{Data}
+
+\subsection{Factory Data}
+
+The primarily source of the factory data is the Mapped in Bangladesh (MiB) project of Centre for Entrepreneurship Development (CED), Brac University (CED-BracU) [@mib] *(MiB dataset hereafter)*.^[Copyright Notice for Using MiB Data: "The Project titled Mapped in Bangladesh (MiB) is being implemented by Centre for Entrepreneurship Development (CED), Brac University (BracU) [hereinafter CED-BracU], and coordinated by Brac with lead funding by Laudes Foundation and co-funding by the Kingdom of the Netherlands (EKN), Bangladesh. The research findings, factory data, digital map, and any other related contents are the sole property(s) of CED-BracU and must not be reproduced and/or regenerated in any form without the expressed written consent of CED-BracU.”] The MiB project gathered a list of factories compiled from multiple secondary sources, narrowed it down to RMG factories producing only for the export market [@mibmethod]. Then they conducted field visits to ascertain existence of the factories and collect information on factory address, establishment date, factory specialization (i.e. whether the factory specializes in knit or woven manufacturing, or produces both), number of male and female workers, among others. I supplement the MiB dataset with data on Bangladesh Export Processing Zone (BEPZ) factories obtained by scraping the website of [Bangladesh Garments Manufacturers and Exporters Association (BGMEA) Member List](https://www.bgmea.com.bd/page/member-list).
+
+|       BGMEA website has data on the number of machines in a given factory, but not on total number of workers, and their gender composition consistently. I estimate these numbers by first matching BGMEA data from non-BPEZ areas with the MiB dataset, and then running regressions to model the number of total and female workers of BGMEA factories. _(See Appendix 2 for further details)_ The factory locations from BGMEA data were geo-coded using [Awesome Table](https://awesome-table.com/) and [Google Maps](https://www.google.com/maps). Summaries of the dataset used for analysis is presented below.
+
+```{r, summaryfacgraphs, message = FALSE, warnings = FALSE, fig.cap = "Factory Characteristics", fig.height = 5, fig.width = 8}
+
+# Factory Statistics
+hist_machine <- ggplot(factory, aes(workers_total)) +
+  geom_histogram(na.rm=T) + labs(x = "Number of Workers")
+
+hist_date <- ggplot(factory, aes(date_est))+
+  geom_histogram(na.rm = T) + labs(x = "Date of establishment")
+
+hist_type <- ggplot(factory, aes(knitfac))+
+  geom_histogram(na.rm = T) +
+  labs(x = "Factory type") +
+  labs(caption = "0=Woven, 0.5=Mixed, 1=Knit")
+  
+
+grid.arrange(hist_machine, hist_date, hist_type,  nrow = 1)
+```
+
+```{r, summaryfactable, cache = TRUE, results='asis', include = F}
+# Factory Statistics
+
+factory %>% as_tibble() %>% select(date_est, knitfac, workers_total, workers_female) %>% as.data.frame() %>% stargazer(type = "latex", digits = 1, covariate.labels = c("Establishment Date", "Knit Factory", "Total Workers", "Female Workers"), title = "Summary Statistics of RMG Factories", header = FALSE)
+```
+
+
+\begin{table}[!htbp] \centering 
+  \caption{Summary Statistics of RMG Factories} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1}{c}{Pctl(25)} & \multicolumn{1}{c}{Pctl(75)} & \multicolumn{1}{c}{Max} \\ 
+\hline \\[-1.8ex] 
+Establishment Date & 3,573 & 2008 & 8.4 & 1978 & 2003 & 2015 & 2021 \\ 
+Knit Factory & 3,573 & 0.6 & 0.5 & 0 & 0 & 1 & 1 \\ 
+Total Workers & 3,571 & 823.8 & 1,148.0 & 6.0 & 180.0 & 1,000.0 & 16,467.0 \\ 
+Female Workers & 3,568 & 483.0 & 651.7 & 0.0 & 108.0 & 592.0 & 8,020.0 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table}
+
+|       Table 1 and 2, and Figure 1 provides a brief overview of the factory data. The dataset contains data on 3,573  factories. Establishment date ranges from 1978 to 2021, with the bulk of the factories established within our DHS sample period 1999-2018. Most of the factories have between 180-1000 workers. On an average, factories have about 823 workers and about 483 of them are females. About 60 percent of factories are knit factories. There appears to be clear differences between knit and woven factories. Knit factories tend to be smaller, are usually established later, located in the North Western part of the country and employ less female workers.
+
+
+```{r, knitVWov, cache = TRUE, results='asis', include=FALSE}
+factory_panel %>% filter(year == 2018) %>%
+  select(year, date_est, knit, workers, fworkers, exist, lat, long) %>%
+  mutate(fworkers_share = (exist*fworkers) / (exist*workers)) %>%
+  select(knit, date_est, workers, fworkers_share, lat, long, ) %>%
+  cor(use = "complete.obs") %>%
+  stargazer(type = "latex", title = "Knit versus Woven Differences", header = FALSE, digits = 2)
+```
+
+
+\begin{table}[!htbp] \centering 
+  \caption{Knit versus Woven Differences} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{0pt}} ccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & knit & Establishment Date & Total Workers & Female Share & Lat & Long \\ 
+\hline \\[-1.8ex] 
+knit & $1$ & $0.21$ & $$-$0.14$ & $$-$0.39$ & $0.06$ & $$-$0.06$ \\ 
+Establishment Date & $0.21$ & $1$ & $$-$0.17$ & $$-$0.08$ & $0.14$ & $$-$0.11$ \\ 
+Total Workers & $$-$0.14$ & $$-$0.17$ & $1$ & $$-$0.05$ & $0.08$ & $$-$0.03$ \\ 
+Female Share & $$-$0.39$ & $$-$0.08$ & $$-$0.05$ & $1$ & $$-$0.30$ & $0.29$ \\ 
+Lat & $0.06$ & $0.14$ & $0.08$ & $$-$0.30$ & $1$ & $$-$0.95$ \\ 
+Long & $$-$0.06$ & $$-$0.11$ & $$-$0.03$ & $0.29$ & $$-$0.95$ & $1$ \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
+
+
+Exports data are taken from the calender year basis table of BGMEA export performance data [@bgmeadata].
+
+\subsection{DHS data}
+
+|       To estimate the impact of RMG factories on the aforementioned gender equality outcomes, I obtain outcome and some of the control variables from the Demographic Health Survey (DHS) survey datasets [@DHS]. The surveys were conducted in Bangladesh in 6 waves^[Earlier waves of surveys do not contain data on location of clusters, an essential element for my methodology.] and 8 different years - 1999, 2000, 2004, 2007, 2011, 2014, 2017 and 2018. ^[Clusters with missing location data were dropped from the sample.] _(See Appendix 3 for locations of the survey clusters)_. To maintain confidentiality, the cluster latitude and longitudes are displaced randomly so that urban clusters are displaced between 0-2 Kilometers (KMs) and rural clusters are displaced between 0-5 KMs 99 percent of the time and 0-10 KM 1 percent of the time [@DHS1]. 
+
+|       Survey clusters that fall into the factory-regions (see Section 3.2) are  used in analysis. Out of concerns for random perturbation, I run probability weighted regressions when possible as robustness checks. I disregard clusters further away due to concerns that the gender development process may emanate from urban areas as documented in @Guinnane, @fluckiger2017, and @jesusDemographics among others.
+
+|       For my analysis, I use individual level data from the clusters in factory regions. In addition to data on outcome variables related to FLFP and fertility, I use individual level  demographic data, cluster location and construct a measure of wealth index and electrification rates in each cluster, and population density from SEDAC.
+
+|       There are 328 factory-exposed clusters in the sample. Data from Female Recode and Individual Recode was used. The Female Recode contains data on married female between the ages 13-49, and provides detailed data on FLFP and reproductive behavior. Individual Recode contains data on all individuals living in the same dwelling unit regardless of sex and marital status. Given data limitations, data from Individual Recode has only been used for analysis of impact of RMG exposure on education and marriage. For these purposes, data from sons, daughters and  grandchildren who are usual residents of the dwelling unit are used.
+
+
+\section{Results}
+
+
+\subsection{Female labor force participation}
+
+The regression results estimating the impact of exposure to RMG factories on FLFP are shown in table 3 and 4. Table 3 documents the association between  contemporaneous changes in export exposures and FLFP. The signs on control variables are mostly as expected. Education level has negligible effect on participation in non-high skilled work, but a statistically significant effect on participation in high skilled work. Age seems to have a strong association with participation in RMG adjacent work, and matches with findings of @BHM2020. Unsurprisingly, pregnancy and existence of young children at home reduces FLFP of all type other than for the high skill who maybe able to afford help in Bangladesh. Other variables are not associated with FLFP in persistent ways.
+
+|       On the other hand, contemporaneous export exposure seem to be strongly associated with FLFP in RMG adjacent occupational groups, and in low skilled non-traditional work groups. In addition, there is some evidence that greater export exposure decreases FLFP in traditional occupation groups (agricultural and domestic) whereas it has no effect on highly skilled women.
+
+
+```{r, warning = F, results='asis', out.width="10",  out.width="30%"}
+
+# garments adjacent
+
+reg1 <- lm(flfp_garments ~ export_exposure1 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), data = filter(dataflfp, age < 35))
+
+reg2 <- lm(flfp_garments ~ export_exposure1 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = filter(dataflfp, age < 35))
+
+
+# traditoal
+
+reg3 <- lm(flfp_trad ~ export_exposure1 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), data = filter(dataflfp, age < 35))
+
+reg4 <- lm(flfp_trad ~ export_exposure1 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = filter(dataflfp, age < 35))
+
+# non-traditoal
+
+reg5 <- lm(flfp_poor_nontrad ~ export_exposure1 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)),  data = filter(dataflfp, age < 35))
+
+reg6 <- lm(flfp_poor_nontrad ~ export_exposure1 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = filter(dataflfp, age < 35))
+
+# high skilled
+
+reg7 <- lm(flfp_highskilled ~ export_exposure1 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), data = filter(dataflfp, age < 35))
+
+reg8 <- lm(flfp_highskilled ~ export_exposure1 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = filter(dataflfp, age < 35))
+
+
+covreg1 <- vcovHC(reg1, type = "HC3", cluster = "region_id")
+robust_sereg1    <- sqrt(diag(covreg1))
+
+covreg2 <- vcovHC(reg2, type = "HC3", cluster = "region_id")
+robust_sereg2    <- sqrt(diag(covreg2))
+
+covreg3 <- vcovHC(reg3, type = "HC3", cluster = "region_id")
+robust_sereg3    <- sqrt(diag(covreg3))
+
+covreg4 <- vcovHC(reg4, type = "HC3", cluster = "region_id")
+robust_sereg4    <- sqrt(diag(covreg4))
+
+covreg5 <- vcovHC(reg5, type = "HC3", cluster = "region_id")
+robust_sereg5    <- sqrt(diag(covreg5))
+
+covreg6 <- vcovHC(reg6, type = "HC3", cluster = "region_id")
+robust_sereg6    <- sqrt(diag(covreg6))
+
+covreg7 <- vcovHC(reg7, type = "HC3", cluster = "region_id")
+robust_sereg7    <- sqrt(diag(covreg7))
+
+covreg8 <- vcovHC(reg8, type = "HC3", cluster = "region_id")
+robust_sereg8    <- sqrt(diag(covreg8))
+
+
+stargazer(reg1, reg2, reg3, reg4, reg5, reg6, reg7, reg8, type = "latex", 
+          se = list(robust_sereg1, robust_sereg2, robust_sereg3, robust_sereg4, robust_sereg5, robust_sereg6, robust_sereg7, robust_sereg8), 
+          title = "RMG exports and Contemporaneous FLFP", 
+          dep.var.labels = c("FLFP(RMG Adjacent)", "FLFP Traditional", "FLFP (Non-trad, Low skill)", "FLFP (Non-trad, High skill)"), 
+          omit = c("year", "Constant"), 
+          omit.stat = c("f", "ser", "rsq"), 
+          float.env = "sidewaystable", 
+          font.size = "small", header=FALSE, no.space=TRUE)
+```
+
+```{r, warning = F, results='asis', out.width="10",  out.width="30%"}
+
+# garments adjacent
+
+reg1 <- lm(flfp_garments ~ export_exposure3 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), data = filter(dataflfp, age < 35))
+
+reg2 <- lm(flfp_garments ~ export_exposure3 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = filter(dataflfp, age < 35))
+
+
+# traditoal
+
+reg3 <- lm(flfp_trad ~ export_exposure3 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), data = filter(dataflfp, age < 35))
+
+reg4 <- lm(flfp_trad ~ export_exposure3 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = filter(dataflfp, age < 35))
+
+# non-traditoal
+
+reg5 <- lm(flfp_poor_nontrad ~ export_exposure3 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)),  data = filter(dataflfp, age < 35))
+
+reg6 <- lm(flfp_poor_nontrad ~ export_exposure3 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = filter(dataflfp, age < 35))
+
+# high skilled
+
+reg7 <- lm(flfp_highskilled ~ export_exposure3 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), data = filter(dataflfp, age < 35))
+
+reg8 <- lm(flfp_highskilled ~ export_exposure3 + educ + age + I(age^2) + childathome + preg_survey + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = filter(dataflfp, age < 35))
+
+
+covreg1 <- vcovHC(reg1, type = "HC3", cluster = "region_id")
+robust_sereg1    <- sqrt(diag(covreg1))
+
+covreg2 <- vcovHC(reg2, type = "HC3", cluster = "region_id")
+robust_sereg2    <- sqrt(diag(covreg2))
+
+covreg3 <- vcovHC(reg3, type = "HC3", cluster = "region_id")
+robust_sereg3    <- sqrt(diag(covreg3))
+
+covreg4 <- vcovHC(reg4, type = "HC3", cluster = "region_id")
+robust_sereg4    <- sqrt(diag(covreg4))
+
+covreg5 <- vcovHC(reg5, type = "HC3", cluster = "region_id")
+robust_sereg5    <- sqrt(diag(covreg5))
+
+covreg6 <- vcovHC(reg6, type = "HC3", cluster = "region_id")
+robust_sereg6    <- sqrt(diag(covreg6))
+
+covreg7 <- vcovHC(reg7, type = "HC3", cluster = "region_id")
+robust_sereg7    <- sqrt(diag(covreg7))
+
+covreg8 <- vcovHC(reg8, type = "HC3", cluster = "region_id")
+robust_sereg8    <- sqrt(diag(covreg8))
+
+
+stargazer(reg1, reg2, reg3, reg4, reg5, reg6, reg7, reg8, type = "latex", 
+          se = list(robust_sereg1, robust_sereg2, robust_sereg3, robust_sereg4, robust_sereg5, robust_sereg6, robust_sereg7, robust_sereg8), 
+          title = "RMG exports and FLFP", 
+          dep.var.labels = c("FLFP(RMG Adjacent)", "FLFP Traditional", "FLFP (Non-trad, Low skill)", "FLFP (Non-trad, High skill)"), 
+          omit = c("year", "Constant"), 
+          omit.stat = c("f", "rsq"), 
+          float.env = "sidewaystable", 
+          font.size = "small", header=FALSE, no.space=TRUE)
+```
+
+
+|       A similar story emerges when the medium term impact of export exposure is estimated (Table 4). Specification related to regression results attempt to control for simultaneity. Moreover, choices of women may take longer than one year to come to culminate into an actual decision to move across occupation types. It can be seen that changes in  export exposure does not impact participation in very high skill work (as expected). However, it does seem to increase participation in RMG adjacent work, non-traditional low skill work and decrease participation in traditional work.
+
+|       Using results from table 4, one thousand dollars worth of export shock per person in a region is associated with about 17-18  percentage point (pp) and about 12 - 13 pp increase in FLFP in RMG adjacent occupations and in non-traditional, low skilled occupations (which contains RMG adjacent occupations). A decline of 1 - 1.4 pp of FLFPin traditional sectors is also seen. At average value of export exposure (0.25 thousand dollars per person), this translates to about 4 pp and 3 pp increase in RMG adjacent and non-traditional, low skilled occupation  respectively. Using 2010 population, this translates to about 264,623 additional women working in non-traditional sectors, and about 88,207 less women working in traditional sectors. @Anderson finds the beneficial impact of women working outside of home for their autonomy. As such, this shift is likely to enhance empower of women as well.
+
+\subsection{Reproductive Behavior}
+
+|       Table 5 documents the relationship between fertility and exposure to exports from RMG industry. It appears, that neither pregnancy at the time of survey, nor, fertility is influenced by the regional exposure to exports. Interestingly, the fertility models have a relatively high R-squared values. This suggests that most of the changes in fertility behavior is captured in time trends, i.e., determined by factors outside of our model.
+
+```{r, warning = F, results='asis', out.width="10",  out.width="30%"}
+
+# pregnancy 1 year
+
+reg1 <- lm(preg_survey ~ export_exposure1 + educ + age_mar + age + I(age^2) + childathome + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), data = dataflfp)
+
+reg2 <- lm(preg_survey ~ export_exposure1 + educ + age_mar + age + I(age^2) + childathome + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = dataflfp)
+
+
+reg3 <- lm(preg_survey ~ export_exposure3 + educ + age_mar + age + I(age^2) + childathome + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), data = dataflfp)
+
+reg4 <- lm(preg_survey ~ export_exposure3 + educ + age_mar + age + I(age^2) + childathome + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = dataflfp)
+
+
+
+# TFR
+
+reg5 <- lm(fertility ~ export_exposure1 + educ + age_mar + age + I(age^2) + childathome + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), data = dataflfp)
+
+reg6 <- lm(fertility ~ export_exposure1 + educ + age_mar + age + I(age^2) + childathome + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = dataflfp)
+
+
+reg7 <- lm(fertility ~ export_exposure3 + educ + age_mar + age + I(age^2) + childathome + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), data = dataflfp)
+
+reg8 <- lm(fertility ~ export_exposure3 + educ + age_mar + age + I(age^2) + childathome + religion + husb_educ + husb_worklocalgroup + rural + density + electrification_rate + factor(year) + factor(I(year-age)), weights = prob, data = dataflfp)
+
+
+covreg1 <- vcovHC(reg1, type = "HC3", cluster = "region_id")
+robust_sereg1    <- sqrt(diag(covreg1))
+
+covreg2 <- vcovHC(reg2, type = "HC3", cluster = "region_id")
+robust_sereg2    <- sqrt(diag(covreg2))
+
+covreg3 <- vcovHC(reg3, type = "HC3", cluster = "region_id")
+robust_sereg3    <- sqrt(diag(covreg3))
+
+covreg4 <- vcovHC(reg4, type = "HC3", cluster = "region_id")
+robust_sereg4    <- sqrt(diag(covreg4))
+
+covreg5 <- vcovHC(reg5, type = "HC3", cluster = "region_id")
+robust_sereg5    <- sqrt(diag(covreg5))
+
+covreg6 <- vcovHC(reg6, type = "HC3", cluster = "region_id")
+robust_sereg6    <- sqrt(diag(covreg6))
+
+covreg7 <- vcovHC(reg7, type = "HC3", cluster = "region_id")
+robust_sereg7    <- sqrt(diag(covreg7))
+
+covreg8 <- vcovHC(reg8, type = "HC3", cluster = "region_id")
+robust_sereg8    <- sqrt(diag(covreg8))
+
+
+stargazer(reg1, reg2, reg3, reg4, reg5, reg6, reg7, reg8, type = "latex", 
+          se = list(robust_sereg1, robust_sereg2, robust_sereg3, robust_sereg4, robust_sereg5, robust_sereg6, robust_sereg7, robust_sereg8), 
+          title = "RMG exports and Reproductive Behavior", 
+          dep.var.labels = c("Pregnancy During Survey", "Fertility"),
+          omit = c("year", "Constant"),
+          omit.stat = c("f", "ser", "rsq"), 
+          float.env = "sidewaystable", 
+          font.size = "small", header=FALSE, no.space=TRUE)
+```
+
+
+
+
+
+
+### Appendix
+
+# Appendix 2: Estimating missing BEPZ data  {-}
+
+```{r, include=FALSE, echo = FALSE}
+
+factory_bgmea <- read_csv("C:/Users/smshi/Dropbox/Research/Data/BD RMG factory data/facdata_bgmea_scrape_final.csv") %>%
+  mutate_if(is.character, tolower)
+
+factory_bgmea <- factory_bgmea %>%
+  filter(machine>0) %>%
+  mutate(epz = if_else(str_detect(fac_ad, "epz|export|processing"), 1, 0)) %>% group_by(epz) %>%
+  summarize(machines = mean(machine))
+```
+
+The MiB dataset consists of 3409 factories. But they were unable to collect data from RMG factories located in Bangladesh Export Processing Zones (BEPZs) @mibmethod. A secondary dataset of factories that includes BEPZ factories is obtained by scraping the website of Bangladesh Garment Manufacturer's and Exporters Association (BGMEA). I found 164 factories located in BEPZs as of March 30, 2021. BGMEA website has consistent data on number of machines but not on number of workers and their gender composition, a critical component of this analysis. One option is to ignore the BEPZ data. However, BEPZs represent concentration of large factories - often in otherwise underdeveloped regions of Bangladesh compared to location of most factories in key cities of Dhaka and Chittagong. Indeed, the average number of machines in BEPZ factories was `r round(factory_bgmea[2,2], 3)` as opposed to `r round(factory_bgmea[1,2],3)` in non-EPZ factories  as per the dataset obtained by scraping BGMEA website. Hence, I decided to estimate the number of workers and their gender composition in BEPZ factories.
+
+Among others, the MiB dataset contains data on date of establishment, number of total, male and female workers, membership to various trade associations, location (latitude, longitude and address), and factory type (knit versus woven specialization). The BGMEA dataset contains date of establishment, data on number of machines (but not number and gender composition of workers), location (latitude, longitude and address), and factory type (knit versus woven specialization). The details of the estimation process is below. 
+
+  1. Factories in BEPZ locations were identified based on address information. 8 of the factories does not have information on number of machines. They are assigned the mean BEPZ number of machines.
+  2. 2,199 Factories in the MiB dataset with BGMEA membership is identified using membership information.
+  3. BGMEA factories in MiB dataset are matched using their names, yielding 1648 matches. BGMEA website contains information of all BGMEA members. As such, it can be suspected that the drop is due to spelling differences in name.
+  5. Regression of the following form is used to model the total number of workers in BGMEA factories in MiB dataset.
+  
+$$
+\text{Total Workers}_{v} = \alpha_0 + \alpha_1 * \text{longitude}_{v} + \alpha_2 * \text{latitude}_{v} + \alpha_3 * \text{date of establishment}_{v} +
+$$
+$$
++\alpha_4 * \text{factory type dummy}_{v} + \alpha_5 * \text{machine}_v+ \epsilon_{v}
+$$
+
+This model is used to estimate the total workers in BEPZ factories.
+
+  6. Regression of the following form is used to model the fraction of female workers in BGMEA factories in MiB dataset.
+  
+$$
+\text{Total Workers}_{v} = \alpha_0 + \alpha_1 * \text{longitude}_{v} + \alpha_2 * \text{latitude}_{v} + \alpha_3 * \text{date of establishment}_{v} +
+$$
+$$
+\alpha_4 * \text{factory type dummy}_{v} + \alpha_5 * \text{machine}_v+ \epsilon_{v}
+$$  
+
+This model is used to estimate the share of female workers, and combined with estimates of total workers to estimate the total number of female workers in BEPZ factories.
+
+```{r, include=FALSE}
+
+## MiB does not have data on BEPZ garments, but BGMEA does. Here we combine them and fill in missing values.
+
+### Loading libraries and input data
+
+
+factory_bgmea <- read_csv("C:/Users/smshi/Dropbox/Research/Data/BD RMG factory data/facdata_bgmea_scrape_final.csv") %>%
+  mutate_if(is.character, tolower)
+
+factory_mib <- read_excel("C:/Users/smshi/Dropbox/Research/Data/BD RMG factory data/rmg_mib.xlsx") %>%
+  mutate_if(is.character, tolower)
+
+### Extract epz factories from BGMEA data
+
+factory_epz_bgmea <- factory_bgmea %>%
+  filter(str_detect(fac_ad, "epz|export|processing"))
+
+# We note 8 missing observations in machines, we assign them mean values conditional on type of factory in the EPZ data
+
+mean_machines <- factory_epz_bgmea %>%
+  filter(machine > 0) %>%
+  group_by(knit) %>%
+  summarise(machine = round(mean(machine)))
+
+factory_epz_bgmea <- factory_epz_bgmea %>%
+  mutate(machine = ifelse(machine > 0, machine, case_when(knit == 0 ~ as.numeric(mean_machines[1,2]),
+                                                          knit == 0.5 ~ as.numeric(mean_machines[2,2]),
+                                                          knit == 1 ~ as.numeric(mean_machines[3,2]))))
+rm(mean_machines)
+         
+         
+# Extract BGMEA factories from mib data
+
+factory_mib_bgmea <- factory_mib %>% 
+  filter(str_detect(memberships, "bgmea"))
+
+# Match non-epz factories from mib dataset to the BGMEA dataset
+
+non_epz_rmg_bgmea <- inner_join(factory_mib_bgmea %>% select(name, longitude, latitude, established_in, workers_total,	workers_female),
+                              factory_bgmea %>% select(name, knit, machine), by = "name") %>%
+  mutate(fshare = workers_female / workers_total, date_est = established_in)
+```
+
+```{r, echo = FALSE, results='asis'}
+# By observing correlation tables, we can see that all factors have some correlation whereas number of machines has a large correlation
+
+# Model for total number of workers
+
+model_workers_total <- lm(workers_total ~ longitude + latitude + date_est + knit + machine, non_epz_rmg_bgmea)
+
+# Model share of women in workforce
+
+model_fshare <- lm(fshare ~ longitude + latitude + date_est + knit + machine, non_epz_rmg_bgmea)
+
+# Predict share of women in workforce based on last model and add to factory_epz_bgmea data, then use to predict female workforce
+
+# Stargazer output
+stargazer(model_workers_total, model_fshare, type = "latex", title = "Modelling total workers and female shares in BEPZ", header = FALSE)
+
+```
+
+\newpage
+
+# Appendix 3: DHS surveys in Bangladesh {-}
+
+```{r, fig.cap = "DHS Survey Regions in Different Survey Waves", fig.align='center'}
+include_graphics("figures//dhs_clusters.png")
+```

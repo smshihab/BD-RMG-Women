@@ -129,28 +129,41 @@ data %>% filter(sex == 2 & age >=30 & age <=40) %>%
 # unmarried women, no location specific variables
 
 ## Overall FLFP
-lm(100*labforce ~ factor(year) + ownership + electric +
+lm(100*labforce ~ factor(year) + ownership + electric + factor(marst) +
      age + I(age^2) + muslim + yrschool + labforce_mom,
-   data = data %>% filter(sex == 2 & marst == 1 & age >=15 & age <=64)) %>%
-  summary()
-
+   data = data %>% filter(sex == 2 & age >=15 & age <=64)) -> reg1
+  
 ### time trend, being poorer, non-Muslim, less education and LFP of women is important.
 ### most important is labforce_mom, and being poor. Low R squared. R squared of less than 2 percent 
 ### with only mom's FLFP
 
 ## Industrial FLFP, ownership dropped
-lm(100*ind ~ factor(year) +  electric +
-     age + I(age^2) + muslim + yrschool + ind_mom,
-   data = data %>% filter(sex == 2 & marst == 1 & age >=15 & age <=64)) %>%
-  summary()
+lm(100*ind ~ factor(year) +  electric + factor(marst) + 
+     age + I(age^2) + muslim + yrschool,
+   data = data %>% filter(sex == 2 & age >=15 & age <=64)) -> reg2
 
 
+lm(100*ind ~ factor(year) +  electric + factor(marst) + m_ind +
+     age + I(age^2) + muslim + yrschool,
+   data = data %>% filter(sex == 2 & age >=15 & age <=64)) -> reg3
 
 
+lm(100*labforce ~ factor(year) + ownership + electric + factor(marst) + m_lfp +
+     age + I(age^2) + muslim + yrschool + labforce_mom,
+   data = data %>% filter(sex == 2 & age >=15 & age <=64)) -> reg4
 
-## observed individual factors do not 
-   
-   data_indiv_flfp)  %>% summary()
+
+p_load(stargazer) 
+
+lm(nchild ~ fertility30_40 + factor(year) + electric + factor(marst) + 
+     yrschool + yrschool_sp + muslim + labforce, I(groups),  
+   data = data %>% filter(sex == 2 & age >=30 & age <=40)) %>% summary()
+  
+  
+  stargazer(reg3, reg4, type = "text")
+
+##
+
 
 
 

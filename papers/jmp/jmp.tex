@@ -1,0 +1,357 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  12pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{chicago}
+\usepackage{mathpple}
+\usepackage{verbatim}
+\usepackage{rotating, graphicx, subfig,url}
+\usepackage{epstopdf}
+\usepackage{booktabs,multirow,setspace}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\setcounter{MaxMatrixCols}{10}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\renewcommand{\baselinestretch}{1.15}
+
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={The Impact of Ready-Made Garments on Female Labor Force Participation, Fertility, and Human Capital Accumulation Among Bangladeshi Women},
+  pdfauthor={SM Shihab Siddiqui},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{The Impact of Ready-Made Garments on Female Labor Force Participation, Fertility, and Human Capital Accumulation Among Bangladeshi Women}
+\author{SM Shihab Siddiqui\footnote{SM Shihab Siddiqui is a Ph.D.~Candidate at the Department of Economics at University of Oregon. He can be reached at \href{mailto:smshihab@uoregon.edu}{\nolinkurl{smshihab@uoregon.edu}}}}
+\date{16 October, 2022}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+
+\rule{100mm}{0.15mm}
+
+\noindent\textsc{Keywords}: Ready Made Garments, Exports, Bangladesh, Female Labor Force Participation Rate, Marriage, Fertility, Education.
+
+\noindent\textsc{JEL Classification}: I10, I12, J1, J4, O01. 
+\end{abstract}
+
+\bigskip
+
+\newpage
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+Since its inception in the late 1970s, the Ready Made Garments (RMG) industry rapidly came to dominate export earnings of Bangladesh. In Fiscal Year 2016-2017, the RMG industry accounted for 81 percent of the Bangladeshi exports -- employing about 4 million people, and contributing to 6.6 percent and 32.7 percent of overall and industrial labor force participation (\protect\hyperlink{ref-BBS2019}{Bangladesh Burea of Statistics 2020}). Matsuura and Teng (\protect\hyperlink{ref-ILO2020}{2020}) estimated that about 61 percent of the workers in RMG sector are women.\footnote{Matsuura and Teng (\protect\hyperlink{ref-ILO2020}{2020}) also note that the estimates from different sources range from 58-80 percent.} It is perhaps not surprising that the growth of the RMG industry has coincided with a steady increase in the Female Labor Force Participation (FLFP) from 24.6 percent in 1990 to 36 percent in 2019. This contrasts the South Asian experience where FLFP dropped from 29 percent in 1990 to 23.6 percent in 2019 (\protect\hyperlink{ref-WB2021}{The World Bank 2021}).\footnote{See Figure \ref{fig:flfp-graph} in \protect\hyperlink{appendix1}{Appendix 1} for a comparison of the Bangladeshi evolution of FLFP relative to other countries.}
+
+~~~~~~Over the same period, the total fertility rate of Bangladeshi women has decreased from 4.49 in 1990 to about 2.20 in 2016.\footnote{See Figure \ref{fig:fertility-graph} in \protect\hyperlink{appendix1}{Appendix 1} for comparisons with other countries.} This change occurred concurrently with an increase in youth literacy rates for women from 27 percent in 1991 to 94 percent in 2018. The corresponding increase for men was less dramatic, from 52 percent to 91 percent (\protect\hyperlink{ref-WB2021}{The World Bank 2021}). These changes paved the way for Bangladesh to meet many of the Millennium Development Goals including reducing poverty gap ratio, attaining gender parity at primary and secondary education and under-five mortality rate reduction ahead of the 2015 deadline (\protect\hyperlink{ref-undpmdg}{United Nations Development Program 2015}).
+
+~~~~~~Several strands of the economic literature predict inter-relationship between RMG industry, FLFP, fertility, and human capital accumulation of women.
+
+\begin{itemize}
+\item
+  discuss manufacturing's importance for FLFP, how FLFP spreads. Discuss FLFP affects fertility, and HC accumulation. Weave together the finding of HM and rest.
+\item
+  discuss the interesting role of RMG, and the historically, South Asia in general, and Bangladesh in particular have had some of the lowest FLFP rates around the world.
+\item
+  age profile makes the impact on fertility and education an empirical question.
+\item
+  Disscuss my methods, results and contribution.
+\end{itemize}
+
+~~~~~~\textbf{The rest of the paper is organized as follows - Section 2 describes the empirical approach, Section 3 describes the data, Section 4 discusses the results and Section 5 concludes the paper.}
+
+\hypertarget{the-rmg-industry-in-bangladesh}{%
+\section{The RMG industry in Bangladesh}\label{the-rmg-industry-in-bangladesh}}
+
+Export oriented RMG industry started its journey in independent Bangladesh in 1978 with \emph{Desh Garments}. The factory started with 130 workers trained in South Korea (\protect\hyperlink{ref-bgmea_rmg_history}{BGMEA 2022a}). However, the industry took off in 1980, and its expansion accelerated in the 1990s. \emph{See figure \ref{fig:facgrowth}.} At least 779 factories were likely established between 1978-1991, whereas at least 2075 factories were likely established between 1992-2001.\footnote{The numbers are obtained by matching factory information in BGMEA Directory 2000-01, and 2009-10 to two other BGMEA datasets. Few factories could not be matched, and date of establishment had to be estimated for some factories. Both non-match incidence and error rates in estimating date of establishment are relatively low. Hence, these numbers are best interpreted as lower bounds on the number of RMG factories established in the respective time periods. Please see \protect\hyperlink{data}{Section 4} and \protect\hyperlink{appendix3}{Appendix 3} for details.} By 1991, the RMG industry accounted for more than 50 percent of Bangladeshi exports. Europe and North America emerged as the key importers of RMG products, possibly buoyed by the Multifiber Agreement\footnote{Multifiber Agreement ended in 2004, but does not seem to have impacted factory formation or export growth. \emph{See Reihan and Bidisha (\protect\hyperlink{ref-Reihan2018}{2018}) and Figure \ref{fig:knitandwoven}}}, and remains the largest markets to this day (\protect\hyperlink{ref-bgmeadata}{BGMEA 2022b}).
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{jmp_files/figure-latex/facgrowth-1} 
+
+}
+
+\caption{Expansion of RMG factories 1978:2005}\label{fig:facgrowth}
+\end{figure}
+
+~~~~~~In 1991, RMG factories were established in 37 sub-districts (admin level 3)\footnote{There has been administrative boundary restructuring at the sub-district level between out study period of 1991-2011. All numbers are derived based on the 1991 census boundaries. There were 485 sub-districts and 64 districts in Bangladesh in 1991.} of 9 districts (admin level 2). Most of these districts are within or near the two districts (admin level 2) containing the capital city (Dhaka district) and port city (Chittagong) and corresponds to a disproportionately large portion of the countries population. Factories were spread to 60 sub-districts in 18 districts by 2005.\footnote{See \protect\hyperlink{appendix2}{Appendix 2} for a spread of RMG factories.} Quality of infrastructure and utilities have been found to be the key drivers of RMG factory location choice, whereas access to educated workforce is not a concern for most factory owners (\protect\hyperlink{ref-Kagy}{Kagy 2014}). \textbf{I verify this to be the case within my dataset as well. See section on results.}
+
+~~~~~~The RMG industry produces two broad categories of products -- knit (HS code 61) and woven (HS code 62). Knit fabric is comprised of a single year looped repeatedly to produce cloth whereas woven fabric is made with multiple yarn criss-crossed over and under each other. Some of the common knit products include cotton T-shirts and sweater; whereas jackets, shirts and pants would be example of common woven products. Producing woven is more energy and capital intensive, and commands about 10 percent higher per unit price. However, the value addition in knit export in Bangladesh is higher (\protect\hyperlink{ref-toby22}{Sytsma 2022}). \textbf{About 90 percent of labor tasks in knit and woven factories overlap. Forgot the citation. Find ASAP}.
+
+~~~~~~Figure \ref{fig:knitandwoven} shows the changing importance of knit manufacturing relative to woven manufacturing within the Bangladeshi RMG industry. Most of the RMG factories established by 1991 engaged in production of woven garments. Over time, more knit factories opened up and we can see that by 2005, Bangladesh was exporting about equal value of knitted and woven products.
+
+\begin{figure}
+
+{\centering \includegraphics{jmp_files/figure-latex/knitandwoven-1} 
+
+}
+
+\caption{Knit and Woven Exports Over the Years}\label{fig:knitandwoven}
+\end{figure}
+
+\hypertarget{methods}{%
+\section{Empirical Approach}\label{methods}}
+
+\hypertarget{overview-of-the-identification-strategy}{%
+\subsection{Overview of the Identification Strategy}\label{overview-of-the-identification-strategy}}
+
+The Bangladeshi economy has been growing at an average rate of about 5.8 percent per year over 1991-2011. In addition to improvements in FLFP, fertility and women's education women discussed in the introduction; this period also saw a doubling of available workforce, rapid urbanization and improvements in infrastructure. For example, electrification rate increased from about 14 percent in 1991 to about 60 percent in 2011 (\protect\hyperlink{ref-WB2021}{The World Bank 2021}).
+
+The primary concern for identification in this context is that placement of factories are correlated with location-specific infrastructure conditions. This may independently change FLFP, fertility and education outcomes. To overcome these challenges, I construct Bartik-style measures of demand for labor originating in the export oriented RMG industry.
+
+Specifically, I estimate the impact of exposure to RMG factories on FLFP and fertility by exploiting the variation in exposure generated by differences in knit versus woven specialization across different factory-regions, and the temporal differences in knit and woven exports from Bangladesh (see Figure 2). This identification avoids comparing FLFP and fertility among people living in locations exposed to RMG factories with people living in locations that are not exposed to RMG factories. Therefore, some concerns regarding unobserved differences in locations that maybe correlated with the FLFP and fertility choices is ameliorated. However, this identification strategy assumes that there is no difference between places varying in degree of knit specialization. I account for time trends using birth year fixed effects, and year of survey fixed effects. I also use population density at the region level as a proxy control for the level of development and urbanization in the regions of interest. Further controls are regression specific and discussed below.
+
+\subsection{Female Labor Force Participation}
+
+The results presented in this paper is plausible only if the DHS sample contains women who are exposed to export-oriented RMG factories. I do not have data on whether an interviewed woman was working in an RMG factory. Hence, I first document whether export exposure increases female participation in occupation groups such as handicraft producers, factory workers, tailoring, and small business owners. The choices are motivated by findings that alumnus of a RMG job training project tended to be employed in these occupation classes (\protect\hyperlink{ref-nari2019}{The World Bank 2019}). Then, I document the impact of export exposure on i) traditional occupation categories (agricultural, household and domestic paid work), ii) low-skilled non-traditional sectors (services and manual labor), and iii) high-skilled non-traditional sectors (sales, professional / technical, clerical). I investigate whether greater exposure to RMG export increases propensity of married women to work outside of their home by estimating Probability Models of the following form:
+
+\begin{align}
+Y_{i,r,t} &= \beta_z Z_{i,r,t} + \beta X_{r,t} + \delta_t + \text{Birth Year}_{i,r,t} + \epsilon_{i, r,t}
+\end{align}
+
+where \(Y_{i,r,t}\) is an indicator variable capturing whether an interviewed woman \(i\) is working in some selected occupation in a region \(r\) at time \(t\). Changes in RMG factory exposure is measured as follows:
+
+\begin{align*}
+X_{r,t} &= Export \space Shock_{r,t} \\
+\textit{where } Export \space Shock_{r,t} &= \frac{\alpha_{r,t}^{knit} * \Delta Knit \space Export_{t-T} + (1 - \alpha_{r,t}^{knit}) * \Delta Woven \space Export_{t-T}}{Population_{r,t}} \\
+\textit{and } \alpha_{r,t}^{knit} &= \frac{Workers_{r,knit,t}}{Workers_{BD,t}}
+\end{align*}
+
+~~~~~~\(\alpha_{r,t}^{knit}\) measures the share of knit exports of Bangladesh attributable to region \(r\) in time \(t\). When \(T = 1\), \(\Delta Knit_{t-1} \text{ and } \Delta Woven_{t-1}\) measures the change in knit and woven exports from Bangladesh over the last year period from time \(t\). In the first case, the measure \(X_{r,t}\) then measures the total exports originating from a region's factories in the year before the date of survey. Thus, \(X_{r,t}\) then measures the contemporaneous export exposure of a region \(r\) in time \(t\). To estimate the medium term effect, I also estimate the regressions with \(T = 3\). \(\Delta Knit_{t-3} \text{ and } \Delta Woven_{t-3}\) are the changes in knit and woven export over a three year period. In addition, to ameliorate potential simultaneity bias, I instrument \(\alpha^{knit}_{r,t}\) with \(\alpha^{knit}_{r,5}\).
+
+~~~~~~In eq (1) \(Z_{i,r,t}\) are the control variables. Cluster level controls include rural dummy and electrification rate; and individual level controls including education level, age, square of age, religion, pregnancy status at the time of survey, and number of children at home. I also control from husband's education and industry of employment to account for possible marriage market sorting behavior. \(\delta_t\) are time fixed effects, and \(\text{Birth Year}_{i,r,t}\) are birth cohort fixed effects. \(X_{r,t}\) measures the changes in exposure to RMG factory at the cluster level.I also use population density of the region as a proxy control for the level of development and urbanization in the regions of interest. Heath and Mobarak (\protect\hyperlink{ref-HM2015}{2015}) and Matsuura and Teng (\protect\hyperlink{ref-ILO2020}{2020}) find that younger women are more likely to be employed in RMG factories. This leads to the expectation that export shocks would induce younger women to enter the work force at higher rates. Thus, I restrict my data to include only women 35 years and younger.
+
+~~~~~~Factory location is possibly an outcome of an optimization process of the RMG entrepreneurs based on unobservables that could be correlated with the outcome variables. By exploiting the knit versus woven variation, I control for the unobserved location characteristics that maybe correlated with both the existence of a factory nearby and the outcome variables. Thus, \(\beta\) estimates the impact of differences in export exposure within factory-exposed regions, ameliorating some of the concerns about unobserved location characteristics by avoiding comparison between clusters near a factory, and further from a factory.
+
+~~~~~~Autor, Dorn, and Hanson (\protect\hyperlink{ref-Autor2019}{2019}) use a similar measure of import exposure to study the impact of Chinese imports in US labor markets. In their specification, CZ level labor market shock is calculated as a weighted average change in Chinese import penetration, where the weights are each industry's share in initial employment in a CZ. They measure each industry's import penetration as the growth of Chinese import. My measure differs from theirs primarily because a shorter time frame in my case means that levels, instead of growth rates, better capture the influence on female labor market. Additionally, their regressand is CZ level outcome variables. Since I do not have reliable measures of region level outcome variables, I use individual level outcome variables as my regressand.
+
+\subsection{Fertility Behavior}
+
+Next, I estimate the impact of exposure to RMG factory on fertility behavior of women. This is done by estimating an equation of the following form:
+
+\begin{align}
+Y_{i,r,t} &= \beta_z Z_{i,r,t} + \beta X_{r,t} + \delta_t + \gamma \text{Birth Year}_{i,t,y} + \epsilon_{i, r,t}
+\end{align}
+
+where \(Y_{i,r,t}\) is pregnancy indicator, or the total births till survey date of an interviewed woman \(i\) is working in some selected occupation in a region \(r\) at time \(t\). In addition to the controls in FLFP regression, I also control for the age of marriage in the fertility regressions.
+
+\hypertarget{data}{%
+\section{Data}\label{data}}
+
+\hypertarget{factory-data}{%
+\subsection{Factory Data}\label{factory-data}}
+
+\hypertarget{population-census-and-labor-force-survey}{%
+\subsection{Population census and Labor force survey}\label{population-census-and-labor-force-survey}}
+
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
+
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
+
+\newpage
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-Autor2019}{}}%
+Autor, David, Dorn, David, and Hanson, Gordon, {``When work disappears: Manufacturing decline and the falling marriage market value of young men,''} \emph{AER:Insights}, 1 (2019), 161--178.
+
+\leavevmode\vadjust pre{\hypertarget{ref-BBS2019}{}}%
+Bangladesh Burea of Statistics, {``Statistical pocketbook 2019,''} (Bangladesh Burea of Statistics, 2020).
+
+\leavevmode\vadjust pre{\hypertarget{ref-bgmeadata}{}}%
+BGMEA, {``\href{https://www.bgmea.com.bd/page/export-performance-list}{Export performance},''} (2022b) (Oct. 16, 2022).
+
+\leavevmode\vadjust pre{\hypertarget{ref-bgmea_rmg_history}{}}%
+------, {``\href{https://www.bgmea.com.bd/page/AboutGarmentsIndustry}{About garment industry of bangladesh},''} (2022a) (Oct. 16, 2022).
+
+\leavevmode\vadjust pre{\hypertarget{ref-HM2015}{}}%
+Heath, Rachel, and Mobarak, Mushfiq A, {``Manufacturing growth and the lives of bangladeshi women,''} \emph{Journal of Development Economics}, 115 (2015), 1--15.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Kagy}{}}%
+Kagy, Gisella, {``\href{https://www.colorado.edu/economics/sites/default/files/attached-files/wp14-09.pdf}{Female labor market opportunities, household DecisionMaking power, and domestic violence: Evidence from the bangladesh garment industry},''} (2014).
+
+\leavevmode\vadjust pre{\hypertarget{ref-ILO2020}{}}%
+Matsuura, Aya, and Teng, Carly, {``Issue brief: Understanding the gender composition and experience of ready-made garment (RMG) workers in bangladesh,''} (2020).
+
+\leavevmode\vadjust pre{\hypertarget{ref-Reihan2018}{}}%
+Reihan, Selim, and Bidisha, Sayema Haque, {``\href{https://asiafoundation.org/wp-content/uploads/2018/12/EDIG-Female-employment-stagnation-in-Bangladesh_report.pdf}{Female employment stagnation in bangladesh. Report on economic dialogue on inclusive growth in bangladesh},''} (Asia Foundation, 2018).
+
+\leavevmode\vadjust pre{\hypertarget{ref-toby22}{}}%
+Sytsma, Tobias, {``\href{http://libproxy.uoregon.edu/login?url=https://search.ebscohost.com/login.aspx?direct=true\&db=eoh\&AN=1938662\&login.asp\&site=ehost-live\&scope=site}{Improving preferential market access through rules of origin: Firm-level evidence from bangladesh.}''} \emph{American Economic Journal: Economic Policy}, 14 (2022), 440--472.
+
+\leavevmode\vadjust pre{\hypertarget{ref-nari2019}{}}%
+The World Bank, {``Bangladesh - nari - northern areas reduction-of-poverty initiative : Women's economic empowerment project,''} (2019).
+
+\leavevmode\vadjust pre{\hypertarget{ref-WB2021}{}}%
+------, {``\href{https://data.worldbank.org/indicator}{World development indicators},''} (The World Bank, 2021).
+
+\leavevmode\vadjust pre{\hypertarget{ref-undpmdg}{}}%
+United Nations Development Program, {``\href{https://www.bd.undp.org/content/bangladesh/en/home/post-2015/millennium-development-goals.html}{Eight goals for 2015},''} (2015).
+
+\end{CSLReferences}
+
+\newpage
+
+\newpage
+
+\hypertarget{appendix1}{%
+\section*{Appendix 1: Evolution of women's work and fertility in Bangladesh}\label{appendix1}}
+\addcontentsline{toc}{section}{Appendix 1: Evolution of women's work and fertility in Bangladesh}
+
+\begin{figure}
+\centering
+\includegraphics{jmp_files/figure-latex/flfp-graph-1.pdf}
+\caption{\label{fig:flfp-graph}Female Labor Force Participation in Bangladesh}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{jmp_files/figure-latex/fertility-graph-1.pdf}
+\caption{\label{fig:fertility-graph}Fertility in Bangladesh}
+\end{figure}
+
+\hypertarget{appendix2}{%
+\section*{Appendix 2: Spread of RMG industry in Bangladesh}\label{appendix2}}
+\addcontentsline{toc}{section}{Appendix 2: Spread of RMG industry in Bangladesh}
+
+\hypertarget{appendix-3}{%
+\section{Appendix 3:}\label{appendix-3}}
+
+\end{document}

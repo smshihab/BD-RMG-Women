@@ -1,0 +1,360 @@
+---
+title  :  The Impact of Ready-Made Garments on Female Labor Force Participation, Fertility, and Human Capital Accumulation Among Bangladeshi Women
+author : SM Shihab Siddiqui^[SM Shihab Siddiqui is a Ph.D. Candidate at the Department of Economics at University of Oregon. He can be reached at smshihab@uoregon.edu]
+date   : "`r format(Sys.time(), '%d %B, %Y')`"
+output :
+    bookdown::pdf_document2:
+        includes:
+          in_header: "jmptemplate.tex"
+        fig_caption: true
+        keep_tex: true
+        number_sections: true
+        toc: false
+fontsize: 12pt
+bibliography: "references.bib"
+csl: "the-quarterly-journal-of-economics.csl"
+link-citations: true
+linkcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Loading packages
+
+library(pacman)
+# base packages
+
+library(conflicted)
+
+p_load(readxl, janitor, plm, tidyverse, knitr, memoise, Rcpp, RhpcBLASctl, gridExtra, stargazer, broom, magick, cowplot, ggplot2, ggrepel)
+
+# geo packages
+p_load(sf, sp, raster, rgdal, ggmap, rgeos) 
+
+conflict_prefer("select", "dplyr")
+conflict_prefer("filter", "dplyr")
+conflict_prefer("lag", "dplyr")
+```
+
+
+```{r include=FALSE}
+
+# Get all data
+
+ # Loading factory data
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/factories.Rdata")
+
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fac_upazilas.Rdata")
+
+# change all to integers
+
+factory_upazilas %>%
+  mutate(across(-upazila, ~as.integer(.x))) -> factory_upazilas
+ 
+
+#source("C:/Users/smshi/Dropbox/Research/Bangladesh RMG Women/New works/05_dataflfp.R", local = knitr::knit_global())
+```
+
+
+\begin{abstract}
+
+\rule{100mm}{0.15mm}
+
+\noindent\textsc{Keywords}: Ready Made Garments, Exports, Bangladesh, Female Labor Force Participation Rate, Marriage, Fertility, Education.
+
+\noindent\textsc{JEL Classification}: I10, I12, J1, J4, O01. 
+\end{abstract}
+
+\bigskip
+
+\newpage
+
+# Introduction
+
+Since its inception in the late 1970s, the Ready Made Garments (RMG) industry rapidly came to dominate export earnings of Bangladesh. In Fiscal Year 2016-2017, the RMG industry accounted for 81 percent of the Bangladeshi exports -- employing about 4 million people, and contributing to `r round(100*4/60.8, digits = 1)` percent and `r round(100*4/(60*0.204), digits = 1)` percent of overall and industrial labor force participation [@BBS2019]. @ILO2020 estimated that about 61 percent of the workers in RMG sector are women.^[@ILO2020 also note that the estimates from different sources range from 58-80 percent.] It is perhaps not surprising that the growth of the RMG industry has coincided with a steady increase in the Female Labor Force Participation (FLFP) from 24.6 percent in 1990 to 36 percent in 2019. This contrasts the South Asian experience where FLFP dropped from 29 percent in 1990 to 23.6 percent in 2019 [@WB2021].^[See Figure \@ref(fig:flfp-graph) in [Appendix 1](#appendix1) for a comparison of the Bangladeshi evolution of FLFP relative to other countries.]
+
+|       Over the same period, the total fertility rate of Bangladeshi women has decreased from 4.49 in 1990 to about 2.20 in 2016.^[See Figure \@ref(fig:fertility-graph) in [Appendix 1](#appendix1) for comparisons with other countries.] This change occurred concurrently with an increase in youth literacy rates for women from 27 percent in 1991 to 94  percent in 2018. The corresponding increase for men was less dramatic, from 52 percent to 91 percent [@WB2021]. These changes paved the way for Bangladesh to meet many of the Millennium Development Goals including reducing poverty gap ratio, attaining gender parity at primary and secondary education and under-five mortality rate reduction ahead of the 2015 deadline [@undpmdg].
+
+|       Several strands of the economic literature predict inter-relationship between RMG industry, FLFP, fertility, and human capital accumulation of women. 
+
+- discuss manufacturing's importance for FLFP, how FLFP spreads. Discuss FLFP affects fertility, and HC accumulation. Weave together the finding of HM and rest.
+
+- discuss the interesting role of RMG, and the historically, South Asia in general, and Bangladesh in particular have had some of the lowest FLFP rates around the world.
+
+- age profile makes the impact on fertility and education an empirical question.
+
+- Disscuss my methods, results and contribution.
+
+|       **The rest of the paper is organized as follows - Section 2 describes the empirical approach, Section 3 describes the data, Section 4 discusses the results and Section 5 concludes the paper.**
+
+# The RMG industry in Bangladesh
+
+Export oriented RMG industry started its journey in independent Bangladesh in 1978 with  _Desh Garments_. The factory started with 130 workers trained in South Korea [@bgmea_rmg_history]. However, the industry took off in 1980, and its expansion accelerated in the 1990s. *See figure \@ref(fig:facgrowth).* At least 779 factories were likely established between 1978-1991, whereas at least 2075 factories were likely established between 1992-2001.^[The numbers are obtained by matching factory information in BGMEA Directory 2000-01, and 2009-10 to two other BGMEA datasets. Few factories could not be matched, and date of establishment had to be estimated for some factories. Both non-match incidence and error rates in estimating date of establishment are relatively low. Hence, these numbers are best interpreted as lower bounds on the number of RMG factories established in the respective time periods. Please see [Section 4](#data) and [Appendix 3](#appendix3) for details.] By 1991, the RMG industry accounted for more than 50 percent of Bangladeshi exports. Europe and North America emerged as the key importers of RMG products, possibly buoyed by the Multifiber Agreement^[Multifiber Agreement ended in 2004, but does not seem to have impacted factory formation  or export growth. *See @Reihan2018 and Figure \@ref(fig:knitandwoven)*], and remains the largest markets to this day [@bgmeadata]. 
+
+```{r facgrowth, fig.cap = "Expansion of RMG factories 1978:2005", fig.align='center', out.width="80%"} 
+
+rmg_growth <- rbind(
+  matched_data_01 %>% select(bgmea_num, date_est, fac_type),
+  matched_data_09 %>% select(bgmea_num, date_est, fac_type)) %>% unique()
+
+rmg_growth %>%
+  group_by(date_est) %>%
+  summarise(new = n()) %>%
+  ggplot(aes(x = date_est, y = cumsum(new))) +
+  geom_line() + 
+  labs(x = "Year", y = "Number of factories",
+  caption = "Based on various BGMEA datasets")
+
+rm("rmg_growth")
+```
+
+|       In 1991, RMG factories were established in 37 sub-districts (admin level 3)^[There has been administrative boundary restructuring at the sub-district level between out study period of 1991-2011. All numbers are derived based on the 1991 census boundaries. There were 485 sub-districts and 64 districts in Bangladesh in 1991.] of 9 districts (admin level 2). Most of these districts are within or near the two districts (admin level 2) containing the capital city (Dhaka district) and port city (Chittagong) and corresponds to a disproportionately large portion of the countries population. Factories were spread to 60 sub-districts in 18 districts by 2005.^[See [Appendix 2](#appendix2) for a spread of RMG factories.] Quality of infrastructure and utilities have been found to be the key drivers of RMG factory location choice, whereas access to educated workforce is not a concern for most factory owners [@Kagy]. **I verify this to be the case within my dataset as well. See section on results.**
+
+|       The RMG industry produces two broad categories of products -- knit (HS code 61) and woven (HS code 62). Knit fabric is comprised of a single year looped repeatedly to produce cloth whereas woven fabric is made with multiple yarn criss-crossed over and under each other. Some of the common knit products include  cotton T-shirts and sweater; whereas jackets, shirts and pants would be example of common woven products. Producing woven is more energy and capital intensive, and commands about 10 percent higher per unit price. However, the value addition in knit export in Bangladesh is higher [@toby22]. **About 90 percent of labor tasks in knit and woven factories overlap. Forgot the citation. Find ASAP**.
+
+|       Figure \@ref(fig:knitandwoven) shows the changing importance of knit manufacturing relative to woven manufacturing within the Bangladeshi RMG industry. Most of the RMG factories established by 1991 engaged in production of woven garments. Over time, more knit factories opened up and we can see that by 2005, Bangladesh was exporting about equal value of knitted and woven products.
+
+```{r, knitandwoven, fig.cap = "Knit and Woven Exports Over the Years", fig.align='center', fig.height=5}
+
+matched_data_01 %>%
+  filter(exist91 == 1) %>%
+  group_by(fac_type) %>%
+  tally() %>%
+  left_join(matched_data_01 %>% filter(exist01 == 1) %>%
+  group_by(fac_type) %>%
+  tally(), by = "fac_type") -> knit_v_wov
+
+matched_data_09 %>%
+  filter(exist05 == 1) %>%
+  group_by(fac_type) %>%
+  tally() %>%
+  left_join(knit_v_wov, by = "fac_type") -> knit_v_wov
+
+names(knit_v_wov) <- c("fac_type", "2005", "1991", "2001")
+
+knit_v_wov <- knit_v_wov %>%
+  mutate(fac_type = as.character(fac_type)) %>%
+  mutate(fac_type = case_when(fac_type == "0" ~ "Woven",
+                              fac_type == "0.5" ~ "Mixed",
+                              fac_type == "1" ~ "knit")) %>%
+  gather(year, fac_num, -fac_type)
+  
+  
+p1 <- ggplot(knit_v_wov, aes(fill = fac_type, y=fac_num, x=year)) + 
+    geom_bar(position="fill", stat="identity") +
+  labs(x = "Year", y = "Share of RMG Factories", fill = "", 
+       caption = "Using Data from BGMEA Directory 2000-01 & 2009-110") +
+  theme(legend.position="bottom")
+
+
+export_data <- read_excel("C:/Users/smshi/Dropbox/Research/Data/BD RMG factory data/exports_bgmea.xlsx")%>%
+  select(year, knit, woven) %>%
+  pivot_longer(-year, names_to = "Type", values_to = "Exports") %>%
+  filter(year <= 2011)
+
+p2 <- ggplot(export_data, aes(x=year, y = Exports)) +
+  geom_line(aes(col = Type))+
+  labs(y = "Millions of USD", x = "Year", col = "",
+       caption = "Using Data from BGMEA (2022)") +
+  theme(legend.position="bottom")
+  
+grid.arrange(p1, p2, nrow =1)
+
+rm("export_data", "knit_v_wov", "p1", "p2")
+```
+
+# Empirical Approach{#methods}
+
+## Overview of the Identification Strategy
+
+** A lot more needs to be done**
+
+The Bangladeshi economy has been growing at an average rate of about 5.8 percent per year over 1991-2011. In addition to improvements in FLFP, fertility and women's education women discussed in the introduction; this period also saw a doubling of available workforce, rapid urbanization and improvements in infrastructure. For example, electrification rate increased from about 14 percent in 1991 to about 60 percent in 2011 [@WB2021]. 
+
+The primary concern for identification in this context is that placement of factories are correlated with location-specific infrastructure conditions. This may independently change FLFP, fertility and education outcomes. To overcome these challenges, I construct Bartik-style measures of demand for labor originating in the export oriented RMG industry.
+
+Specifically,  I estimate the impact of exposure to RMG factories on FLFP and fertility by exploiting the variation in exposure generated by differences in knit versus woven specialization across different factory-regions, and the temporal differences in knit and woven exports from Bangladesh (see Figure 2). This identification avoids comparing FLFP and fertility among people living in locations exposed to RMG factories with people living in locations that are not exposed to RMG factories. Therefore, some concerns regarding unobserved differences in locations that maybe correlated with the FLFP and fertility choices is ameliorated. However, this identification strategy assumes that there is no difference between places varying in degree of knit specialization. I account for time trends using birth year fixed effects, and year of survey fixed effects. I also use population density at the region level as a proxy control for the level of development and urbanization in the regions of interest. Further controls are regression specific and discussed below.
+
+\subsection{Female Labor Force Participation}
+
+The results presented in this paper is plausible only if the DHS sample contains women who are exposed to export-oriented RMG factories. I do not have data on whether an interviewed woman was working in an RMG factory. Hence, I first document whether export exposure increases female participation in occupation groups such as handicraft producers, factory workers, tailoring, and small business owners. The choices are motivated by findings that alumnus of a RMG job training project tended to be employed in these occupation classes [@nari2019]. Then, I document the impact of export exposure on i) traditional occupation categories (agricultural, household and domestic paid work), ii) low-skilled non-traditional sectors (services and manual labor), and iii) high-skilled non-traditional sectors (sales, professional / technical, clerical). I investigate whether greater exposure to RMG export increases propensity of married women to work outside of their home by estimating Probability Models of the following form:
+
+\begin{align}
+Y_{i,r,t} &= \beta_z Z_{i,r,t} + \beta X_{r,t} + \delta_t + \text{Birth Year}_{i,r,t} + \epsilon_{i, r,t}
+\end{align}
+
+where $Y_{i,r,t}$ is an indicator variable capturing whether an interviewed woman $i$ is working in some selected occupation in a region $r$ at time $t$. Changes in RMG factory exposure is measured as follows:
+
+\begin{align*}
+X_{r,t} &= Export \space Shock_{r,t} \\
+\textit{where } Export \space Shock_{r,t} &= \frac{\alpha_{r,t}^{knit} * \Delta Knit \space Export_{t-T} + (1 - \alpha_{r,t}^{knit}) * \Delta Woven \space Export_{t-T}}{Population_{r,t}} \\
+\textit{and } \alpha_{r,t}^{knit} &= \frac{Workers_{r,knit,t}}{Workers_{BD,t}}
+\end{align*}
+
+|       $\alpha_{r,t}^{knit}$ measures the share of knit exports of Bangladesh attributable to region $r$ in time $t$. When $T = 1$, $\Delta Knit_{t-1} \text{ and } \Delta Woven_{t-1}$ measures the change in knit and woven exports from Bangladesh over the last year period from time $t$. In the first case, the measure $X_{r,t}$ then measures the total exports originating from a region's factories in the year before the date of survey. Thus, $X_{r,t}$ then measures the contemporaneous export exposure of a region $r$ in time $t$. To estimate the medium term effect, I also estimate the regressions with $T = 3$. $\Delta Knit_{t-3} \text{ and } \Delta Woven_{t-3}$ are the changes in knit and woven export over a three year period. In addition, to ameliorate potential simultaneity bias, I instrument $\alpha^{knit}_{r,t}$ with $\alpha^{knit}_{r,5}$.
+
+|       In eq (1) $Z_{i,r,t}$ are the control variables. Cluster level controls include rural dummy and electrification rate; and individual level controls including education level, age, square of age, religion, pregnancy status at the time of survey, and number of children at home. I also control from husband's education and industry of employment to account for possible marriage market sorting behavior. $\delta_t$ are time fixed effects, and $\text{Birth Year}_{i,r,t}$ are birth cohort fixed effects. $X_{r,t}$ measures the changes in exposure to RMG factory at the cluster level.I also use population density of the region as a proxy control for the level of development and urbanization in the regions of interest. @HM2015 and @ILO2020 find that younger women are more likely to be employed in RMG factories. This leads to the expectation that export shocks would induce younger women to enter the work force at higher rates. Thus, I restrict my data to include only women 35 years and younger. 
+
+|       Factory location is possibly an outcome of an optimization process of the RMG entrepreneurs based on unobservables that could be correlated with the outcome variables. By exploiting the knit versus woven variation, I control for the unobserved location characteristics that maybe correlated with both the existence of a factory nearby and the outcome variables. Thus, $\beta$ estimates the impact of differences in export exposure within factory-exposed regions, ameliorating some of the concerns about unobserved location characteristics by avoiding comparison between clusters near a factory, and further from a factory.
+
+|       @Autor2019 use a similar measure of import exposure to study the impact of Chinese imports in US labor markets. In their specification, CZ level labor market shock is calculated as a weighted average change in Chinese import penetration, where the weights are each industry's share in initial employment in a CZ. They measure each industry's import penetration as the growth of Chinese import. My measure differs from theirs primarily because a shorter time frame in my case means that levels, instead of growth rates, better capture the influence on female labor market. Additionally, their regressand is CZ level outcome variables. Since I do not have reliable measures of region level outcome variables, I use individual level outcome variables as my regressand.
+
+
+\subsection{Fertility Behavior}
+
+Next, I estimate the impact of exposure to RMG factory on fertility  behavior of women. This is done by estimating an equation of the following form:
+
+\begin{align}
+Y_{i,r,t} &= \beta_z Z_{i,r,t} + \beta X_{r,t} + \delta_t + \gamma \text{Birth Year}_{i,t,y} + \epsilon_{i, r,t}
+\end{align}
+
+where $Y_{i,r,t}$ is pregnancy indicator, or the total births till survey date of an interviewed woman $i$ is working in some selected occupation in a region $r$ at time $t$. In addition to the controls in FLFP regression, I also control for the age of marriage in the fertility regressions.
+
+# Data {#data}
+
+## Factory Data
+
+## Population census and Labor force survey
+
+
+# Results {#results}
+
+
+
+# Discussion
+
+# Conclusion {#conclusion}
+
+
+
+\newpage
+
+# References
+
+<div id="refs"></div>
+
+\newpage
+
+\newpage
+
+# Appendix 1: Evolution of women's work and fertility in Bangladesh {-#appendix1}
+
+```{r, flfp-graph, fig.cap = "Female Labor Force Participation in Bangladesh", echo=FALSE, fig.width = 10}
+
+flfp <- read.csv("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/flfp.csv", check.names=FALSE) %>%
+    pivot_longer(-year, names_to="country", values_to="flfp")
+
+flfp_start <- flfp %>%
+  filter(year == 1990)
+
+flfp_end <- flfp %>%
+  filter(year == 2019)
+
+ggplot(flfp, aes(x = year, y = flfp)) +
+  geom_line(aes(col = country)) +
+  geom_line(data = subset(flfp, country =="Bangladesh"), color = "red", size =1.25) +
+geom_text_repel(
+    aes(label = round(flfp,1)), data = flfp_start,
+    fontface ="plain", color = "black", size = 2
+    ) +
+  geom_text_repel(
+    aes(label = round(flfp,1)), data = flfp_end,
+    fontface ="plain", color = "black", size = 2
+    ) +
+   labs(y = "FLFP", caption = "Data Source: World Bank (2021)") + theme(legend.position="bottom")
+
+rm(flfp, flfp_start, flfp_end)
+```
+
+```{r, fertility-graph, fig.cap = "Fertility in Bangladesh", echo=FALSE, fig.width = 10}
+
+fertility <- read.csv("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fertility.csv", check.names=FALSE) %>%
+    pivot_longer(-year, names_to="country", values_to="fertility")
+
+fertility_start <- fertility %>%
+  filter(year == 1971)
+
+fertility_end <- fertility %>%
+  filter(year == 2018)
+
+ggplot(fertility, aes(x = year, y = fertility)) +
+  geom_line(aes(col = country)) +
+  geom_line(data = subset(fertility, country =="Bangladesh"), color = "red", size =1.25) + geom_text_repel(
+    aes(label = round(fertility,1)), data = fertility_start,
+    fontface ="plain", color = "black", size = 2
+    ) +
+  geom_text_repel(
+    aes(label = round(fertility,1)), data = fertility_end,
+    fontface ="plain", color = "black", size = 2
+    ) +
+   labs(y = "Total Fertility Rates", caption = "Data Source: World Bank (2021)") + theme(legend.position="bottom")
+
+rm(fertility, fertility_start, fertility_end)
+```
+
+# Appendix 2: Spread of RMG industry in Bangladesh  {-#appendix2}
+
+```{r, facspread, fig.cap = "Spatial spread of RMG factories in Bangladesh", cache = TRUE, results='asis', eval=FALSE, echo=FALSE}
+
+# Loading data
+
+
+# Factory Map
+
+factory_upazilas91  <- "C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/geo3_bd1991/geo3_bd1991.shp"
+
+factory_upazilas91 <- st_read(factory_upazilas91, quiet = TRUE)
+
+# Convert to Sf and transform to Mercator Gulshan
+factory_upazilas91 <- st_as_sf(factory_upazilas91) %>% st_transform(3106) %>%
+  select(ADMIN_NAME, contains("UP"), PARENT) %>%
+  clean_names() %>%
+  mutate_if(is.character,tolower)
+
+# Bangladesh zones 0 - country map, 1 - div, 2- district, 3-sub-district, 4 - smaller
+geo_bd0 <- "C:/Users/smshi/Dropbox/University of Oregon/Research/Bangladesh FLFPR/Data/Bd admin and roads/bgd_adm_bbs_20201113_shp/bgd_admbnda_adm0_bbs_20201113.shp"
+
+bd_map0 <- st_read(geo_bd0, quiet = TRUE)
+bd_map0 <- bd_map0 %>% st_transform(3106)
+
+p1 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=1999), color = "black") +
+  geom_sf(data = filter(factory, date_est>1999 & date_est<=2000), color = "red") +
+  theme_map() + labs(title="Factories betwen 99-00")
+
+p2 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=2000), color = "black") +
+  geom_sf(data = filter(factory, date_est > 2000 & date_est <= 2004), color = "red")+
+  theme_map() + labs(title="Factories betwen 00-04")
+
+p3 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=2004), color = "black") +
+  geom_sf(data = filter(factory, date_est > 2004 & date_est <= 2007), color = "red")+
+  theme_map() + labs(title="Factories betwen 04-07")
+
+p4 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=2007), color = "black") +
+  geom_sf(data = filter(factory, date_est > 2007 & date_est <= 2011), color = "red")+
+  theme_map() + labs(title="Factories betwen 07-11")
+
+p5 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=2011), color = "black") +
+  geom_sf(data = filter(factory, date_est > 2011 & date_est <= 2014), color = "red")+
+  theme_map()+labs(title="Factories betwen 11-14")
+
+p6 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=2014), color = "black") +
+  geom_sf(data = filter(factory, date_est > 2014 & date_est <= 2018), color = "red")+
+  theme_map() + labs(title="Factories betwen 14-18")
+
+grid.arrange(p1, p2, p3, p4, p5, p6, nrow =3)
+```
+
+# Appendix 3: 
