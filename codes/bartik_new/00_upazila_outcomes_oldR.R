@@ -1,29 +1,9 @@
-library(pacman)
-p_load(tidyverse, conflicted, janitor, sf, sp, labelled)
-
-conflict_prefer("select", "dplyr")
-conflict_prefer("filter", "dplyr")
-conflict_prefer("lag", "dplyr")
-
-# Loading Upazila data and the outcome data in census
-
-load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fac_upazilas.RData")
-
-factory_upazilas <- factory_upazilas %>%
-  mutate(across(-upazila, ~as.integer(.)))
-
-# Data is the IPUMS dataset from Bangladesh that covers the variables for parents and spouse in same HH.
-load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data.Rdata")
-
-data <- data %>% clean_names() %>%
-  select(year, urban, geo3_bd1991, geo3_bd2001, geo3_bd2011, ownership, electric, 
-         famsize, nchild, nchlt5, age, sex, marst, religion, school, lit, yrschool, empstat, labforce, ind,
-       starts_with(c("age","lit", "yrs", "empstat_", "lab", "ind")))
-
-
-# Collecting the variables available
-as.data.frame(names(data)) -> variables_in_data
-
+data %>%
+  filter(sex == 1  & age >14 & age <65) %>%
+  group_by(year) %>%
+  summarise(flfp = sum(labforce == 1) / n(),
+            flfp_ind = sum(ind %in% c(2))/n())
+  
 
 # samples to select from IPUMS data
 
@@ -151,7 +131,7 @@ fac_up_sample01 <- left_join(fac_up_sample01, factory_upazilas %>% select(ipum19
 upazila01_gen <- fac_up_sample01 %>%
   group_by(ipum1991) %>%
   summarise(pop = n()/0.1,
-    urban_share = sum(urban == 2)/n(),
+            urban_share = sum(urban == 2)/n(),
             electrification = sum(electric == 1)/n(),
             #toilet_share = 1 - sum(toilet == 10)/n(),
             age_15 = sum(age < 15)/n(),
@@ -195,7 +175,7 @@ upazila01_fu39 <- fac_up_sample01 %>%
   filter(age >=15 & age <= 39 & sex == 2) %>%
   group_by(ipum1991) %>%
   summarise(f_1539_pop = n()/0.1,
-    f39_ind_share = sum(ind %in% c(05, 06, 07))/ n(),
+            f39_ind_share = sum(ind %in% c(05, 06, 07))/ n(),
             f39_ind_share2 = sum(ind == 2)/ n(),# based on granular data
             f39_cons_share = sum(ind %in% c(06, 07, 08))/ n(),# based on granular data
             f39_trad_share = sum(ind %in% c(03, 04))/ n(),# based on granular data, agri an household
@@ -276,7 +256,7 @@ upazila11_female <- fac_up_sample11 %>%
   filter(age >=15 & age < 64 & sex == 2) %>%
   group_by(ipum1991) %>%
   summarise(f_1564_pop = n()/0.05,
-        f_ind_share = sum(ind %in% c(05, 06, 07))/ n(),
+            f_ind_share = sum(ind %in% c(05, 06, 07))/ n(),
             f_ind_share2 = sum(ind == 2)/ n(),# based on granular data
             f_cons_share = sum(ind %in% c(06, 07, 08))/ n(),# based on granular data
             f_trad_share = sum(ind %in% c(03, 04))/ n(),# based on granular data, agri an household
@@ -325,6 +305,8 @@ upazila11 <- left_join(upazila11, upazila11_fu25, by = "ipum1991")
 
 rm(upazila11_gen, upazila11_male, upazila11_female, upazila11_fu39, fac_up_sample11, upazila11_fu25)
 
+
+data %>% filter
 
 upazila91$year <- 1991
 upazila01$year <- 2001

@@ -221,30 +221,27 @@ rm("export_data", "knit_v_wov", "p1", "p2")
 
 Suppose the importance of export oriented RMG industry in a sub-district of Bangladesh increases either through establishment of new factories, increases in number of machines within existing factories, or through increases in exports originating from existing factories. For that sub-district, these increases in export exposure increases labor demand in general, and female labor demand in particular. The aim of this paper is to estimate the long-run impact of changes in exposure to RMG industry exports on FLFP, reproductive behavior, and human capital accumulation of Bangladeshi women by estimating equations of the following form:
 
-```{=tex}
 \begin{equation}\label{Eq:RegModel}
   \Delta Y_{s,t} = \beta \space \Delta \text{Export Exposure}_{s,t} + \delta_{t}  + Z_{s,t-1} \beta_z + X_{s,t-1} \beta_x + \epsilon_{s,t}
 \end{equation}
-```
+
 Where $\Delta Y_{s,t}$ is the change in outcome variables in sub-district $s$ over period starting in $\underline t$ and ending in $t$. $\Delta \text{Export Exposure}_{s,t}$ measures change in export exposure in sub-district $s$ between $\underline t$ and $t$. $\delta_t$ are period fixed-effects. $Z_{s,t-1}$ is a vector of sub-district specific controls common to all regressions. They include two proxies of infrastructure quality at a sub-district -- start of the period electrification rate and urbanization rate; and three measures of sub-district demographics -- adult $(age > 15)$ men's and women's education levels, and population density. $X_{s,t-1}$ are start of the period controls that vary depending on the outcome variable, and are discussed below in relevant sub-sections. The export exposure per potential worker in a sub-district $s$ between $\underline t$ and $t$ can be measured as:
 
-```{=tex}
 \begin{align}
   \text{Export Exposure}_{s,t} =& \sum_{i=0}^{\underline t} \alpha_{s,t-i}^{K} * \frac{\text{Export}_{BD,t-i}^{K}}{L_{s,t-i}} + \sum_{i=1}^{\underline t} \alpha_{s,t-i}^{W} * \frac{\text{Export}_{BD,t-i}^{W}}{{L_{s,t-i}}} \\
 \text{ Where } \alpha_{s,t-i}^{K} =& \frac{Machines_{s,t-i}^{K}}{Machines_{BD,t-i}^{K}}, \text{ and } \alpha_{s,t-i}^{W} = \frac{Machines_{s,t-i}^{W}}{Machines_{BD,t-i}^{W}}
 \end{align}
-```
+
 |       $K \text{ and } W$ denotes knit and woven respectively, $BD$ denotes the total for Bangladesh, $Machines$ is the number of machines, and $L$ is the 15-64 year old population. Thus, values of knit and woven exports originating in Bangladesh are apportioned to each sub-district in proportion to that sub-district's share of knit and woven machines relative to total knit and total woven machines in Bangladesh respectively. Total exposure is divided by the working age population to derive the export exposure per potential worker, i.e., $\text{Export Exposure}_{s,t}$.
 
 |       The outcome variables in this paper are measured from 1991, 2001 and 2011 censuses, and 2005 Labor Force Survey. See the [data section](#data) for details. The economy of Bangladesh grew at an average rate of 5.8 percent per year over 1991-2011. In addition to improvements in FLFP and women's education, and reductions in fertility discussed in the introduction; this period saw a doubling of available workforce, rapid urbanization and improvements in infrastructure. For example, electrification rate increased from 14 percent in 1991 to 60 percent in 2011 [@WB2021]. The primary concern for identification in this context is that placement of factories are correlated with sub-district development characteristics such as infrastructure conditions, and that these characteristics may independently change FLFP, reproductive behavior and human capital accumulation of women.
 
 |       I overcome this challenge in two ways. First, I construct Bartik-style measures of decade equivalent changes in export exposure in different sub-districts. I set knit shares, woven shares, and working age population to the start of the period knit shares, woven share, and working age population respectively. This avoids picking up location-time specific shocks that would both change the outcome, as well as change the export exposure measures in a sub-district. With this modifications, the decade equivalent change in export exposure per potential worker in sub-district $s$ and time period starting in $\underline t$ and ending in $t$ is as following:
 
-```{=tex}
 \begin{align}
   \Delta \text{ Export Exposure}_{s,t} =& \space (\alpha_{s,\underline t}^{K} * \frac{\Delta \space \text{Export}_{BD,t}^{K}}{L_{\underline t}} + \alpha_{s,\underline t}^{W} * \frac{\Delta \space \text{Export}_{BD,t}^{W}}{L_{\underline t}}) * \frac{10}{t-\underline t}
 \end{align}
-```
+
 |       Second, I restrict my analysis only to sub-districts that had factories in them by 2005. The year 2005 is chosen since it is the final start of the period year in my outcome data. This restriction of sample to only sub-districts with factories avoids comparing outcomes of sub-districts exposed to the RMG industry with sub-districts that are not exposed to the RMG industry. This sample restriction and working with first difference of outcomes ameliorates some of the concerns regarding unobserved location characteristics driving the results.
 
 |       The increase in total knit and woven exports from Bangladesh over decades (see Figure \@ref(fig:knitandwoven)) were likely driven by changing comparative advantage as Chinese wages were increasing [@BBC_2012; @zhang_transformation_2016] and unlikely to be correlated with the changes in outcomes in different sub-districts of Bangladesh. But I do not rely on the independent or as-if independent "shifters" assumption highlighted in @borusyak_quasi-experimental_2022 as I only have the two sub-sectors -- knit and woven. Rather, the identification in this paper comes from exploiting the variation in exposure generated by differences in knit and woven shares across sub-districts exposed to the RMG industry. These shares are then scaled by temporal differences in changes in knit and woven exports from Bangladesh (see Figure \@ref(fig:knitandwoven)).
@@ -301,13 +298,13 @@ rm("p1", "p2")
   \Delta Y_{s,t} = \beta \space \Delta \text{Export Exposure}_{s,t} + \delta_{t}  + Z_{s,t-1} \beta_z + \epsilon_{s,t}
 \end{equation}
 
-where $\Delta Y_{s,t}$ includes marriage rates among 15-20 and 21-30 year old women. Women 30 years and above are not investigated given the near universality of ever being married by that age among Bangladesh women. No additional controls are included in these regressions. Next, I investigate how fertility changes by estimating regressions of the following form:
+Where $\Delta Y_{s,t}$ includes marriage rates among 15-20 and 21-30 year old women. Women 30 years and above are not investigated given the near universality of ever being married by that age among Bangladesh women. No additional controls are included in these regressions. Next, I investigate how fertility changes by estimating regressions of the following form:
 
 \begin{equation}\label{Eq:Regfert}
   \Delta Y_{s,t} = \beta \space \Delta \text{Export Exposure}_{s,t} + \delta_{t}  + Z_{s,t-1} \beta_z + \beta_{x} Y_{District, t-1}  + \epsilon_{s,t}
 \end{equation}
 
-where $\Delta Y_{s,t}$ includes proxy measures of fertility rates among 15-20, 21-30, and 31-40 year old women. Since I do not observe realized fertility or birth histories, I use number of own child in household as measures of fertility. This measure becomes noisier at older ages. In addition to controls in \@ref(Eq:RegModel), regressions in \@ref(Eq:Regfert) includes district level (admin level 2) fertility rates at relevant ages as a control for regional fertility norms.
+where $\Delta Y_{s,t}$ are measures of fertility rates among 15-20, 21-30, and 31-40 year old women. Since I do not observe realized fertility or birth histories, I use number of own child in household as measures of fertility. This measure becomes noisier at older ages. In addition to controls in \@ref(Eq:RegModel), regressions in \@ref(Eq:Regfert) includes sub-district level fertility rates at relevant ages as a control for regional fertility norms.
 
 ## Human capital accumulation
 
