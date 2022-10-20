@@ -15,9 +15,10 @@ factory_upazilas <- factory_upazilas %>%
 # Data is the IPUMS dataset from Bangladesh that covers the variables for parents and spouse in same HH.
 load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data.Rdata")
 
+
 data <- data %>% clean_names() %>%
   select(year, urban, geo3_bd1991, geo3_bd2001, geo3_bd2011, ownership, electric, 
-         famsize, nchild, nchlt5, age, sex, marst, religion, school, lit, yrschool, empstat, labforce, ind,
+         famsize, relate, nchild, nchlt5, age, sex, marst, religion, school, lit, yrschool, empstat, labforce, ind,
        starts_with(c("age","lit", "yrs", "empstat_", "lab", "ind")))
 
 
@@ -122,6 +123,9 @@ data %>% filter(sex == 2 & age >=30 & age <=40) %>%
   group_by(groups) %>%
   summarise(fertility30_40 = mean(nchild)) %>%
   right_join(data, by = "groups") -> data
+
+save(data, file = "C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data_cleaned_indiv.Rdata")
+
 
 ### Running individual regressions
 # without location variables
