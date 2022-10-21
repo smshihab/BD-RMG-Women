@@ -1,6 +1,6 @@
 ---
 title  :  The Impact of Ready-Made Garments on Female Labor Force Participation, Fertility, and Human Capital Accumulation Among Bangladeshi Women
-author : SM Shihab Siddiqui^[SM Shihab Siddiqui is a Ph.D. Candidate at the Department of Economics at University of Oregon. He can be reached at smshihab@uoregon.edu]
+author : SM Shihab Siddiqui^[I am a Ph.D. Candidate at the Department of Economics, University of Oregon. Please reach me at  smshihab@uoregon.edu. I am grateful to Shankha Chakraborty, Alfredo Burlando, Anca Cristea, Woan Foong Wang and Mark Colas for their invaluable guidance and support. This paper has also benefited from comments and suggestions from participants at the Northwest Development Workshop 2022, BGMEA University of Fashion & Technology Seminar (August 02, 2022), UO Development Workshop, UO International Trade Workshop, and UO Microeconomics Workshop. All errors are my own.]
 date   : "`r format(Sys.time(), '%d %B, %Y')`"
 output :
     bookdown::pdf_document2:
@@ -71,7 +71,8 @@ twenty11_sample <-  factory_upazilas$ipum2011
 #source("C:/Users/smshi/Dropbox/Research/Bangladesh RMG Women/New works/05_dataflfp.R", local = knitr::knit_global())
 ```
 
-```{=tex}
+\pagenumbering{gobble} 
+
 \begin{abstract}
 
 \rule{100mm}{0.15mm}
@@ -80,68 +81,51 @@ twenty11_sample <-  factory_upazilas$ipum2011
 
 \noindent\textsc{JEL Classification}: I10, I12, J1, J4, O01. 
 \end{abstract}
-```
+
+
 \bigskip
 
 \newpage
 
+\pagenumbering{arabic} 
+
 # Introduction
 
-Since its inception in the late 1970s, the Ready Made Garments (RMG) industry rapidly came to dominate export earnings of Bangladesh. In Fiscal Year 2016-2017, the RMG industry accounted for 81 percent of Bangladeshi exports -- employing about 4 million people, and contributing `r round(100*4/60.8, digits = 1)` percent and `r round(100*4/(60*0.204), digits = 1)` percent to overall and industrial labor force participation [@BBS2019]. @ILO2020 estimated that about 61 percent of the workers in RMG sector are women.[^1] It is perhaps not surprising that the growth of the RMG industry has coincided with a steady increase in the Female Labor Force Participation (FLFP) from 24.6 percent in 1990 to 36 percent in 2019. This contrasts the South Asian experience where FLFP dropped from 29 percent in 1990 to 23.6 percent in 2019 [@WB2021].[^2]
+Since its inception in the late 1970s, the Ready Made Garments (RMG) industry rapidly came to dominate export earnings of Bangladesh. In Fiscal Year 2016-2017, the RMG industry accounted for 81 percent of Bangladeshi exports -- employing about 4 million people, and contributing `r round(100*4/60.8, digits = 1)` percent and `r round(100*4/(60*0.204), digits = 1)` percent to overall and industrial labor force participation [@BBS2019]. @ILO2020 estimated that about 61 percent of the workers in RMG sector are women.^[@ILO2020 also note that the estimates from different sources range from 58-80 percent.] It is perhaps not surprising that the growth of the RMG industry has coincided with a steady increase in the Female Labor Force Participation (FLFP) from 24.6 percent in 1990 to 36 percent in 2019. This contrasts the South Asian experience where FLFP dropped from 29 percent in 1990 to 23.6 percent in 2019 [@WB2021].^[See Figure \@ref(fig:flfp-graph) in [Appendix 1](#appendix1) for a comparison of the Bangladeshi evolution of FLFP relative to other countries.]
 
-[^1]: @ILO2020 also note that the estimates from different sources range from 58-80 percent.
+|       Over the same period, the total fertility rate of Bangladeshi women has decreased from 4.49 in 1990 to about 2.20 in 2016.^[See Figure \@ref(fig:fertility-graph) in [Appendix 1](#appendix1) for comparisons with other countries.] This change occurred concurrently with an increase in youth literacy rates for women from 27 percent in 1991 to 94 percent in 2018. The corresponding increase for men was less dramatic, from 52 percent to 91 percent [@WB2021]. These changes paved the way for Bangladesh to meet many of the Millennium Development Goals including reducing poverty gap, attaining gender parity at primary and secondary education and under-five mortality rate reduction ahead of the 2015 deadline [@undpmdg].
 
-[^2]: See Figure \@ref(fig:flfp-graph) in [Appendix 1](#appendix1) for a comparison of the Bangladeshi evolution of FLFP relative to other countries.
-
-|       Over the same period, the total fertility rate of Bangladeshi women has decreased from 4.49 in 1990 to about 2.20 in 2016.[^3] This change occurred concurrently with an increase in youth literacy rates for women from 27 percent in 1991 to 94 percent in 2018. The corresponding increase for men was less dramatic, from 52 percent to 91 percent [@WB2021]. These changes paved the way for Bangladesh to meet many of the Millennium Development Goals including reducing poverty gap ratio, attaining gender parity at primary and secondary education and under-five mortality rate reduction ahead of the 2015 deadline [@undpmdg].
-
-[^3]: See Figure \@ref(fig:fertility-graph) in [Appendix 1](#appendix1) for comparisons with other countries.
-
-|       Several strands of the economic literature predict inter-relationship between the RMG industry, FLFP, reproductive behavior, and human capital accumulation of women. In 1991, the 2.7 percent of the men aged 15-64 worked in industrial sectors in Bangladesh whereas the corresponding figure for women was only 0.5 percent.[^4] Over the next decades, RMG industry expanded and became the largest industrial and export sector of Bangladesh. Expansion of the RMG industry in different regions increased demand for labor in those regions. The increase in labor demand for women may be more salient as the relative importance of female employment in textile and clothing related industries can be observed across time and space. @rmg_history and @field-hendrey_role_1998 documents that women made up large portions of the labor force in textile and related industries in England and in USA in 1800s -- well before their respective rapid FLFP transition. @kucera_feminization_2014 finds that textiles and related industries were the strongest drivers of women's share of employment among a broad swath of countries at different levels of development in the period of 1981-2008. Women makes up the majority of labor force in the Bangladeshi RMG industry as well [@ILO2020].
-
-[^4]: Based on my own calculations using Census 1991 data.
+|       Several strands of the economic literature predict inter-relationship between the RMG industry, FLFP, reproductive behavior, and human capital accumulation of women. In 1991, the 2.7 percent of the men aged 15-64 worked in industrial sectors in Bangladesh whereas the corresponding figure for women was only 0.5 percent.^[Based on my own calculations using Census 1991 data.] Over the next decades, RMG industry expanded and became the largest industrial and export sector of Bangladesh. Expansion of the RMG industry in different regions increased demand for labor in those regions. The increase in labor demand for women may be more salient as the relative importance of female employment in textile and clothing related industries can be observed across time and space. @rmg_history and @field-hendrey_role_1998 documents that women made up large portions of the labor force in textile and related industries in England and in USA in 1800s -- well before their respective rapid FLFP transition. @kucera_feminization_2014 finds that textiles and related industries were the strongest drivers of women's share of employment among a broad swath of countries at different levels of development in the period of 1981-2008. Women makes up the majority of labor force in the Bangladeshi RMG industry as well [@ILO2020].
 
 |       Widespread employment in one industrial sector has the potential to increase overall FLFP by changing cultural norms surrounding FLFP and learning about the lack of impact of FLFP on children, channels highlighted in @fogli and @Raq. These channels could be especially important in a historically low FLFP and pro-natal context of Bangladesh.
 
-|       FLFP increases opportunity cost of having children, and decreases fertility and desired fertility (*See @Aaronson, among others.*). FLFP could also change patterns of marriage and divorces by changing costs and benefits of marriages for both men and women [@greenwood_family_2017; @Autor2019]. Additionally, industrial employment may change norms regarding women's reproductive decisions, a key driver of fertility [@Amin98; @Baudin2010; @Shankha2012]. On the other hand, Bangladesh was already undergoing one of the fastest fertility transition in since 1970s, decades before emergence of the RMG industry. One feature of the Bangladeshi fertility transition is the short temporal gap between urban areas, where factories are mostly located, and rural areas [@siddiqui2022]. Thus the magnitude of the impact of RMG industry expansion on fertility is an empirical question. Given the prevalence of younger workers in the RMG industry[^5], it is also possible that RMG expansion led to delayed child bearing without overall changing fertility.
+|       FLFP increases opportunity cost of having children, and decreases fertility and desired fertility (*See @Aaronson, among others.*). FLFP could also change patterns of marriage and divorces by changing costs and benefits of marriages for both men and women [@greenwood_family_2017; @Autor2019]. Additionally, industrial employment may change norms regarding women's reproductive decisions, a key driver of fertility [@Amin98; @Baudin2010; @Shankha2012]. On the other hand, Bangladesh was already undergoing one of the fastest fertility transition in since 1970s, decades before emergence of the RMG industry. One feature of the Bangladeshi fertility transition is the short temporal gap between urban areas, where factories are mostly located, and rural areas [@siddiqui2022]. Thus the magnitude of the impact of RMG industry expansion on fertility is an empirical question. Given the prevalence of younger workers in the RMG industry^[About 90 percent of the women working in RMG factories are younger than 40 years old, gaining first experience of paid employment in the RMG sector [@ILO2020].], it is also possible that RMG expansion led to delayed child bearing without changing fertility overall.
 
-[^5]: About 90 percent of the women working in RMG factories are younger than 40 years old, gaining first experience of paid employment in the RMG sector [@ILO2020].
+|       Opportunities to work in manufacturing sector could increase returns to education, as argued in [@Amin98; @HM2015]. And export demand from contextually higher skilled sectors has been found to increase schooling in India [@shastry_human_2012; @oster_it_2013] and in China [@Li2018]. On the other, @atkin_endogenous_2016 finds that opportunities in export oriented manufacturing increases school drop-out rate. Since the returns to skills learned in school in the RMG industry in Bangladesh is not well established, whether expansion of the RMG industry increased or decreased human capital accumulation of Bangladeshi women remains unclear.
 
-|       Opportunities to work in manufacturing sector could increase returns to education, as argued in [@Amin98; @HM2015]. And export demand from contextually higher skilled sectors has been found to increase schooling in India [@shastry_human_2012; @oster_it_2013] and in China [@Li2018]. On the other, @atkin_endogenous_2016 finds that opportunities in export oriented manufacturing increases school drop-out rate. since the returns to skills learned in school in RMG industry in Bangladesh is not well established, whether expansion of the RMG industry increased or decreased human capital accumulation of Bangladeshi women remains unclear.
+|       In this paper, I estimate the long-run impact of the expansion of the RMG industry on FLFP, reproductive behavior, and human capital accumulation of Bangladeshi women over 1991-2011. Doing this serves three purposes. First, it adds to the documentation of the role of the RMG industry in fostering overall development and gender equality in Bangladesh. Prevalence of women in RMG industry in Bangladesh seem to be declining [@ILO2020] since 2010, and this fact is in line with what can be expected as technology improves^[There has been a reduction in number of RMG factories despite continued growth in exports since 2013 [@Reihan2018].] in a manufacturing sector [@tejani_defeminization_2021]. The RMG industry was particularly hit by Covid-19 [@kabir_impact_2020; @paton_bangladesh_2020] as well. As a result, this study informs debate about the immediate future path of Bangladeshi development. Second, this study adds to the literature discussing the mechanisms of manufacturing- and export-led development. This is particularly relevant given concerns about structural transformation bypassing the manufacturing sector in many of the currently developing countries as discussed in @Rodrik2015. Third, this study adds to the literature examining the impact of exposure to international trade on lives of workers (see for example, @Autor2013, @Autor2019 and @Li2018).
 
-|       In this paper, I estimate the long-run impact of the expansion of the RMG industry on FLFP, reproductive behavior, and human capital accumulation of Bangladeshi women over 1991-2011. Doing this serves three purposes. First, it adds to the documentation of the role of the RMG industry in fostering overall development and gender equality in Bangladesh. Prevalence of women in RMG industry in Bangladesh seem to be declining [@ILO2020] since 2010, and this fact is in line with what can be expected as technology improves[^6] in a manufacturing sector [@tejani_defeminization_2021]. The sector was particularly hit by Covid-19 [@kabir_impact_2020; @paton_bangladesh_2020] as well. This study informs debate about the future path of Bangladeshi development. Second, it adds to the literature discussing the mechanisms of development through manufacturing industry and through export oriented manufacturing. This is particularly relevant given concerns about structural transformation bypassing the manufacturing sector in many of the currently developing countries as discussed in @Rodrik2015. Third, it adds to the literature examining the impact of exposure to trade on lives of workers (see for example, @Autor2013, @Autor2019 and @Li2018).
+|       The methodology of this paper takes inspiration from @Autor2013, @Autor2019 and @Li2018. @Autor2013 exploited differences in the spatial patterns of specialization in different US manufacturing sectors to estimate the impact of increased exposure to Chinese imports on various outcomes of US workers. They find that import competition reduced US manufacturing employment by about a quarter over 1990-2007, with an impact on overall employment to population ratio of -0.42 percentage point (pp) on college educated workers and -1.1 pp on non-college educated workers. Using variation in spatial and gender patterns of specialization in US manufacturing exposed to Chinese imports, @Autor2019 found that one unit of import exposure, roughly equivalent to the average decade level exposure between 1990-2014, reduced manufacturing employment as a share of the population for both sexes by 1.06 pp. They find that sex-specific trade shocks reduced employment by 2.6 pp for both sexes. They also find that negative shocks to male-dominated industries reduce family formation and fertility, whereas negative shocks to female-dominated industries tend to increase family formation and fertility. In the export exposure context, @Li2018 exploited variation in skill intensity of industries and spatial variation in industry specialization and found that high skill export shock increased high school and college enrollment in China between 1990 to 2005.
 
-[^6]: There has been a reduction in number of RMG factories despite continued growth in exports since 2013 [@Reihan2018].
-
-|       The methodology of this paper takes inspiration from @Autor2013, @Autor2019 and @Li2018. @Autor2013 exploited differences in the spatial patterns of specialization in different US manufacturing sectors to estimate the impact of increased exposure to Chinese imports on various outcomes of US workers. They find that import competition reduced US manufacturing employment by about a quarter over 1990-2007, with an impact on overall employment to population ratio of -0.42 percentage point (pp) on college educated workers and -1.1 pp on non-college educated workers. Using variation in spatial and gender patterns of specialization in US manufacturing exposed to Chinese imports, @Autor2019 found that one unit of import exposure, roughly equivalent to the average decade level exposure between 1990-2014, reduced manufacturing employment as a share of the population for both sexes by 1.06 pp. They find that sex-specific trade shocks reduced employment by 2.6 pp for both sexes. They also find that negative shocks to male-dominated industries reduce family formation and fertility, whereas negative shocks to female-dominated industries tend to increase family formation and fertility. In export exposure context, @Li2018 exploited variation in skill intensity of industries and spatial variation in industry specialization and found that high skill export shock increased high school and college enrollment in China between 1990 to 2005.
-
-|       By 2005, 60 out of the 485 sub-districts (admin level 3) of Bangladesh[^7] had RMG factories. These sub-districts contain a disproportionate amount of the countries population, and likely are the more developed regions with better infrastructure [*(See Section 2)*](#rmghistory)]. My analysis is restricted to this 60 sub-districts. I estimate the long-run impact of the expansion of the RMG industry by using a Bartik style instrument that exploits differences in specialization between knit and woven products within Bangladeshi sub-districts exposed to RMG industry. Given the similarity in labor tasks of knit and woven producing factories **citation needed**, these specialization pattern are unlikely to be driven by factors that influence FLFP, reproductive behavior and schooling of women.
-
-[^7]: There has been administrative boundary restructuring at the sub-district level within our study period of 1991-2011. All numbers are derived based on the 1991 census boundaries.
+|       By 2006, 63 out of the 485 sub-districts (admin level 3)^[There has been administrative boundary restructuring at the sub-district level within our study period of 1991-2011. All numbers are derived based on the 1991 census boundaries.] of Bangladesh had RMG factories. These sub-districts contain a disproportionate amount of the countries population, and likely are the more developed regions with better infrastructure [*(See Section 2)*](#rmghistory). My analysis is restricted to this 63 sub-districts. I estimate the long-run impact of the expansion of the RMG industry by using a Bartik style instrument that exploits differences in specialization between knit and woven products within Bangladeshi sub-districts that had RMG factories by 2006. Given the similarity in labor tasks of knit and woven producing factories **citation needed**, these specialization pattern are unlikely to be driven by other factors that changes FLFP, reproductive behavior and schooling of women.
 
 |       My estimates indicate that I find that **summary of what you find**.
 
 **Compare with HM** And with the three trade papers.
 
-|       @HM2015 investigated the impact of the RMG industry on FLFP, fertility and education outcomes in Bangladesh. In 2009, they surveyed 1395 households in 60 villages. 44 of these villages were within commuting zones (CZs) of RMG factories, while the remainder were not.[^8] They reported that the bulk of the women employed in RMG factories were below 30 years old. Using a difference-in-difference estimator, they first documented that women in villages near RMG factory villages were about 15 percentage point (pp hereafter) more likely to have worked outside of home. Moreover, the effect was stronger among women exposed to RMG factories during critical exposure period (ages 10 - 23) by an additional 12 pp.
-
-[^8]: @HM2015 determined whether villages were in RMG factory CZs or not in consultation with officials from the Bangladesh Garments Manufacturers and Exporters Association.
+|       @HM2015 investigated the impact of the RMG industry on FLFP, fertility and education outcomes in Bangladesh. In 2009, they surveyed 1395 households in 60 villages. 44 of these villages were within commuting zones (CZs) of RMG factories, while the remainder were not.@HM2015 determined whether villages were in RMG factory CZs or not in consultation with officials from the Bangladesh Garments Manufacturers and Exporters Association (BGMEA). They reported that the bulk of the women employed in RMG factories were below 30 years old. Using a difference-in-difference estimator, they first documented that women in villages near RMG factory villages were about 15 percentage point (pp hereafter) more likely to have worked outside of home. Moreover, the effect was stronger among women exposed to RMG factories during critical exposure period (ages 10 - 23) by an additional 12 pp.
 
 |       Using total years of exposure to capture the overall impact of RMG factories on marriage and child-bearing decision, @HM2015 found that 6.4 years of RMG exposure (mean in their sample) reduced the probability of getting married and having first children by about 0.3 and 0.23 pp. Comparing it to the full sample probabilities, this represents a 28 percent and 29 percent decrease in probability of marriage and first birth for women. However, they found no effect on men. By using the same measure of exposure to RMG factory, [@HM2015] also found increases in educational attainment for women and men by 0.22 and 0.26 years respectively. However, they did not find strong evidence suggesting increases in enrollment. The findings in @HM2015 are consistent with @Amin98 and @NS who found an association between the RMG industry and increased FLFP, education and declining fertility in Bangladesh.
 
 |       @Autor2019 use a similar measure of import exposure to study the impact of Chinese imports in US labor markets. In their specification, CZ level labor market shock is calculated as a weighted average change in Chinese import penetration, where the weights are each industry's share in initial employment in a CZ. They measure each industry's import penetration as the growth of Chinese import. My measure differs from theirs primarily because a shorter time frame in my case means that levels, instead of growth rates, better capture the influence on female labor market. Additionally, their regressand is CZ level outcome variables. Since I do not have reliable measures of region level outcome variables, I use individual level outcome variables as my regressand.
 
-|       The rest of the paper is organized as follows - Section 2 describes the empirical approach, Section 3 describes the data, Section 4 discusses the results and Section 5 concludes the paper.\*\*
+|       The rest of the paper is organized as follows - [section 2](#rmghistory) provides a brief introduction to the RMG industry in Bangladesh, [section 3](#methods) describes the empirical approach, [section 4](#data) discusses the data, [section 5](#results) presents the results and [section 6](#conclusion) concludes the paper.
 
 # The RMG industry in Bangladesh {#rmghistory}
 
-Export oriented RMG industry started its journey in independent Bangladesh in 1978 with *Desh Garments*. The factory started with 130 workers trained in South Korea [@bgmea_rmg_history]. However, the industry took off in 1980, and its expansion accelerated in the 1990s. *See figure* \@ref(fig:facgrowth)*.* At least 779 factories were likely established between 1978-1991, whereas at least 2075 factories were likely established between 1992-2001.[^9] By 1991, the RMG industry accounted for more than 50 percent of Bangladeshi exports. Europe and North America emerged as the key importers of RMG products, possibly buoyed by the Multifiber Agreement[^10], and remains the largest markets to this day [@bgmeadata].
+Export oriented RMG industry started its journey in independent Bangladesh in 1978 with *Desh Garments*. The factory started with 130 workers trained in South Korea [@bgmea_rmg_history]. However, the industry took off in 1980, and its expansion accelerated in the 1990s. *See figure* \@ref(fig:facgrowth)*.* At least 779 factories were likely established between 1978-1991, whereas at least 2075 factories were likely established between 1992-2001.^[The numbers are obtained by matching factory information in BGMEA Directory 2000-01, and 2009-10 to two other BGMEA datasets. Few factories could not be matched, and date of establishment had to be estimated for some factories. Both non-match incidence and error rates in estimating date of establishment are relatively low. Hence, these numbers are best interpreted as lower bounds on the number of RMG factories established in the respective time periods. Please see [Section 4](#data) and [Appendix 3](#appendix3) for details.] By 1991, the RMG industry accounted for more than 50 percent of Bangladeshi exports. Europe and North America emerged as the key importers of RMG products, possibly buoyed by the Multifiber Agreement^[Multifiber Agreement ended in 2004, but does not seem to have impacted factory formation or export growth. *See @Reihan2018 and Figure* \@ref(fig:knitandwoven)], and they remain the largest markets to this day [@bgmeadata].
 
-[^9]: The numbers are obtained by matching factory information in BGMEA Directory 2000-01, and 2009-10 to two other BGMEA datasets. Few factories could not be matched, and date of establishment had to be estimated for some factories. Both non-match incidence and error rates in estimating date of establishment are relatively low. Hence, these numbers are best interpreted as lower bounds on the number of RMG factories established in the respective time periods. Please see [Section 4](#data) and [Appendix 3](#appendix3) for details.
-
-[^10]: Multifiber Agreement ended in 2004, but does not seem to have impacted factory formation or export growth. *See @Reihan2018 and Figure* \@ref(fig:knitandwoven)
-
-```{r facgrowth, fig.cap = "Expansion of RMG factories 1978:2005", fig.align='center', out.width="60%"}
+```{r facgrowth, fig.cap = "Expansion of RMG factories 1978:2006", fig.align='center', out.width="70%"}
 
 rmg_growth <- rbind(
   matched_data_01 %>% select(bgmea_num, date_est, fac_type),
@@ -153,18 +137,16 @@ rmg_growth %>%
   ggplot(aes(x = date_est, y = cumsum(new))) +
   geom_line() + 
   labs(x = "Year", y = "Number of factories",
-  caption = "Based on various BGMEA datasets")
+  caption = "Data Source: Various BGMEA datasets")
 
 rm("rmg_growth")
 ```
 
-|       In 1991, RMG factories were established in 37 sub-districts of 9 districts (admin level 2). Most of these districts are within or near the two districts containing the capital city (Dhaka district) and port city (Chittagong) and corresponds to a disproportionately large portion of the countries population. Factories were spread to 60 sub-districts in 18 districts by 2005.[^11] Quality of infrastructure and utilities have been found to be the key drivers of RMG factory location choice, whereas access to educated workforce is not a concern for most factory owners [@Kagy]. **I verify this to be the case within my dataset as well. See section on results.**
+|       In 1991, RMG factories were established in 37 sub-districts of 9 districts (admin level 2). Most of these sub-districts are within or near the two districts containing the capital city (Dhaka district) and port city (Chittagong) and corresponds to a disproportionately large portion of the countries population. Factories spread to 63 sub-districts in 18 districts by 2006.^[See [Appendix 2](#appendix2) for a spread of RMG factories.] Quality of infrastructure and utilities have been found to be the key drivers of RMG factory location choice, whereas access to educated workforce is not a concern for most factory owners [@Kagy]. **I verify this to be the case within my dataset as well. See section on results.**
 
-[^11]: See [Appendix 2](#appendix2) for a spread of RMG factories.
+|       The RMG industry produces two broad categories of products -- knit (HS code 61) and woven (HS code 62). Knit fabric is comprised of a single year looped repeatedly to produce cloth whereas woven fabric is made with multiple yarn criss-crossed over and under each other. Some of the common knit products include cotton T-shirts and sweater; whereas jackets, shirts and pants would be example of common woven products. Producing woven is more energy and capital intensive, and commands about 10 percent higher per unit price. However, the value addition in knit export in Bangladesh is higher [@toby22].
 
-|       The RMG industry produces two broad categories of products -- knit (HS code 61) and woven (HS code 62). Knit fabric is comprised of a single year looped repeatedly to produce cloth whereas woven fabric is made with multiple yarn criss-crossed over and under each other. Some of the common knit products include cotton T-shirts and sweater; whereas jackets, shirts and pants would be example of common woven products. Producing woven is more energy and capital intensive, and commands about 10 percent higher per unit price. However, the value addition in knit export in Bangladesh is higher [@toby22]. **About 90 percent of labor tasks in knit and woven factories overlap. Forgot the citation. Find ASAP**.
-
-|       Figure \@ref(fig:knitandwoven) shows the changing importance of knit manufacturing relative to woven manufacturing within the Bangladeshi RMG industry. Most of the RMG factories established by 1991 engaged in production of woven garments. Over time, more knit factories opened up and by 2005, Bangladesh was exporting about equal value of knitted and woven products.
+|       Figure \@ref(fig:knitandwoven) shows the changing importance of knit manufacturing relative to woven manufacturing within the Bangladeshi RMG industry. Most of the RMG factories established by 1991 engaged in production of woven garments. Over time, more knit factories opened up and by 2006, Bangladesh was exporting about equal value of knitted and woven products.
 
 ```{r, knitandwoven, fig.cap = "Knit and Woven Exports Over the Years", fig.align='center', fig.height=3.5}
 
@@ -177,12 +159,12 @@ matched_data_01 %>%
   tally(), by = "fac_type") -> knit_v_wov
 
 matched_data_09 %>%
-  filter(exist05 == 1) %>%
+  filter(exist06 == 1) %>%
   group_by(fac_type) %>%
   tally() %>%
   left_join(knit_v_wov, by = "fac_type") -> knit_v_wov
 
-names(knit_v_wov) <- c("fac_type", "2005", "1991", "2001")
+names(knit_v_wov) <- c("fac_type", "2006", "1991", "2001")
 
 knit_v_wov <- knit_v_wov %>%
   mutate(fac_type = as.character(fac_type)) %>%
@@ -195,7 +177,7 @@ knit_v_wov <- knit_v_wov %>%
 p1 <- ggplot(knit_v_wov, aes(fill = fac_type, y=fac_num, x=year)) + 
     geom_bar(position="fill", stat="identity") +
   labs(x = "Year", y = "Share of RMG Factories", fill = "", 
-       caption = "Using Data from BGMEA Directory 2000-01 & 2009-110") +
+       caption = "Data Source: BGMEA Directory 2000-01 & 2009-110") +
   theme(legend.position="bottom")
 
 
@@ -207,7 +189,7 @@ export_data <- read_excel("C:/Users/smshi/Dropbox/Research/Data/BD RMG factory d
 p2 <- ggplot(export_data, aes(x=year, y = Exports)) +
   geom_line(aes(col = Type))+
   labs(y = "Millions of USD", x = "Year", col = "",
-       caption = "Using Data from BGMEA (2022)") +
+       caption = "Data Source: BGMEA (2022)") +
   theme(legend.position="bottom")
   
 grid.arrange(p1, p2, nrow =1)
@@ -225,28 +207,28 @@ Suppose the importance of export oriented RMG industry in a sub-district of Bang
   \Delta Y_{s,t} = \beta \space \Delta \text{Export Exposure}_{s,t} + \delta_{t}  + Z_{s,t-1} \beta_z + X_{s,t-1} \beta_x + \epsilon_{s,t}
 \end{equation}
 
-Where $\Delta Y_{s,t}$ is the change in outcome variables in sub-district $s$ over period starting in $\underline t$ and ending in $t$. $\Delta \text{Export Exposure}_{s,t}$ measures change in export exposure in sub-district $s$ between $\underline t$ and $t$. $\delta_t$ are period fixed-effects. $Z_{s,t-1}$ is a vector of sub-district specific controls common to all regressions. They include two proxies of infrastructure quality at a sub-district -- start of the period electrification rate and urbanization rate; and three measures of sub-district demographics -- adult $(age > 15)$ men's and women's education levels, and population density. $X_{s,t-1}$ are start of the period controls that vary depending on the outcome variable, and are discussed below in relevant sub-sections. The export exposure per potential worker in a sub-district $s$ between $\underline t$ and $t$ can be measured as:
+Where $\Delta Y_{s,t}$ is the change in outcome variables in sub-district $s$ over period ending at $t$. The outcome variables in this paper are estimated from 1991, 2001 and 2011 census sub-samples. Therefore, decadal changes over 1991-2001 and 2001-2011 are stacked. $\Delta \text{Export Exposure}_{s,t}$ measures change in export exposure in sub-district $s$ in the period ending at t. $\delta_t$ are period fixed-effects. $Z_{s,t-1}$ is a vector of sub-district specific controls common to all regressions. They include two proxies of infrastructure quality at a sub-district -- start of the period electrification rate and urbanization rate; and three measures of sub-district demographics -- start of the period education levels of men and women between the ages 15-64, and population density. $X_{s,t-1}$ are start of the period controls that vary depending on the outcome variable, and are discussed in relevant sub-sections. The export exposure per potential worker in a sub-district $s$ in a decade ending at $t$ can be measured as:
 
-\begin{align}
-  \text{Export Exposure}_{s,t} =& \sum_{i=0}^{\underline t} \alpha_{s,t-i}^{K} * \frac{\text{Export}_{BD,t-i}^{K}}{L_{s,t-i}} + \sum_{i=1}^{\underline t} \alpha_{s,t-i}^{W} * \frac{\text{Export}_{BD,t-i}^{W}}{{L_{s,t-i}}} \\
+\begin{align}\label{Eq:ExExpr}
+  \text{Export Exposure}_{s,t} =& \sum_{i=0}^{9} \alpha_{s,t-i}^{K} * \frac{\text{Export}_{BD,t-i}^{K}}{L_{s,t-i}} + \sum_{i=1}^{9} \alpha_{s,t-i}^{W} * \frac{\text{Export}_{BD,t-i}^{W}}{{L_{s,t-i}}} \\
 \text{ Where } \alpha_{s,t-i}^{K} =& \frac{Machines_{s,t-i}^{K}}{Machines_{BD,t-i}^{K}}, \text{ and } \alpha_{s,t-i}^{W} = \frac{Machines_{s,t-i}^{W}}{Machines_{BD,t-i}^{W}}
 \end{align}
 
-|       $K \text{ and } W$ denotes knit and woven respectively, $BD$ denotes the total for Bangladesh, $Machines$ is the number of machines, and $L$ is the 15-64 year old population. Thus, values of knit and woven exports originating in Bangladesh are apportioned to each sub-district in proportion to that sub-district's share of knit and woven machines relative to total knit and total woven machines in Bangladesh respectively. Total exposure is divided by the working age population to derive the export exposure per potential worker, i.e., $\text{Export Exposure}_{s,t}$.
+|       $K \text{ and } W$ denotes knit and woven respectively, $BD$ denotes the total for Bangladesh, $Machines$ is the number of machines, and $L$ is the 15-64 year old population. Thus, \@ref(Eq:ExExpr) apportions values of knit and woven exports originating in Bangladesh to each sub-district in proportion to that sub-district's share of knit and woven machines relative to total knit and total woven machines in Bangladesh respectively. This exposure measure of a sub-district is divided by the working age population in that sub-district to derive the export exposure per potential worker, i.e., $\text{Export Exposure}_{s,t}$.
 
-|       The outcome variables in this paper are measured from 1991, 2001 and 2011 censuses, and 2005 Labor Force Survey. See the [data section](#data) for details. The economy of Bangladesh grew at an average rate of 5.8 percent per year over 1991-2011. In addition to improvements in FLFP and women's education, and reductions in fertility discussed in the introduction; this period saw a doubling of available workforce, rapid urbanization and improvements in infrastructure. For example, electrification rate increased from 14 percent in 1991 to 60 percent in 2011 [@WB2021]. The primary concern for identification in this context is that placement of factories are correlated with sub-district development characteristics such as infrastructure conditions, and that these characteristics may independently change FLFP, reproductive behavior and human capital accumulation of women.
+|       During my sample period of 1991-2011, the economy of Bangladesh grew at an average rate of 5.8 percent per year. In addition to improvements in FLFP and women's education, and reductions in fertility discussed in the introduction; this period saw a doubling of available workforce, rapid urbanization and improvements in infrastructure. For example, electrification rate increased from 14 percent in 1991 to 60 percent in 2011 [@WB2021]. The primary concern for identification in this context is that placement of factories are correlated with sub-district development characteristics such as infrastructure conditions, and that these characteristics may independently change FLFP, reproductive behavior and human capital accumulation of women.
 
-|       I overcome this challenge in two ways. First, I construct Bartik-style measures of decade equivalent changes in export exposure in different sub-districts. I set knit shares, woven shares, and working age population to the start of the period knit shares, woven share, and working age population respectively. This avoids picking up location-time specific shocks that would both change the outcome, as well as change the export exposure measures in a sub-district. With this modifications, the decade equivalent change in export exposure per potential worker in sub-district $s$ and time period starting in $\underline t$ and ending in $t$ is as following:
+|       I overcome this challenge in two ways. First, I construct Bartik-style measures of decade equivalent changes in export exposure in different sub-districts following @Autor2013. The knit shares, woven shares, and working age population are set to the start of the period knit shares, woven share, and working age population respectively. This avoids picking up location-time specific shocks that would both change the outcome, as well as change the export exposure measures in a sub-district. With this modifications, the decadal change in export exposure per potential worker in sub-district $s$ and in the decade ending in $t$ is as following:
 
-\begin{align}
-  \Delta \text{ Export Exposure}_{s,t} =& \space (\alpha_{s,\underline t}^{K} * \frac{\Delta \space \text{Export}_{BD,t}^{K}}{L_{\underline t}} + \alpha_{s,\underline t}^{W} * \frac{\Delta \space \text{Export}_{BD,t}^{W}}{L_{\underline t}}) * \frac{10}{t-\underline t}
+\begin{align}\label{autormeasure}
+  \Delta \text{ Export Exposure}_{s,t} =& \alpha_{s,t-1}^{K} * \frac{\Delta \space \text{Export}_{BD,t}^{K}}{L_{t-1}} + \alpha_{s,t-1}^{W} * \frac{\Delta \space \text{Export}_{BD,t}^{W}}{L_{t-1}} 
 \end{align}
 
-|       Second, I restrict my analysis only to sub-districts that had factories in them by 2005. The year 2005 is chosen since it is the final start of the period year in my outcome data. This restriction of sample to only sub-districts with factories avoids comparing outcomes of sub-districts exposed to the RMG industry with sub-districts that are not exposed to the RMG industry. This sample restriction and working with first difference of outcomes ameliorates some of the concerns regarding unobserved location characteristics driving the results.
+|       Second, I restrict my analysis only to sub-districts that had factories in them by the end of 2006. The end of year 2006 was chosen as the mid-point between 2001 and 2011 censuses. This restriction of sample to only sub-districts with factories avoids comparing outcomes of sub-districts exposed to the RMG industry with sub-districts that are not exposed to the RMG industry. This sample restriction and working with first difference of outcomes ameliorates some of the concerns regarding unobserved location characteristics driving the results.
 
-|       The increase in total knit and woven exports from Bangladesh over decades (see Figure \@ref(fig:knitandwoven)) were likely driven by changing comparative advantage as Chinese wages were increasing [@BBC_2012; @zhang_transformation_2016] and unlikely to be correlated with the changes in outcomes in different sub-districts of Bangladesh. But I do not rely on the independent or as-if independent "shifters" assumption highlighted in @borusyak_quasi-experimental_2022 as I only have the two sub-sectors -- knit and woven. Rather, the identification in this paper comes from exploiting the variation in exposure generated by differences in knit and woven shares across sub-districts exposed to the RMG industry. These shares are then scaled by temporal differences in changes in knit and woven exports from Bangladesh (see Figure \@ref(fig:knitandwoven)).
+|       The increase in total knit and woven exports from Bangladesh over decades (see Figure \@ref(fig:knitandwoven)) were likely driven by changing comparative advantage as Chinese wages were increasing [@BBC_2012; @zhang_transformation_2016] and unlikely to be correlated with the changes in outcomes in different sub-districts of Bangladesh. But I do not rely on the independent or as-if independent "shifters" assumption highlighted in @borusyak_quasi-experimental_2022 since I only have the two sub-sectors -- knit and woven, and two periods of change. Rather, the identification in this paper comes from exploiting the variation in exposure generated by differences in knit and woven shares across sub-districts exposed to the RMG industry. These shares are then scaled by temporal differences in changes in knit and woven exports from Bangladesh (see Figure \@ref(fig:knitandwoven)).
 
-|       The identifying assumption following @pinkham_bartik_2020, modified to this paper's context, is that the relative specialization into knit versus woven products in a sub-district is unrelated to the $\epsilon_{s,t}$ in \@ref(Eq:RegModel). This implies that the differences in shares should not influence the outcome through any other confounding channel. What could be an example of a violation of this assumption? Say for example woven factories employ relatively more women. And sub-districts with relatively high intensity of woven factories may have more schools through lobbying of factory owners, or through actions of non-governmental organizations providing free schooling. This will improve schooling for females in those sub-districts without improving demand for women's labor.
+|       The identifying assumption following @pinkham_bartik_2020, modified to this paper's context, is that the relative specialization into knit versus woven products in a sub-district is unrelated to the $\epsilon_{s,t}$ in equation \@ref(Eq:RegModel). This implies that the differences in shares should not influence the outcome through any other confounding channel. What could be an example of a violation of this assumption? Say for instance woven factories employ relatively more women. And sub-districts with relatively high intensity of woven factories may have more schools through lobbying of factory owners, or through actions of non-governmental organizations providing free schooling to cater to the needs of this potential mothers. This will improve schooling for females in those sub-districts without corresponding improvement in demand for women's labor, violating our identifying assumption.
 
 ## Female Labor Force Participation
 
@@ -256,15 +238,13 @@ I first investigate the impact of increased export exposure on FLFP by estimatin
   \Delta Y_{s,t} = \beta \space \Delta \text{Export Exposure}_{s,t} + \delta_{t}  + Z_{s,t-1} \beta_z + \beta_{x1} Y_{s,t-1}^{Male} + \beta_{x2} Pop_{s, t-1}^{15-64} +  \epsilon_{s,t}
 \end{equation}
 
-|       I start with an investigation of overall and industrial FLFP rate for 15-64 year old women. In two surveys separated by 9 years, @HM2015 and @ILO2020 found that roughly 70 percent of the women working in the RMG industry are 29 and younger. In addition, both surveys found that about 20 percent were teenagers. These age groups has implications for reproductive as well as human capital accumulation. Hence, I also investigate the overall and industrial FLFP for 15-29 year old women as well as for 15-20 year old women.^[Labor force participation data is only available for 15+ ages.]
+|       Changes in overall and industrial FLFP rate for 15-64 year old women are investigated first. In two surveys separated by 9 years, @HM2015 and @ILO2020 found that roughly 70 percent of the women working in the RMG industry are 29 and younger. In addition, both surveys found that about 20 percent were teenagers. These age groups has implications for reproductive as well as human capital accumulation. Hence, I also investigate the changes in overall and industrial FLFP for 15-29 year old women as well as for 15-20 year old women.^[Labor force participation data is only available for 15+ ages.]
 
-|       In addition to common controls mentioned in [Section 3.1](#methods), equation \@ref(Eq:Regflfp) adds two more controls to equation \@ref(Eq:RegModel). Start of the period labor force participation rate for men aged 15-64 in all or industrial sectors, as relevant, are added to capture changes in local industry structures unrelated to the expansion of the RMG industry. While it is likely that men's labor force participation is influenced by the RMG industry and its supporting industries, it makes up a small portion of men's employment.[^Even if half the RMG industry employees were men, less than 5 percent of the working men would be working in the RMG industry.] In addition, share of 15-64 year old in the population is included as a control of labor supply conditions.
+|       In addition to common controls mentioned in [Section 3.1](#methods), equation \@ref(Eq:Regflfp) adds two more controls to equation \@ref(Eq:RegModel). Start of the period labor force participation rate for men aged 15-64 in all or industrial sectors, as relevant, are added to capture changes in local industry structures unrelated to the expansion of the RMG industry. While it is likely that men's labor force participation is influenced by the RMG industry and its supporting industries, it makes up a small portion of men's employment.^[Even if half the RMG industry employees were men, less than 5 percent of the working men would be working in the RMG industry.] In addition, share of 15-64 year old in the population is included as a control of labor supply conditions.
 
 ## Reproductive Behavior
 
-I investigate how changes in export exposure influences three key components of reproductive behavior among women -- marriage rates, fertility and timing of having children. Figure \@ref(fig:ageReproduction) shows the age profile of being ever married and the number of own children in household for 10-40 year old women in sub-districts with factories by 2005.^[See appendix for overall Bangladesh.] Opportunities in the RMG industry changes the economic value of women. And given the age profile of workers discussed above, it also changes costs and benefits of marriage and of bearing and raising children during ages that are very important for marriage and fertility in Bangladesh.
-
-```{r ageReproduction, fig.cap = "Age specific marriage and own children in household in sample areas", fig.align='center', fig.height=4.5}
+```{r ageReproduction, fig.cap = "Age specific marriage and own children in household in sample areas", fig.align='center', fig.height=4}
 
 data %>%
   filter(geo3_bd1991 %in% ninetyone_sample | geo3_bd2001 %in% twentyone_sample | geo3_bd2011 %in% twenty11_sample) %>%
@@ -292,33 +272,85 @@ grid.arrange(p1, p2, nrow =1)
 rm("p1", "p2")
 ```
 
-|       First, I estimate equations of the following form:
+|       Figure \@ref(fig:ageReproduction) shows the age profile of being ever married and the number of own children in household for 10-40 year old women in sub-districts with factories by 2006.^[See appendix for overall Bangladesh.] Opportunities in the RMG industry changes the economic value of women. And given the age profile of RMG industry workers discussed above, it also changes costs and benefits of marriage and of bearing and raising children during ages that are very important for marriage and fertility in Bangladesh. I investigate how changes in export exposure influences three key components of reproductive behavior among women -- marriage rates, fertility and timing of having children. Marriage behavior is investigated by estimating equations of the following form:
 
 \begin{equation}\label{Eq:Regmar}
   \Delta Y_{s,t} = \beta \space \Delta \text{Export Exposure}_{s,t} + \delta_{t}  + Z_{s,t-1} \beta_z + \epsilon_{s,t}
 \end{equation}
 
-Where $\Delta Y_{s,t}$ includes marriage rates among 15-20 and 21-30 year old women. Women 30 years and above are not investigated given the near universality of ever being married by that age among Bangladesh women. No additional controls are included in these regressions. Next, I investigate how fertility changes by estimating regressions of the following form:
+Where $\Delta Y_{s,t}$ includes changes in rates of ever being married among 15-20 and 21-30 year old women. Influence on women 30 years and above are not investigated since almost all women of that age have had married at least once by that age among Bangladeshi women in our sample. No additional controls are included in regressions investigating marriage behavior. Next, I investigate how fertility changes by estimating regressions as follows:
 
 \begin{equation}\label{Eq:Regfert}
   \Delta Y_{s,t} = \beta \space \Delta \text{Export Exposure}_{s,t} + \delta_{t}  + Z_{s,t-1} \beta_z + \beta_{x} Y_{District, t-1}  + \epsilon_{s,t}
 \end{equation}
 
-where $\Delta Y_{s,t}$ are measures of fertility rates among 15-20, 21-30, and 31-40 year old women. Since I do not observe realized fertility or birth histories, I use number of own child in household as measures of fertility. This measure becomes noisier at older ages. In addition to controls in \@ref(Eq:RegModel), regressions in \@ref(Eq:Regfert) includes sub-district level fertility rates at relevant ages as a control for regional fertility norms.
+Where $\Delta Y_{s,t}$ are measures of changes in fertility rates among 15-20, 21-30, and 31-40 year old women. Since I do not observe realized fertility or birth histories, I use number of own child in household as a proxy measures of fertility. In addition to controls in \@ref(Eq:RegModel), regressions in \@ref(Eq:Regfert) includes sub-district level fertility rates at relevant ages as a control for unobserved and changing regional determinants of fertility such as fertility norms.
 
 ## Human capital accumulation
 
-As discussed in introduction, exposure to exports from RMG industry could encourage increased educational attainment by increasing returns to basic education. However, it could also reduce educational attainments by encouraging drop-outs among working age women. These scenarios are tested using regressions of the following form:
+Exposure to exports from RMG industry could encourage increased educational attainment by increasing returns to basic education. However, it could also reduce educational attainments by encouraging drop-outs among working age women. Additionally, efforts to learn while in school may also increase. These hypotheses are tested using following forms of regressions:
 
 \begin{equation}\label{Eq:RegHC}
   \Delta Y_{s,t} = \beta \space \Delta \text{Export Exposure}_{s,t} + \delta_{t}  + Z_{s,t-1} \beta_z + \beta_{x} Y_{s, t-1}^{M}  + \epsilon_{s,t}
 \end{equation}
 
-where $\Delta Y_{s,t}$ are enrollment rates for female's aged 5-10, 11-13, 14-19; years of schooling and literacy among working age teenage females (ages 14-19). These regression include start of the period educational outcomes for males corresponding to the changes in in female outcomes estimated as a control region specific norms and quality of educational institutions.
+Where $\Delta Y_{s,t}$ include changes in enrollment rates for female's aged 5-9, females aged 10-13, 14-19; and changes in years of schooling and literacy among working age teenage females (ages 14-19). These regression include start of the period educational outcomes for males of corresponding age as a control for changes in region specific quality of educational institutions.
 
 # Data {#data}
 
 ## Factory Data
+
+The data on factories of export oriented Bangladeshi RMG industries are obtained from several sources. 
+
+The key BGMEA Members Directory 2000-01 [@bgmea_dir01] and BGMEA Members Directory 2009-10 [@bgmea_dir09] data are used.^[I acknowledge and thank Prof. Ayub Nabi Khan (Pro-VC, BUFT, Bangladesh) and BUFT library  staff to  ] These directories provide BGMEA code, number of machines in the factory, types of product a factory produces, factory address and phone number. 
+
+In order to calculate knit and woven shares over the years, data from several sources 
+
+
+
+```{r , fig.cap = "Expansion of RMG factories 1978:2006", fig.align='center', out.width="70%"}
+
+rmg_growth <- rbind(
+  matched_data_01 %>% select(bgmea_num, date_est, fac_type),
+  matched_data_09 %>% select(bgmea_num, date_est, fac_type)) %>% unique()
+
+rmg_growth %>%
+  group_by(date_est) %>%
+  summarise(new = n()) %>%
+  ggplot(aes(x = date_est, y = cumsum(new))) +
+  geom_line() + 
+  labs(x = "Year", y = "Number of factories",
+  caption = "Data Source: Various BGMEA datasets")
+
+rm("rmg_growth")
+```
+
+
+```{r, summaryfacgraphs, message = FALSE, warnings = FALSE, fig.cap = "Factory Characteristics", fig.height = 5, fig.width = 8}
+
+# Factory Statistics
+hist_machine <- ggplot(factory, aes(workers_total)) +
+  geom_histogram(na.rm=T) + labs(x = "Number of Workers")
+
+hist_date <- ggplot(factory, aes(date_est))+
+  geom_histogram(na.rm = T) + labs(x = "Date of establishment")
+
+hist_type <- ggplot(factory, aes(knitfac))+
+  geom_histogram(na.rm = T) +
+  labs(x = "Factory type") +
+  labs(caption = "0=Woven, 0.5=Mixed, 1=Knit")
+  
+
+grid.arrange(hist_machine, hist_date, hist_type,  nrow = 1)
+```
+
+```{r, summaryfactable, cache = TRUE, results='asis', include = F}
+# Factory Statistics
+
+factory %>% as_tibble() %>% select(date_est, knitfac, workers_total, workers_female) %>% as.data.frame() %>% stargazer(type = "latex", digits = 1, covariate.labels = c("Establishment Date", "Knit Factory", "Total Workers", "Female Workers"), title = "Summary Statistics of RMG Factories", header = FALSE)
+```
+
+
 
 ## Population census and Labor force survey
 
@@ -347,7 +379,7 @@ data %>%
 
 ## Reproductive Behavior
 
-\label{Eq:Regmar}
+\@ref(Eq:Regmar)
 
 
 \@ref(Eq:Regfert)
@@ -360,7 +392,7 @@ data %>%
 
 ## Human capital accumulation
 
-\label{Eq:RegHC}
+\@ref(Eq:RegHC)
 
 
 
@@ -500,4 +532,6 @@ p6 <- ggplot(bd_map0) +
 grid.arrange(p1, p2, p3, p4, p5, p6, nrow =3)
 ```
 
-# Appendix 3:
+\newpage 
+
+# Appendix 3: Factory Data {#appendix3 .unnumbered}

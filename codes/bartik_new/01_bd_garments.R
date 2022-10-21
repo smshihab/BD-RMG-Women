@@ -251,12 +251,12 @@ matches_09 <- inner_join(bgmea_09 %>% rename(machine09 = machine),
 
 matches_09$machine09[is.na(matches_09$machine09)] <- mean(matches_09$machine09, na.rm=T)
 
-# machine in 2005 is the average between 2005 and 2009
-# if found in 2001 and 2009, it surely existed in 2005
+# machine in 2006 is the average between 2001 and 2009
+# if found in 2001 and 2009, it surely existed in 2006
 
 matches_09 %>%
   mutate(machine = (machine + machine09)/2,
-         exist05 = 1) %>%
+         exist06 = 1) %>%
   select(-machine09) -> matches_09
 
 # finding firms that started between 2000-01 to 2009-10
@@ -268,7 +268,7 @@ match_09_21 <- inner_join(non_matches_09, bgmea_21 %>% select(-name), by = "bgme
 
 match_09_21 %>%
   mutate(upazila = NA,
-         exist05 = case_when(date_est <2006 ~ 1,
+         exist06 = case_when(date_est <= 2006 ~ 1,
                       TRUE ~ 0)) -> match_09_21
 
 # Combining the BGMEA 2009-10 matches so far
@@ -278,7 +278,7 @@ all_matched_data_09 <- rbind(matches_09, match_09_21)
 non_matches_09 <- anti_join(non_matches_09,all_matched_data_09, by = "bgmea_num")
 
 
-# Estimating the date of establishment and will work only with those that were likely to exist in 2005
+# Estimating the date of establishment and will work only with those that were likely to exist in 2006
 
 reg_date <- lm(date_est ~ bgmea_num, all_matched_data_09)
 
@@ -287,7 +287,7 @@ non_matches_09$date_est <- round(predict(reg_date, non_matches_09), digits = 0)
 # only keeping factories that provides 2006 estimates
 
 non_matches_09 %>%
-  filter(date_est < 2006) -> non_matches_09
+  filter(date_est <= 2006) -> non_matches_09
 
 ## Export these data for manual matching
 # write.csv(non_matches_09, "~/large_datasets/BD Garments/02_not_match_09.csv", row.names = FALSE)
@@ -296,7 +296,7 @@ manually_matched_BGMEA_09 <- read.csv("~/large_datasets/BD Garments/02_manually_
 
 manually_matched_BGMEA_09 %>%
   filter(upazila != "") %>%
-  mutate(exist05 = 1, Latitude = NA, Longitude = NA, fac_ad = NA) -> manually_matched_BGMEA_09
+  mutate(exist06 = 1, Latitude = NA, Longitude = NA, fac_ad = NA) -> manually_matched_BGMEA_09
 
 # Bind the relevant 2009-10 data
 
@@ -318,7 +318,7 @@ all_matched_data_09 %>%
 anti_join(matching09, matching01, by = "bgmea_num") -> matching09
 
 
-all_matched_data_01 <- rbind(matching09 %>% select(-exist05) %>%
+all_matched_data_01 <- rbind(matching09 %>% select(-exist06) %>%
                                mutate(exist91 = 0, exist01 = 1),
                              all_matched_data_01)
 

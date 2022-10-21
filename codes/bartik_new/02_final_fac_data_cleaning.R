@@ -111,7 +111,7 @@ matched_data_01 %>%
               rename(upazila = admin_name)) -> upaz01
 
 matched_data_09 %>%
-  filter(exist05 == 1) %>%
+  filter(exist06 == 1) %>%
   select(upazila) %>% unique() %>%
   left_join(upazilas11 %>% as.data.frame() %>%
               select(admin_name, upaz2011, parent) %>%
@@ -169,7 +169,7 @@ matched_data_01 %>%
               rename(upazila = admin_name)) -> upaz01
 
 matched_data_09 %>%
-  filter(exist05 == 1) %>%
+  filter(exist06 == 1) %>%
   select(upazila) %>% unique() %>%
   left_join(upazilas11 %>% as.data.frame() %>%
               select(admin_name, upaz2011, parent) %>%
@@ -190,21 +190,20 @@ fac_upaz %>%
 left_join(matched_data_01, fac_upaz, by = "upazila") %>%
   mutate(across(c(upaz2011, parent), as.integer)) -> matched_data_01
 
-# only keeping data for 2005 and before facs
+# only keeping data for 2006 and before facs
 
 matched_data_09 %>%
-  filter(date_est < 2006) %>%
+  filter(date_est <= 2006) %>%
   left_join(fac_upaz, by = "upazila") %>%
   mutate(across(c(upaz2011, parent), as.integer)) -> matched_data_09
 
-### Writing 91,01 data, then the 05 data, then the factory list
+### Writing 91,01 data, then the 06 data, then the factory list
 
 write.csv(matched_data_01, "~/large_datasets/BD Garments/04_final_data_01.csv", row.names = F)
 write.csv(matched_data_09, "~/large_datasets/BD Garments/04_final_data_09.csv", row.names = F)
 
 save(list = c("matched_data_01","matched_data_09"),
      file = "C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/factories.Rdata")
-
 
 
 ### Creating a let of factory upazila matching over time.

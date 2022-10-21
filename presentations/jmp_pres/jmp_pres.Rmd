@@ -1,5 +1,5 @@
 ---
-title: "Ready Made Garments, FLFP, Fertility and Human Capital in Bangladesh"
+title: "Ready Made Garments, Reproductive Behavior and Human Capital among  Bangladeshi Women"
 subtitle: "SM Shihab Siddiqui"
 author: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -132,31 +132,93 @@ read.csv("bgmea.csv") %>%
 ]
 
 ---
+# Could there be a connection?
 
+## FLFP
+
+- Textile and affiliated industry always employed relatively more women across different time and place.
+
+--
+
+  - Mid 1800s England (Burnette, n.d), USA (Field-Hendrey, 1998); developed and developing countries 1981-2008 (Kucera and Tejani, 2014).
+  
+--
+  
+  - Women engaged in more spinning and knitting for centuries *(Virginia Postrel, Textiles and the Fabric of Civilization)*
+  
+--
+
+  - Did this "kick" off an overall FLFP transition in lines of Fogli and Veldkamp (2011)?
+
+---
+# Could there be a connection?
+
+## Reproductive behavior
+
+- Labor market opportunities changes cost and benefit of marriage, and the opportunity costs of having and raising children (see for Aaronson et al 2014; Greenwood et al 2017).
+
+--
+
+- But fertility transition was already on the way and may have aided women going to work rather than the other way round? 
+
+--
+## Education
+
+- More schooling if returns to schoooling in RMG industry is adequate.
+
+--
+
+- Less if potential students ae better off working
+
+--
+
+.hi[All these are empirical questions!]
+
+---
 # Research questions
 
-  1. To what extent did the emergence of the RMG industry contributed to the increase in FLFP in Bangladesh?
+  1. To what extent did the emergence of the RMG industry contribute to the increase in FLFP in Bangladesh?
  
 --
 
-  2. What is the effect of the RMG industry on fertility and human capital accumulation of Bangladeshi women.
+  2. What is the effect of the RMG industry on reproductive behavior of women (marriage and fertility)?
+  
+--
+
+ 3.  What is the effect of the RMG industry on human capital accumulation of Bangladeshi women.
 
 ---
-# This paper
+# Why do we care?
+
+1. Adds to the literature on manufacturing- and export-led growth. Especially relevant since:
+
+--
+  - Pre-mature industrialization (Rodrik, 2015)
+  
+  - Prevalence of women in RMG industry in Bangladesh seem to be declining, and is along the lines of what happens as technology
+improves in a manufacturing sector (Tejani and Kucera, 2021).
+
+--
+
+2. Adds to the literature focusing on trade and lives of workers (Autor et al (2013), Li (2018) and Autor et al (2019)).
+
+---
+# Preview of the paper
+
+## Methods
 
  - Estimates the long run impact of female labor demand shock on FLFP, fertility and human capital accumulation by:
 
-  - Bartik shift-share method to identify labor demand shocks following a methodology similar to .hi[Autor et al (2013), Li (2018) and Autor et al (2019).]
+  - Bartik shift-share method to identify labor demand shocks following a methodology similar to .hi[Autor et al (2013).]
   
-  - Specifically, it exploits product specialization in the RMG industry along the knit versus woven line across sub-districts (Bangladesh administrative level-3) for identification.
+  - Specifically, I exploit product specialization in the RMG industry along the knit versus woven line across sub-districts (Bangladesh administrative level-3) for identification.
 
-## Preview of results
-
-  - I find that FLFP increases and fertility declines, albeit modestly relative to .hi[Heath and Mobarak (2015)].
-  
 --
-  
-  - No impact on school enrollment of younger girls.
+
+
+
+
+
 
 ---
 
