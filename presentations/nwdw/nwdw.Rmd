@@ -336,7 +336,7 @@ class: inverse, middle, center
 ---
 # FLFP
 
-```{r, include = FALSE}
+```{r, include = FALSE , eval = FALSE}
 
 load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH data/IPUMS-I/final_data.RData")
 
