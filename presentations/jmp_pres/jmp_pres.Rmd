@@ -155,21 +155,19 @@ read.csv("bgmea.csv") %>%
 
 ## Reproductive behavior
 
-- Labor market opportunities changes cost and benefit of marriage, and the opportunity costs of having and raising children (see for Aaronson et al 2014; Greenwood et al 2017).
+- Labor market opportunitieschanges net benefits of marriage and children *(e.g. Aaronson et al 2014; Greenwood et al 2017).*
 
 --
 
-- But fertility transition was already on the way and may have aided women going to work rather than the other way round? 
-
---
-## Education
-
-- More schooling if returns to schoooling in RMG industry is adequate.
+- But fertility transition was already on the way and may have already ushered in a low-fertility enviroment? What about timing?
 
 --
 
-- Less if potential students ae better off working
+## Human capital accumulation
 
+- More schooling if returns to schooling in RMG industry is adequate. Less if potential students are better off working.
+
+  - Maybe less schooling but more human capital accumulation through increased effort?
 --
 
 .hi[All these are empirical questions!]
@@ -178,14 +176,19 @@ read.csv("bgmea.csv") %>%
 # Research questions
 
   1. To what extent did the emergence of the RMG industry contribute to the increase in FLFP in Bangladesh?
- 
+  
+    - A question about magnitude.
 --
 
   2. What is the effect of the RMG industry on reproductive behavior of women (marriage and fertility)?
+    
+    - A question about sign and magnitude.
   
 --
 
- 3.  What is the effect of the RMG industry on human capital accumulation of Bangladeshi women.
+  3.  What is the effect of the RMG industry on human capital accumulation of Bangladeshi women?
+  
+    - A question about sign and magnitude.
 
 ---
 # Why do we care?
@@ -193,10 +196,9 @@ read.csv("bgmea.csv") %>%
 1. Adds to the literature on manufacturing- and export-led growth. Especially relevant since:
 
 --
-  - Pre-mature industrialization (Rodrik, 2015)
+  - General concerns with pre-mature industrialization (Rodrik, 2015)
   
-  - Prevalence of women in RMG industry in Bangladesh seem to be declining, and is along the lines of what happens as technology
-improves in a manufacturing sector (Tejani and Kucera, 2021).
+  - Reductions in prevalence of women in RMG industry in Bangladesh <footnote>A [Along the lines of what happens as technology improves in a manufacturing sector (Tejani and Kucera, 2021).</footnote>
 
 --
 
@@ -213,10 +215,19 @@ improves in a manufacturing sector (Tejani and Kucera, 2021).
   
   - Specifically, I exploit product specialization in the RMG industry along the knit versus woven line across sub-districts (Bangladesh administrative level-3) for identification.
 
+---
+# Preview of the paper
+
+## Results
+
+- FLFP, particularly industrial FLFP changes a lot.
+
 --
 
+- Not much of an impact on reproductive behavior and fertility overall.
 
 
+-- Results can be rationalized with previous literature under plausible assumptions.
 
 
 
@@ -259,7 +270,7 @@ include_graphics("figures//woven1.png")
 ---
 # Knit versus Woven Specialization
 
-```{r out.width="60%"}
+```{r out.width="70%"}
 include_graphics("figures//fac_dist.png")
 ```
 
@@ -270,10 +281,6 @@ include_graphics("figures//fac_dist.png")
 --
 
 - Woven factories are larger, and employs more women.
-
---
-
-- About 90% labor tasks overlap.
 
 ---
 # Location of RMG factories
@@ -296,25 +303,23 @@ class: inverse, middle, center
 ---
 # Overview of the identification strategy
 
-  - Sub-districts with and without factories are likely to have different infrastructure quality, which maybe correlated with outcome variables. So, .hi[I restrict the analysis only to sub-districts that ever had a factory.]
+
+  - Sub-districts with and without factories are likely to have different infrastructure quality, which maybe correlated with outcome variables. So, .hi[I restrict the analysis only to sub-districts that had a factory by 2006.]
   
 --
 
-  - Export exposure in sub-district $s$ in at time period $t$ depends on:
-  
---
-    - Intensity of knit versus woven specialization.
-  
---
+  - Different sub-districts have different intensity of knit versus woven specialization **within** the RMG industry.  
 
-    - Variation in changes in demand for knit versus woven products products from Bangladesh.
-  
+--
+    - Adopting Goldsmith-Pinkham et al (2020), the key assumption is that these differences in specialization do not change outcomes through confounders.
+ 
 ---
 # Regression Model
 
-\begin{align*}
-  \Delta Y_{s,t}&= \beta \space \Delta \text{Export Exposure}_{s,t} +  Z \beta_z + \delta_t + \epsilon_{s,t}, \text{ where,}
-\end{align*}
+
+\begin{equation}
+  \Delta Y_{s,t} = \beta \space \Delta \text{Export Exposure}_{s,t} + \delta_{t}  + Z_{s,t-1} \beta_z + X_{s,t-1} \beta_x + \epsilon_{s,t}
+\end{equation}
 
 - $\Delta Y_{s,t}$ is the decadal change in outcome variables in sub-district $s$ over decade ending at year $t$.
 
@@ -324,41 +329,56 @@ class: inverse, middle, center
 
 --
 
-- $\delta_t$ are census-year fixed-effects and $Z_{s, t}$ is a vector of sub-district specific controls including start of period electrification, urbanization, density, share of 15-64 year old in population, adult women's and men's education levels, measures of male labor force participation. Fertility regression also controls for starting period fertility, and schooling regression controls for male schooling.
+- $\delta_t$ are period fixed-effects and $Z_{s, t-1}$ is a vector of controls across all outcomes including start of period electrification rate, urbanization, density, share of 15-64 year old in population and years of education for adults (15-64).
+
+--
+
+- $X_{s,t-1}$ are start of the period comparable outcomes for males other than in the cases of regressions corresponding to marriage and fertility rates.
 
 
 ---
-# Export shock
+# Export exposure
 
-Follows Autor et al (2019):
+One candidate measure of export exposure per potential worker (Population 15-64) is: 
 
-\begin{align*}
-\Delta Export \space Exposure_{s,t} =& \alpha_{s,t-10}^{knit} * \Delta Knit \space Export_{t-10} + \\
-&\alpha_{s,t-10}^{Woven} * \Delta Woven \space Export_{t-10} \\
-\textit{and } \alpha_{s,t-10}^{knit} =& \frac{Workers_{s,knit,t-10}}{Workers_{BD-Knit,t-10}},\\
-\alpha_{s,t-10}^{Woven} =& \frac{Workers_{s,woven,t-10}}{Workers_{BD-Woven,t-10}},
-\end{align*}
+\begin{equation}
+  \sum_{i=0}^{9} \alpha_{s,t-i}^{K} * \frac{\text{Export}_{BD,t-i}^{K}}{L_{s,t-i}} + \sum_{i=1}^{9} \alpha_{s,t-i}^{W} * \frac{\text{Export}_{BD,t-i}^{W}}{{L_{s,t-i}}} \\
+ \alpha_{s,t-i}^{K} = \frac{Machines_{s,t-i}^{K}}{Machines_{BD,t-i}^{K}}, 
+\alpha_{s,t-i}^{W} = \frac{Machines_{s,t-i}^{W}}{Machines_{BD,t-i}^{W}}
+\end{equation}
 
 --
 
- - Shares are instrumented with 1-year lags.
- 
+ - Apportions total knit (woven) exports originating in Bangladesh to a sub-districts based on what share of national knit (woven) production is in the sub-district.
+
 --
 
- - Estimates are not very sensitive to 1-5 year lag used.
- 
+  - Export exposure in sub-district $s$ in at time period $t$ depends on the intensity of knit (woven) specialization and is scaled by total exports and population.
+  
 ---
-# Identifying assumption
+# Export exposure
 
-- .hi[Identifying assumption 1:] Extent of knit versus woven specialization in a sub-district is uncorrelated with outcomes.
+- But clearly the previous measure can be endogenous since over decades, infrastructure changes and that in itself could change both the shares and change the outcomes differentially. So, I fix share to the values at the start of decade. Thus export exposure per potential worker is as follows:
+
+\begin{align}
+  \Delta \text{ Export Exposure}_{s,t} =& \alpha_{s,t-1}^{K} * \frac{\Delta \space \text{Export}_{BD,t}^{K}}{L_{t-1}} + \alpha_{s,t-1}^{W} * \frac{\Delta \space \text{Export}_{BD,t}^{W}}{L_{t-1}} 
+\end{align}
+
+
+---
+# Identifying Assumptions
+
+Adopting from Goldsmith-Pinkham et al (2020), the key assumption is that the differences in knit versus woven specialization do not *change* outcomes through confounders. That is:
+
+- .hi[Identifying assumption 1:] Extent of knit versus woven specialization in a sub-district is uncorrelated with the errors conditional on controls in the first difference equations.
 
 --
 
-- .hi[Identifying assumption 2:] FLFP responds similarly to woven and knit based shocks.
+- .hi[Identifying assumption 2:] FLFP responds similarly to woven and knit shocks.
 
 --
 
-- .hi[Identifying assumption 3:]	Usual Bartik assumptions.
+- .hi[Example of a violation:]	Woven employs more women, so areas with more woven factories has increased presence of fertility control programs because there are more women.
 
 ---
 # Data Sources
@@ -367,28 +387,7 @@ Follows Autor et al (2019):
 
 --
 
-- .hi[Factory data] are primarily from **Mapped in Bangladesh Project.**
-
-  - Between 2017 and 2021, the project gathered information on all potentially existing factories from government and trade groups.
-  
-  - Processed the list and physically verified locations of 3805 factories in outside of export processing zones (EPZs).
-  
-  - I obtained EPZ factory data by scraping Bangladesh Garments Manufacturers and Exporters Association (BGMEA) website.
-
----
-# Threats to identification
-
-- Assumes orthogonality of knit and woven share to outcomes
-    
-  - Defensible since infrastructure, not labor related issues, seem to be the key factor in location choice of RMG factories (kagy, 2014).
-
---
-
-- Factory data does not account for exits.
-
-  - For example, my dataset identifies about 1914 firms in 2009. Astarloay (2015) identified 3548 firms.
-  
-  - Key concern is if exits are geographically correlated.
+- .hi[Factory data] are primarily from  multiple BGMEA datasets from members directory (2001, 2010), BGMEA (2015) and scraping of BGMEA websie in 2013.
 
 ---
 class: inverse, middle, center
@@ -398,89 +397,68 @@ class: inverse, middle, center
 ---
 # FLFP
 
-```{r, include = FALSE}
+## Overall
 
-load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH data/IPUMS-I/final_data.RData")
+```{r, include=F}
+
+#load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/final_data.RData")
 
 # garments adjacent
 
+reg_flfp <- data.frame(Age = c("15-64", "15-29", "15-20"),
+                       coeff = c(0.004, 0.005, 0.006  ),
+                       std_error = c(0.0006, 0.0008, 0.0009))
 
-reg1 <- lm(100*f_lfp_diff ~ export_exposure1 + factor(year) + urban_lag + density_lag  + elec_lag + age_1564_lag + f_educ_lag + m_lfp_lag -1, data)
+reg_flfp_ind <- data.frame(Age = c("15-64", "15-29", "15-20"),
+                       coeff = c(0.007, 0.006, 0.007),
+                       std_error = c(0.0008, 0.0006, 0.0007))
 
-reg2 <- lm(100*f39_lfp_diff ~ export_exposure1 + factor(year) + urban_lag + density_lag  + elec_lag + age_1564_lag + f_educ_lag + m_lfp_lag -1, data)
+reg_flfp_mar <- data.frame(Age = c("15-20", "21-30"),
+                       coeff = c(-0.0004, 0.0001),
+                       std_error = c(0.0005, 0.0004))
 
-reg3 <- lm(100*f_ind_share2_diff ~ export_exposure1 + factor(year) + urban_lag + density_lag  + elec_lag + age_1564_lag + f_educ_lag + m_ind_share2_lag -1, data)
 
-reg4 <- lm(100*f39_ind_share2_diff ~ export_exposure1 + factor(year) + urban_lag + density_lag  + elec_lag + age_1564_lag + f_educ_lag + m_ind_share2_lag -1, data)
+reg_flfp_fert <- data.frame(Age = c("15-20", "21-30", "15-20"),
+                       coeff = c(0.0001, 0.0000, 0.0036),
+                       std_error = c(0.0004, 0.0015, 0.0023))
 
-reg5 <- lm(100*m_lfp_diff ~ export_exposure1 + factor(year) + urban_lag + density_lag  + elec_lag + age_1564_lag + m_educ_lag -1, data)
+
+reg_enrol <- data.frame(Age = c("05-09", "10-13", "14-19"),
+                       coeff = c(0.0009, -0.0002, -0.0013),
+                       std_error = c(0.0008, 0.0008, 0.0011))
 ```
 
-
-
-```{r fig.height = 4, fig.width = 8}
-include_graphics("figures//regs1.png")
+```{r}
+kable(list(reg_flfp, reg_flfp_ind), align = "ccc", caption = "Influence on overall (left) and industrial (right) FLFP")
 ```
+
 
 - Modest impact on FLFP that is stronger on industrial FLFP and among younger women. 
 
 --
+- At mean export exposure for a sub-district over two decades:
 
-- No strong impact on men's labor force participation.
-
---
-
-- At mean export exposure for a sub-district over two decades (203 million USD):
-
-  - FLFP increases by 1.44 percentage point.
+  - FLFP increases by 3.45 percentage point overall, 6.04 for industrial FLFP.
   
-
+- More than half of industrial FLFP change is from RMG industry.
   
 ---
-# FLFP
-
-
-  - FLFP in industry for 15-39 year olds increase by 1.6 percentage point, and FLFP in industrial sectors increased by 2.3 percentage points.
-
---
-
-- In my sample, FLFP in industrial sector increases from 1 percent of women in 1991 to 5 percent in 2011. So, exposure to RMG explains a good part of it.
-  
---
-
-- My estimates are smaller than Heath and Mubarak (2015).
-
---
-
-  - Possibly since FLFP varies substantially by proximity to factories and I use a larger definition of labor markets.
-  
-    - Perhaps suggestive of limited diffusion? 
-  
----
-# Education and Fertility
-
-```{r, include=F}
-
-reg7 <- lm(fertility_39_diff ~ export_exposure1 + factor(year) + elec_lag + urban_lag + density_lag + m_educ_lag + f_educ_lag + lag(fertility_39) -1, data)
-
-reg8 <- lm(school15_f_diff ~ export_exposure1 + factor(year) + urban_lag + elec_lag + density_lag +	m_educ_lag + 	f_educ_lag + school15_m_lag -1, data)
-```
-
+# Reproductive behavior 
 
 ```{r}
-
-include_graphics("figures//regs2.png")
-
+kable(list(reg_flfp_mar, reg_flfp_fert), align = "ccc", caption = "Influence on marriage rates (left) and fertility (right)")
 ```
 
---
+- Signs as I expected, but not statistically significant.
 
-- At average value of export exposure, fertility decreases by $-0.00812$ over two decades, contributing about 1.5% to the decline in factory exposed areas.
+---
+# Human capital accumulation
 
---
+```{r}
+kable(reg_enrol, align = "ccc", caption = "Influence on schooling rates of women")
+```
 
-- Weak evidence of declining school enrollment.
-
+- Signs as I expected, but not statistically significant.
 ---
 # Conclusions
 
@@ -488,11 +466,8 @@ include_graphics("figures//regs2.png")
 
 --
 
-- However, most changes are likely driven by other factors.
+- However, most changes in reproductive and human capital likely driven by other factors.
 --
 
-- Some evidence of lower fertility among 15-39 year olds.
-
---
 
 .hi[Thank you. Suggestions and comments are very appreciated!]

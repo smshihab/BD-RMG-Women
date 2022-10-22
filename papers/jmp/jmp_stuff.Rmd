@@ -1,0 +1,544 @@
+
+# Loading packages
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Loading packages
+
+library(pacman)
+# base packages
+
+library(conflicted)
+
+p_load(readxl, units, janitor, plm, tidyverse, knitr, gridExtra, stargazer,  cowplot, ggplot2, ggrepel, gtsummary)
+
+# geo packages
+p_load(sf, sp, raster, rgdal, ggmap, rgeos) 
+
+conflict_prefer("select", "dplyr")
+conflict_prefer("filter", "dplyr")
+conflict_prefer("lag", "dplyr")
+
+options(dplyr.summarise.inform = FALSE)
+```
+
+```{r include=FALSE}
+
+# Get all data
+
+ # Loading factory data
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/factories.Rdata")
+
+matched_data_01 %>%
+  filter(!is.na(fac_type)) -> matched_data_01
+
+matched_data_09 %>%
+  filter(!is.na(fac_type)) -> matched_data_09
+
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fac_upazilas.Rdata")
+
+# change all to integers
+
+factory_upazilas %>%
+  mutate(across(-upazila, ~as.integer(.x))) -> factory_upazilas
+
+factory_upazilas <- factory_upazilas %>%
+  mutate(across(-upazila, ~as.integer(.)))
+
+ninetyone_sample <- factory_upazilas$ipum1991
+twentyone_sample <- factory_upazilas$ipum2001
+twenty11_sample <-  factory_upazilas$ipum2011
+
+load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data_cleaned_indiv.Rdata")
+
+## Geo data
+```
+
+
+# The RMG industry in Bangladesh {#rmghistory}
+
+
+```{r facgrowth, fig.cap = "Expansion of RMG factories 1978:2006", fig.align='center', out.width="70%"}
+
+all_facs <- rbind(
+  matched_data_01 %>% select(bgmea_num, date_est, fac_type),
+  matched_data_09 %>% select(bgmea_num, date_est, fac_type)) %>% unique()
+
+all_facs %>%
+  group_by(date_est) %>%
+  summarise(new = n()) %>%
+  ggplot(aes(x = date_est, y = cumsum(new))) +
+  geom_line() + 
+  labs(x = "Year", y = "Number of factories",
+  caption = "Data Source: Various BGMEA datasets") -> facgrowth
+
+ggsave("figures/facgrowth.png", plot = facgrowth, width = 7)
+
+rm("facgrowth")
+
+```
+
+```{r, knitandwoven, fig.cap = "Knit and Woven Exports Over the Years", fig.align='center', fig.height=3.5, warning=FALSE}
+
+matched_data_01 %>%
+  filter(exist91 == 1) %>%
+  group_by(fac_type) %>%
+  tally() %>%
+  left_join(matched_data_01 %>% filter(exist01 == 1) %>%
+  group_by(fac_type) %>%
+  tally(), by = "fac_type") -> knit_v_wov
+
+matched_data_09 %>%
+  filter(exist06 == 1) %>%
+  group_by(fac_type) %>%
+  tally() %>%
+  left_join(knit_v_wov, by = "fac_type") -> knit_v_wov
+
+names(knit_v_wov) <- c("fac_type", "2006", "1991", "2001")
+
+knit_v_wov <- knit_v_wov %>%
+  mutate(fac_type = as.character(fac_type)) %>%
+  mutate(fac_type = case_when(fac_type == "0" ~ "Woven",
+                              fac_type == "0.5" ~ "Mixed",
+                              fac_type == "1" ~ "knit")) %>%
+  gather(year, fac_num, -fac_type)
+  
+  
+p1 <- ggplot(knit_v_wov, aes(fill = fac_type, y=fac_num, x=year)) + 
+    geom_bar(position="fill", stat="identity") +
+  labs(x = "Year", y = "Share of RMG Factories", fill = "", 
+       caption = "Data Source: BGMEA Directory 2000-01 & 2009-110") +
+  theme(legend.position="bottom")
+
+
+export_data <- read_excel("C:/Users/smshi/Dropbox/Research/Data/BD RMG factory data/exports_bgmea.xlsx")%>%
+  select(year, knit, woven) %>%
+  pivot_longer(-year, names_to = "Type", values_to = "Exports") %>%
+  filter(year <= 2011)
+
+p2 <- ggplot(export_data, aes(x=year, y = Exports)) +
+  geom_line(aes(col = Type))+
+  labs(y = "Millions of USD", x = "Year", col = "",
+       caption = "Data Source: BGMEA (2022)") +
+  theme(legend.position="bottom")
+  
+grid.arrange(p1, p2, nrow =1) -> knitWov
+
+ggsave("figures/knitWov.png", plot = knitWov, height = 4)
+
+rm("export_data", "knit_v_wov", "knitWov", "p1", "p2")
+```
+
+## Reproductive Behavior
+
+```{r ageReproduction, fig.cap = "Age specific marriage and own children in household in sample areas", fig.align='center', fig.height=3.5}
+
+data %>%
+  filter(geo3_bd1991 %in% ninetyone_sample | geo3_bd2001 %in% twentyone_sample | geo3_bd2011 %in% twenty11_sample) %>%
+  filter(sex == 2 & age >= 10 & age <= 40) %>%
+  group_by(age, year) %>%
+  summarize(ever_married = round(100*sum(marst %in% c(2,3, 4)) / n(), digits =2)) %>%
+  ggplot(aes(x = age, y = ever_married, col = as.factor(year))) +
+  geom_line() +
+  labs(x = "Age", y = "Percent Ever Married", col = "Census Year") +
+  theme(legend.position="bottom") -> p1
+  
+data %>%
+  filter(geo3_bd1991 %in% ninetyone_sample | geo3_bd2001 %in% twentyone_sample |
+           geo3_bd2011 %in% twenty11_sample) %>%
+  filter(sex == 2 & age >= 10 & age <= 40) %>%
+  group_by(age, year) %>%
+  summarize(fert = round(mean(nchild), digits =2)) %>%
+  ggplot(aes(x = age, y = fert, col = as.factor(year))) +
+  geom_line() +
+  labs(x = "Age", y = "Nu. Own Child in HH", col = "Census Year") +
+  theme(legend.position="bottom") -> p2
+
+grid.arrange(p1, p2, nrow =1) -> marfert
+
+ggsave("figures/marfert.png", plot = marfert, height = 4.5)
+
+rm("p1", "p2", "marfert")
+```
+
+
+
+# Data {#data}
+
+## Factory and Export Data
+
+###  Summary table FAC
+```{r, summaryfactable, include=FALSE, eval=FALSE}
+
+# Factory Statistics
+
+matched_data_01 %>% 
+  select(machine, exist91, fac_type, machine) %>% as.data.frame() %>%
+  mutate(knit = case_when(fac_type == 1 ~ 1, TRUE ~0), 
+         woven = case_when(fac_type == 0 ~ 1, TRUE ~ 0)) %>% select(-fac_type) %>%
+  stargazer(type = "latex", omit.summary.stat = c("max", "min"), digits = 1,
+            covariate.labels = c("Num. of Machines", "Existed in 1991", "Knit Factory", "Woven Factory"), 
+            title = "Summary Statistics of RMG Factories in Sample", header = FALSE)
+```
+
+
+###  Size dist
+
+```{r, facsize-dist, fig.cap = "Factory Size distribution in 1991 and 2001", fig.align='center', out.width="70%", warning=FALSE}
+
+matched_data_01 %>%
+  filter(fac_type == 0) %>%
+  mutate(Year = case_when(exist91 == 1 ~ "<1992", TRUE ~"1992-01")) %>%
+  ggplot(aes(machine, pad = FALSE, colour = as.factor(Year))) +
+  stat_ecdf(geom = "step") + 
+  labs(x = "Nu. of Machines", y = "Percentage", colour = "Established on",   caption = "Woven Factories") +
+  theme(legend.position="bottom") -> p1
+
+
+matched_data_01 %>%
+  filter(fac_type == 1) %>%
+  mutate(Year = case_when(exist91 == 1 ~ "<1992", TRUE ~"1992-01")) %>%
+  ggplot(aes(machine, pad = FALSE, colour = as.factor(Year))) +
+  stat_ecdf(geom = "step") + 
+  labs(x = "Nu. of Machines", y = "Percentage", colour = "Established on",   caption = "Knit Factories") +
+  theme(legend.position="bottom") -> p2
+
+grid.arrange(p1, p2, nrow =1) -> facSizeDist
+
+ggsave("figures/facSizeDist.png", plot = facSizeDist, height = 4.5)
+
+rm("p1", "p2", "facSizeDist")
+```
+
+
+## Population census and Labor force survey
+
+
+```{r, facNOfac-census91, warning=FALSE, message=FALSE}
+
+upazilas91  <- "C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/geo3_bd1991/geo3_bd1991.shp"
+
+upazilas91 <- st_read(upazilas91, quiet = TRUE) %>%
+  st_as_sf(factory_upazilas91) %>% st_transform(3106) %>%
+  select(contains("IP")) %>%
+  clean_names() %>%
+  mutate(geo3_bd1991 = as.integer(ipum1991)) %>%
+  mutate(area = st_area(geometry) %>% drop_units()) %>%
+  as.data.frame() %>% mutate(area = area/1000000) %>% select(geo3_bd1991, area)
+
+
+data %>%
+  filter(year == 1991) %>%
+  left_join(upazilas91) %>%
+  mutate(factory = case_when(
+    geo3_bd1991 %in% ninetyone_sample ~ 1, TRUE ~ 0)) %>%
+  group_by(geo3_bd1991) %>%
+  mutate(pop = n()/0.1) %>%
+  ungroup() %>%
+  mutate(density = pop/area) %>%
+  select(geo3_bd1991, density, electric, urban, age, sex, yrschool, factory) %>%
+  group_by(geo3_bd1991) %>%
+  summarise(across(everything(), ~mean(.,na.rm=T))) %>% 
+  ungroup() -> data91 
+
+data91 %>%
+  mutate(Factory = ifelse(factory == 1, "Factory by 2006", "No Factory by 2006")) %>% select(-c(geo3_bd1991, factory)) %>%
+    tbl_summary(by= Factory,
+                statistic = list(everything() ~ "{mean} ({sd})"),
+                missing = 'no') %>%
+    add_n() %>% add_p() %>%  modify_header(label = "**Variable**") %>% # update the column header
+  bold_labels() -> table_19_FacnoFac
+
+# using the {gt} package
+as_gt(table_19_FacnoFac) %>%
+  gt::tab_header(title = "Table 2. Difference between Sub-districts with or Without Factory") %>% gt::as_latex() %>% as.character()
+```
+
+
+```{r, facCorel91, warning=FALSE, message=FALSE, eval=FALSE, include=FALSE}
+
+matched_data_01 %>%
+  left_join(factory_upazilas %>% select(ipum1991, upaz2011)) %>%
+  filter(exist91 == 1 & !is.na(machine)) %>%
+  group_by(ipum1991) %>%
+  summarise(
+    total91 = sum(machine*exist91, na.rm = T),
+    total01 = sum(machine*exist01, na.rm = T),
+    knit91 = sum(machine*exist91*fac_type, na.rm = T),
+    knit01 = sum(machine*exist01*fac_type, na.rm = T),
+    wove91 = total91 - knit91,
+    wove01 = total01 - knit01) %>% ungroup %>%
+  mutate(knit_share91 = knit91 / total91,
+         knit_share01 = knit01 / total01,
+         wove_share91 = wove91 / total91,
+         wove_share01 = wove01 / total01) %>% 
+    mutate(geo3_bd1991 = ipum1991) %>%
+    mutate_all(~replace(., is.nan(.), 0)) -> intensity
+
+data91 %>% 
+  filter(geo3_bd1991 %in% intensity$geo3_bd1991) %>%
+  left_join(intensity %>% select(geo3_bd1991, wove_share91)) %>%
+  select(-c(geo3_bd1991, factory)) -> cordata
+
+
+corstars <-function(x, method=c("pearson", "spearman"), removeTriangle=c("upper", "lower"),
+                     result=c("none", "html", "latex")){
+    #Compute correlation matrix
+    require(Hmisc)
+    x <- as.matrix(x)
+    correlation_matrix<-rcorr(x, type=method[1])
+    R <- correlation_matrix$r # Matrix of correlation coeficients
+    p <- correlation_matrix$P # Matrix of p-value 
+    
+    ## Define notions for significance levels; spacing is important.
+    mystars <- ifelse(p < .0001, "****", ifelse(p < .001, "*** ", ifelse(p < .01, "**  ", ifelse(p < .05, "*   ", "    "))))
+    
+    ## trunctuate the correlation matrix to two decimal
+    R <- format(round(cbind(rep(-1.11, ncol(x)), R), 2))[,-1]
+    
+    ## build a new matrix that includes the correlations with their apropriate stars
+    Rnew <- matrix(paste(R, mystars, sep=""), ncol=ncol(x))
+    diag(Rnew) <- paste(diag(R), " ", sep="")
+    rownames(Rnew) <- colnames(x)
+    colnames(Rnew) <- paste(colnames(x), "", sep="")
+    
+    ## remove upper triangle of correlation matrix
+    if(removeTriangle[1]=="upper"){
+      Rnew <- as.matrix(Rnew)
+      Rnew[upper.tri(Rnew, diag = TRUE)] <- ""
+      Rnew <- as.data.frame(Rnew)
+    }
+    
+    ## remove lower triangle of correlation matrix
+    else if(removeTriangle[1]=="lower"){
+      Rnew <- as.matrix(Rnew)
+      Rnew[lower.tri(Rnew, diag = TRUE)] <- ""
+      Rnew <- as.data.frame(Rnew)
+    }
+    
+    ## remove last column and return the correlation matrix
+    Rnew <- cbind(Rnew[1:length(Rnew)-1])
+    if (result[1]=="none") return(Rnew)
+    else{
+      if(result[1]=="html") print(xtable(Rnew), type="html")
+      else print(xtable(Rnew), type="latex") 
+    }
+}
+
+corstars(cordata, result="latex")
+```
+
+
+# Results {#results}
+
+
+## Factory locations and industry shares
+
+```{r, results='asis'}
+
+
+
+
+```
+
+```{r, regwork, cache=TRUE, results='asis'}
+
+# Comparing variations in knit vs woven exposure
+
+reg1 <- lm(work_outlocalgroup ~ ever_fac + rural + electricity1 + factor(year) + educ + factor(I(year-age)) + childathome +ever_fac:export_shock, data = datafr_final)
+
+covreg1         <- vcovHC(reg1, type = "HC0", cluster = "id")
+robust_sereg1    <- sqrt(diag(covreg1))
+
+# Comparing variations in knit vs woven exposure by different age groups
+
+reg2 <- lm(work_outlocalgroup ~ ever_fac + rural + electricity1 +  factor(year) + educ + factor(I(year-age)) +  childathome + ever_fac:export_shock:factor(age_group), data = datafr_final)
+
+covreg2 <- vcovHC(reg2, type = "HC0", cluster = "id")
+robust_sereg2 <- sqrt(diag(covreg2))
+
+# Closest ot HM estimation
+
+reg3 <- lm(work_outlocalgroup ~ ever_fac + rural + electricity1 + factor(year) + educ + factor(I(year-age)) + childathome + ever_fac:exposure_period, data = datafr_final)
+
+covreg3 <- vcovHC(reg3, type = "HC0", cluster = "id")
+robust_sereg3    <- sqrt(diag(covreg3))
+
+# Stargazer output
+stargazer(reg1, reg2, reg3, type = "latex", covariate.labels = c("Factory Exposed", "Factory Exposed * Export Shock", "Factory Exposed * Export Shock * Age(>35)", "Factory Exposed * Export Shock * Age(25-25)", "Factory Exposed * Export Shock * Age(<25)", "Factory Exposed * Critical Period"), dep.var.labels = c("Working in Selected Local Occupation Groups"), title = "LPM estimating impact of RMG on FLFP", omit = c("year", "electricity1", "rural", "childathome", "educ"), header = FALSE, se = list(robust_sereg1, robust_sereg2, robust_sereg3),  omit.stat = c("f", "ser"), model.numbers=FALSE)
+```
+
+
+
+```
+
+have the reg of fac loc here.
+
+## Female Labor Force Participation
+
+\@ref(Eq:Regflfp)
+
+
+## Reproductive Behavior
+
+\@ref(Eq:Regmar)
+
+
+\@ref(Eq:Regfert)
+
+
+\@ref(Eq:Regfert)
+
+
+
+
+## Human capital accumulation
+
+\@ref(Eq:RegHC)
+
+
+
+
+# Conclusion {#conclusion}
+
+\newpage
+
+# References
+
+::: {#refs}
+:::
+
+\newpage
+
+# Appendix 1: Evolution of women's work and fertility in Bangladesh {#appendix1 .unnumbered}
+
+
+```{r, flfp-graph, fig.cap = "Female Labor Force Participation in Bangladesh", fig.width = 10}
+
+flfp <- read.csv("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/flfp.csv", check.names=FALSE) %>%
+    pivot_longer(-year, names_to="country", values_to="flfp")
+
+flfp_start <- flfp %>%
+  filter(year == 1990)
+
+flfp_end <- flfp %>%
+  filter(year == 2019)
+
+ggplot(flfp, aes(x = year, y = flfp)) +
+  geom_line(aes(col = country)) +
+  geom_line(data = subset(flfp, country =="Bangladesh"), color = "red", size =1.25) +
+geom_text_repel(
+    aes(label = round(flfp,1)), data = flfp_start,
+    fontface ="plain", color = "black", size = 2
+    ) +
+  geom_text_repel(
+    aes(label = round(flfp,1)), data = flfp_end,
+    fontface ="plain", color = "black", size = 2
+    ) +
+   labs(y = "FLFP Rate (Age 15-64)", col = "Geographical Unit", caption = "Data Source: World Bank (2021)")+ theme(legend.position="bottom") -> flfP_transition
+
+ggsave("figures/flfp_transition.png", plot = flfP_transition, width = 10)
+
+rm("flfp", "flfp_start", "flfp_end", "flfP_transition")
+
+```
+
+```{r, fertility-graph, fig.cap = "Fertility in Bangladesh", echo=FALSE, fig.width = 10}
+
+fertility <- read.csv("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fertility.csv", check.names=FALSE) %>%
+    pivot_longer(-year, names_to="country", values_to="fertility")
+
+fertility_start <- fertility %>%
+  filter(year == 1971)
+
+fertility_end <- fertility %>%
+  filter(year == 2018)
+
+ggplot(fertility, aes(x = year, y = fertility)) +
+  geom_line(aes(col = country)) +
+  geom_line(data = subset(fertility, country =="Bangladesh"), color = "red", size =1.25) + geom_text_repel(
+    aes(label = round(fertility,1)), data = fertility_start,
+    fontface ="plain", color = "black", size = 2
+    ) +
+  geom_text_repel(
+    aes(label = round(fertility,1)), data = fertility_end,
+    fontface ="plain", color = "black", size = 2
+    ) +
+   labs(y = "Total Fertility Rates", col = "Geographical Units",
+        caption = "Data Source: World Bank (2021)") + theme(legend.position="bottom") -> fertility_transition
+
+ggsave("figures/fertility_transition.png", plot = fertility_transition, width = 10)
+
+rm(fertility, fertility_start, fertility_end, fertility_transition)
+```
+
+\newpage 
+
+# Appendix 2: Spread of the RMG industry in Bangladesh {#appendix2 .unnumbered}
+
+```{r, facspread, fig.cap = "Spatial spread of RMG factories in Bangladesh", cache = TRUE, results='asis', eval=FALSE, echo=FALSE}
+
+# Loading data
+
+
+# Factory Map
+
+factory_upazilas91  <- "C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/geo3_bd1991/geo3_bd1991.shp"
+
+factory_upazilas91 <- st_read(factory_upazilas91, quiet = TRUE)
+
+# Convert to Sf and transform to Mercator Gulshan
+factory_upazilas91 <- st_as_sf(factory_upazilas91) %>% st_transform(3106) %>%
+  select(ADMIN_NAME, contains("UP"), PARENT) %>%
+  clean_names() %>%
+  mutate_if(is.character,tolower)
+
+# Bangladesh zones 0 - country map, 1 - div, 2- district, 3-sub-district, 4 - smaller
+geo_bd0 <- "C:/Users/smshi/Dropbox/University of Oregon/Research/Bangladesh FLFPR/Data/Bd admin and roads/bgd_adm_bbs_20201113_shp/bgd_admbnda_adm0_bbs_20201113.shp"
+
+bd_map0 <- st_read(geo_bd0, quiet = TRUE)
+bd_map0 <- bd_map0 %>% st_transform(3106)
+
+p1 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=1999), color = "black") +
+  geom_sf(data = filter(factory, date_est>1999 & date_est<=2000), color = "red") +
+  theme_map() + labs(title="Factories betwen 99-00")
+
+p2 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=2000), color = "black") +
+  geom_sf(data = filter(factory, date_est > 2000 & date_est <= 2004), color = "red")+
+  theme_map() + labs(title="Factories betwen 00-04")
+
+p3 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=2004), color = "black") +
+  geom_sf(data = filter(factory, date_est > 2004 & date_est <= 2007), color = "red")+
+  theme_map() + labs(title="Factories betwen 04-07")
+
+p4 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=2007), color = "black") +
+  geom_sf(data = filter(factory, date_est > 2007 & date_est <= 2011), color = "red")+
+  theme_map() + labs(title="Factories betwen 07-11")
+
+p5 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=2011), color = "black") +
+  geom_sf(data = filter(factory, date_est > 2011 & date_est <= 2014), color = "red")+
+  theme_map()+labs(title="Factories betwen 11-14")
+
+p6 <- ggplot(bd_map0) +
+  geom_sf() +
+  geom_sf(data = filter(factory, date_est<=2014), color = "black") +
+  geom_sf(data = filter(factory, date_est > 2014 & date_est <= 2018), color = "red")+
+  theme_map() + labs(title="Factories betwen 14-18")
+
+grid.arrange(p1, p2, p3, p4, p5, p6, nrow =3)
+```
+
+\newpage
+
+# Appendix 3: Summary Statistics of Outcomes, Census 2001 {#appendix3 .unnumbered}

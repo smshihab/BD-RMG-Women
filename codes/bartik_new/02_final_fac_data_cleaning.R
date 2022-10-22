@@ -20,7 +20,6 @@ matched_data_09 <- read.csv("~/large_datasets/BD Garments/03_all_matched_data_09
   mutate_if(is.character,tolower) %>%
   select(-c(name, fac_ad, product_type))
 
-
 # Upazilas in 2011
 
 upazilas11  <- "C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/geo3_bd2011/geo3_bd2011.shp"

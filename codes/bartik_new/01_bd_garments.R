@@ -182,6 +182,9 @@ manually_matched_BGMEA_01 %>%
 
 all_matched_data_01 <- rbind(manually_matched_BGMEA_01, match_01)
 
+all_matched_data_01 %>%
+  mutate(machine_pred = case_when(is.na(machine) ~ 1, TRUE ~ 0)) -> all_matched_data_01
+
 # Assigning missing machines to be their mean values
 
 all_matched_data_01$machine[is.na(all_matched_data_01$machine)] <- mean(all_matched_data_01$machine, na.rm=T)
@@ -211,7 +214,8 @@ has_date %>%
                                   TRUE ~ 0),
          exist01_pred = case_when(predicted_year <2002 ~ 1,
                                   TRUE ~ 0)) -> has_date
-#(sum(abs(has_date$exist91 - has_date$exist91_pred)) + sum(abs(has_date$exist00 - has_date$exist00_pred))) / (2*2161)
+
+#(sum(abs(has_date$exist91 - has_date$exist91_pred)) + sum(abs(has_date$exist01 - has_date$exist01_pred))) / (2*2159)
 
 # providing the predicted values to those that do not have date of establishment
 
@@ -223,9 +227,11 @@ has_no_date %>%
   mutate(exist91 = case_when(date_est <1992 ~ 1,
                              TRUE ~ 0),
          exist01 = case_when(date_est <2002 ~ 1,
-                             TRUE ~ 0)) -> has_no_date
+                             TRUE ~ 0)) %>%
+  mutate(predicted_date = 1) -> has_no_date
 
 has_date %>% select(-c(predicted_year, exist91_pred, exist01_pred)) %>%
+  mutate(predicted_date = 0) %>%
   rbind(has_no_date) -> all_matched_data_01
 
 
@@ -249,6 +255,9 @@ matches_09 <- inner_join(bgmea_09 %>% rename(machine09 = machine),
 
 # Assigning 2009 machines to be their mean values
 
+matches_09 %>% mutate(machine_pred = case_when(is.na(machine) ~ 1,
+                                                 TRUE ~ 0)) -> matches_09
+
 matches_09$machine09[is.na(matches_09$machine09)] <- mean(matches_09$machine09, na.rm=T)
 
 # machine in 2006 is the average between 2001 and 2009
@@ -267,16 +276,18 @@ non_matches_09 <- anti_join(bgmea_09, bgmea_01, by = "bgmea_num")
 match_09_21 <- inner_join(non_matches_09, bgmea_21 %>% select(-name), by = "bgmea_num")
 
 match_09_21 %>%
-  mutate(upazila = NA,
-         exist06 = case_when(date_est <= 2006 ~ 1,
-                      TRUE ~ 0)) -> match_09_21
+  mutate(upazila = NA, predicted_date = 0,
+         machine_pred = case_when(is.na(machine) ~ 1, TRUE ~ 0),
+         exist06 = case_when(date_est <= 2006 ~ 1, TRUE ~ 0))  -> match_09_21
+
+# mean machine for missing machine
+match_09_21$machine[is.na(match_09_21$machine)] <- mean(match_09_21$machine, na.rm=T)
 
 # Combining the BGMEA 2009-10 matches so far
 all_matched_data_09 <- rbind(matches_09, match_09_21)
 
 # Separating the BGMEA 2009-10 matches so far
 non_matches_09 <- anti_join(non_matches_09,all_matched_data_09, by = "bgmea_num")
-
 
 # Estimating the date of establishment and will work only with those that were likely to exist in 2006
 
@@ -296,14 +307,13 @@ manually_matched_BGMEA_09 <- read.csv("~/large_datasets/BD Garments/02_manually_
 
 manually_matched_BGMEA_09 %>%
   filter(upazila != "") %>%
-  mutate(exist06 = 1, Latitude = NA, Longitude = NA, fac_ad = NA) -> manually_matched_BGMEA_09
-
+  mutate(exist06 = 1, Latitude = NA, Longitude = NA, fac_ad = NA,
+         predicted_date = 1,
+         machine_pred = case_when(is.na(machine) ~ 1, 
+                                    TRUE ~0)) -> manually_matched_BGMEA_09
 # Bind the relevant 2009-10 data
 
 all_matched_data_09 <- rbind(all_matched_data_09, manually_matched_BGMEA_09)
-
-# mean machine for missing machine
-all_matched_data_09$machine[is.na(all_matched_data_09$machine)] <- mean(all_matched_data_09$machine, na.rm=T)
 
 rm(list = setdiff(ls(), c("all_matched_data_01", "all_matched_data_09")))
 
@@ -317,11 +327,13 @@ all_matched_data_09 %>%
 
 anti_join(matching09, matching01, by = "bgmea_num") -> matching09
 
-
-all_matched_data_01 <- rbind(matching09 %>% select(-exist06) %>%
+all_matched_data_01 <- rbind(matching09 %>% select(-c(exist06)) %>%
                                mutate(exist91 = 0, exist01 = 1),
                              all_matched_data_01)
 
+#all_matched_data_01 %>% select(-predicted_date) -> all_matched_data_01
+
+#all_matched_data_09 %>% select(-c(predicted_date, machine09_pred)) -> all_matched_data_09
 
 ########## manually correct the exported files fac_types ##########
 ########## manually correct the exported files fac_types ##########
