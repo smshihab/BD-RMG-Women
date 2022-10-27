@@ -337,7 +337,9 @@ corstars(cordata, result="latex")
 
 ```{r, results='asis'}
 
-
+lm(has_fac ~ electrification + urban_share + density_1564 + yrschool + factor(year), data_fac_loc %>%
+     filter(year <2011)) %>% 
+  summary()
 
 
 ```
