@@ -1,5 +1,5 @@
 
-# Loading packages
+# Loading packages and data
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -8,7 +8,6 @@ knitr::opts_chunk$set(echo = FALSE)
 
 library(pacman)
 # base packages
-
 library(conflicted)
 
 p_load(readxl, units, janitor, plm, tidyverse, knitr, gridExtra, stargazer,  cowplot, ggplot2, ggrepel, gtsummary)
@@ -16,10 +15,7 @@ p_load(readxl, units, janitor, plm, tidyverse, knitr, gridExtra, stargazer,  cow
 # geo packages
 p_load(sf, sp, raster, rgdal, ggmap, rgeos) 
 
-conflict_prefer("select", "dplyr")
-conflict_prefer("filter", "dplyr")
-conflict_prefer("lag", "dplyr")
-
+conflict_prefer_all("dplyr")
 options(dplyr.summarise.inform = FALSE)
 ```
 
@@ -50,9 +46,9 @@ ninetyone_sample <- factory_upazilas$ipum1991
 twentyone_sample <- factory_upazilas$ipum2001
 twenty11_sample <-  factory_upazilas$ipum2011
 
-load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data_cleaned_indiv.Rdata")
+# Individual data
 
-## Geo data
+load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data_cleaned_indiv.Rdata")
 ```
 
 
@@ -73,10 +69,9 @@ all_facs %>%
   labs(x = "Year", y = "Number of factories",
   caption = "Data Source: Various BGMEA datasets") -> facgrowth
 
-ggsave("figures/facgrowth.png", plot = facgrowth, width = 7)
+#ggsave("figures/facgrowth.png", plot = facgrowth, width = 7)
 
-rm("facgrowth")
-
+rm("facgrowth", "all_facs")
 ```
 
 ```{r, knitandwoven, fig.cap = "Knit and Woven Exports Over the Years", fig.align='center', fig.height=3.5, warning=FALSE}
@@ -125,7 +120,7 @@ p2 <- ggplot(export_data, aes(x=year, y = Exports)) +
   
 grid.arrange(p1, p2, nrow =1) -> knitWov
 
-ggsave("figures/knitWov.png", plot = knitWov, height = 4)
+#ggsave("figures/knitWov.png", plot = knitWov, height = 4)
 
 rm("export_data", "knit_v_wov", "knitWov", "p1", "p2")
 ```
@@ -157,11 +152,10 @@ data %>%
 
 grid.arrange(p1, p2, nrow =1) -> marfert
 
-ggsave("figures/marfert.png", plot = marfert, height = 4.5)
+#ggsave("figures/marfert.png", plot = marfert, height = 4.5)
 
 rm("p1", "p2", "marfert")
 ```
-
 
 
 # Data {#data}
@@ -206,7 +200,7 @@ matched_data_01 %>%
 
 grid.arrange(p1, p2, nrow =1) -> facSizeDist
 
-ggsave("figures/facSizeDist.png", plot = facSizeDist, height = 4.5)
+#ggsave("figures/facSizeDist.png", plot = facSizeDist, height = 4.5)
 
 rm("p1", "p2", "facSizeDist")
 ```
@@ -332,77 +326,181 @@ corstars(cordata, result="latex")
 
 # Results {#results}
 
-
 ## Factory locations and industry shares
 
 ```{r, results='asis'}
 
-lm(has_fac ~ electrification + urban_share + density_1564 + yrschool + factor(year), data_fac_loc %>%
-     filter(year <2011)) %>% 
-  summary()
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fac_location_result1.RData")
 
+reg1 <- lm(has_fac ~ electrification + urban_share + density_1564 + yrschool + factor(year), data_fac_loc_standardized)
 
-```
+reg2 <- lm(has_fac ~ electrification + urban_share + yrschool + factor(year), data_fac_loc_standardized)
 
-```{r, regwork, cache=TRUE, results='asis'}
-
-# Comparing variations in knit vs woven exposure
-
-reg1 <- lm(work_outlocalgroup ~ ever_fac + rural + electricity1 + factor(year) + educ + factor(I(year-age)) + childathome +ever_fac:export_shock, data = datafr_final)
-
-covreg1         <- vcovHC(reg1, type = "HC0", cluster = "id")
-robust_sereg1    <- sqrt(diag(covreg1))
-
-# Comparing variations in knit vs woven exposure by different age groups
-
-reg2 <- lm(work_outlocalgroup ~ ever_fac + rural + electricity1 +  factor(year) + educ + factor(I(year-age)) +  childathome + ever_fac:export_shock:factor(age_group), data = datafr_final)
-
-covreg2 <- vcovHC(reg2, type = "HC0", cluster = "id")
-robust_sereg2 <- sqrt(diag(covreg2))
-
-# Closest ot HM estimation
-
-reg3 <- lm(work_outlocalgroup ~ ever_fac + rural + electricity1 + factor(year) + educ + factor(I(year-age)) + childathome + ever_fac:exposure_period, data = datafr_final)
-
-covreg3 <- vcovHC(reg3, type = "HC0", cluster = "id")
-robust_sereg3    <- sqrt(diag(covreg3))
 
 # Stargazer output
-stargazer(reg1, reg2, reg3, type = "latex", covariate.labels = c("Factory Exposed", "Factory Exposed * Export Shock", "Factory Exposed * Export Shock * Age(>35)", "Factory Exposed * Export Shock * Age(25-25)", "Factory Exposed * Export Shock * Age(<25)", "Factory Exposed * Critical Period"), dep.var.labels = c("Working in Selected Local Occupation Groups"), title = "LPM estimating impact of RMG on FLFP", omit = c("year", "electricity1", "rural", "childathome", "educ"), header = FALSE, se = list(robust_sereg1, robust_sereg2, robust_sereg3),  omit.stat = c("f", "ser"), model.numbers=FALSE)
+stargazer(reg1, reg2, type = "latex", digits = 2, 
+          covariate.labels = c("Electrification Rate", "Urbanization Rate", "Density (Age 15-64)", "Yrs. of Schooling"),
+          dep.var.labels = c("Has Factory by 2006"), 
+          title = "LPM Estimating Whether a Sub-district Has Factory by 2006", 
+          omit = c("year"), omit.stat = c("f", "ser"), no.space=TRUE, header = FALSE)
+
+rm(reg1, reg2, data_fac_loc_standardized)
 ```
 
 
+```{r, results='asis'}
 
+# knit shares
+reg_knit91 <- lm(dplyr::lag(knit_share) ~
+                   diff_electrification + diff_urban_share + diff_pop_1564 + diff_m_ind + diff_m_schooling, 
+                 data_share_reg %>% filter(year %in% c(1991, 2001)))
+
+reg_knit01 <- lm(dplyr::lag(knit_share) ~
+                   diff_electrification + diff_urban_share + diff_pop_1564 + diff_m_ind + diff_m_schooling, 
+                 data_share_reg %>% filter(year %in% c(2001, 2011)))
+
+
+# Wove shares
+reg_woven91 <- lm(dplyr::lag(woven_share) ~
+                   diff_electrification + diff_urban_share + diff_pop_1564 + diff_m_ind + diff_m_schooling, 
+                 data_share_reg %>% filter(year %in% c(1991, 2001)))
+
+reg_woven01 <- lm(dplyr::lag(woven_share) ~
+                   diff_electrification + diff_urban_share + diff_pop_1564 + diff_m_ind + diff_m_schooling, 
+                 data_share_reg %>% filter(year %in% c(2001, 2011)))
+
+# Stargazer output
+
+stargazer(reg_knit91, reg_woven91, reg_knit01, reg_woven01, type = "latex", digits = 2, column.sep.width = "-10pt",
+          covariate.labels = c("$\\Delta$ Electrification Rate", "$\\Delta$ Urbanization Rate", "$\\Delta$ Pop (Age 15-64)", "$\\Delta$ \text{Male Ind LFP}", "$\\Delta$ \text{Male Schooling (<15)}"),
+          dep.var.labels = c("$\\alpha_{k}$ 91", "$\\alpha_{W}$ 91", "$\\alpha_{k}$ 01", "$\\alpha_{W}$ 01"), 
+          title = "$\\alpha_{k}$ and $\\alpha_{W}$ and Changes in Sub-district Charecteristics", 
+          omit = c("year"), omit.stat = c("f", "ser"), no.space=TRUE, header = FALSE)
+
+
+rm(reg_knit91, reg_woven91, reg_knit01, reg_woven01, data_fac_loc_standardized)
 ```
 
-have the reg of fac loc here.
 
-## Female Labor Force Participation
+```{r, regwork_flfp, cache=TRUE, results='asis'}
 
-\@ref(Eq:Regflfp)
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/final_data.RData")
 
+reg_flfp1564 <- lm(100*dif_f_lfp1564 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density +
+    + lag_age_1564_pop + lag_m_lfp1564 -1, data)
 
-## Reproductive Behavior
+reg_flfp1529 <- lm(100*dif_f_lfp1529 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density +
+    + lag_age_1564_pop + lag_m_lfp1529 -1, data)
 
-\@ref(Eq:Regmar)
-
-
-\@ref(Eq:Regfert)
-
-
-\@ref(Eq:Regfert)
-
-
-
-
-## Human capital accumulation
-
-\@ref(Eq:RegHC)
+reg_flfp1520 <- lm(100*dif_f_lfp1520 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density +
+    + lag_age_1564_pop + lag_m_lfp1520 -1, data)
 
 
+reg_flfp1564_ind <- lm(100*dif_f_lfp_ind1564 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density +
+    + lag_age_1564_pop + lag_m_lfp_ind1564 -1, data)
+
+reg_flfp1529_ind <- lm(100*dif_f_lfp_ind_1529 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density +
+    + lag_age_1564_pop + lag_m_lfp_ind1529 -1, data)
+
+reg_flfp1520_ind <- lm(100*dif_f_lfp_ind1520 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density +
+    + lag_age_1564_pop + lag_m_lfp_ind1520 -1, data)
 
 
-# Conclusion {#conclusion}
+stargazer(reg_flfp1564, reg_flfp1564_ind, reg_flfp1529, reg_flfp1529_ind,
+          reg_flfp1520, reg_flfp1520_ind, type = "latex", digits = 2, 
+          column.labels = c("FLFP", "FLFP-Ind", "FLFP", "FLFP-Ind", "FLFP", "FLFP-Ind"),
+          covariate.labels = c("$\\Delta$ Export Exposure", "Electrification Rate", "Urbanization Rate", "Yrs. School (15-64, M)", "Yrs. School (15-64, F)", "Density", "Pop (15-64)", "$Y_{s,t-1}^{M}$"),
+          dep.var.labels = c(" Ages 15-64", "Ages 15-29", "Ages 15-20"), 
+          title = "Export Exposure and Female Labor Force Participation", 
+          omit = c("year", "Constant"), omit.stat = c("f", "ser"), no.space=TRUE, header = FALSE)
+```
+
+
+```{r, regwork_marFert, cache=TRUE, results='asis'}
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/final_data.RData")
+
+reg_mar1520 <- lm(100*dif_married_1520 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density -1, data)
+
+reg_mar2130 <- lm(100*dif_married_2130 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density -1, data)
+
+reg_fert1520 <- lm(100*dif_fertility_1520 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density -1, data)
+
+reg_fert2130 <- lm(100*dif_fertility_2130 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density -1, data)
+
+reg_fert3040 <- lm(100*dif_fertility_3040 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density -1, data)
+
+
+
+
+stargazer(reg_mar1520, reg_mar2130, reg_fert1520, reg_fert2130,
+          reg_fert3040, type = "text", digits = 2, 
+          dep.var.labels = c("Marriage Rate", "Fertility"),
+          covariate.labels = c("$\\Delta$ Export Exposure", "Electrification Rate", "Urbanization Rate", "Yrs. School (15-64, M)", "Yrs. School (15-64, F)", "Density"),
+          column.labels = c("Ages 15-20", "Ages 21-30", "Ages 15-20", "Ages 21-30", "Ages 30-40"), 
+          title = "Export Exposure and Marriage and Age specific Fertility", 
+          omit = c("year", "Constant"), omit.stat = c("f", "ser"), no.space=TRUE, header = FALSE)
+```
+
+
+```{r, regwork_educ, cache=TRUE, results='asis'}
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/final_data.RData")
+
+reg_enrol0509 <- lm(100*dif_f_enrollment_0509 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density + I(100*lag_m_enrollment_0509) -1, data)
+
+reg_enrol1013 <- lm(100*dif_f_enrollment_1013 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density + I(100*lag_m_enrollment_1013) -1, data)
+
+reg_enrol1419 <- lm(100*dif_f_enrollment_1419 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density + I(100*lag_m_enrollment_1419) -1, data)
+
+
+
+reg_lit1419 <- lm(100*dif_f_literacy_1419 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density + I(100*lag_m_literacy_1419) -1, data)
+
+reg_yrs1419 <- lm(dif_f_yrschool_1419 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density + lag_m_yrschool_1419
+-1, data)
+
+
+stargazer(reg_enrol0509, reg_enrol1013, reg_enrol1419, reg_lit1419,
+          reg_yrs1419, type = "text", digits = 2, 
+          dep.var.labels = c("Enrollment Rate", "Literacy", "Yrs. School"),
+          covariate.labels = c("$\\Delta$ Export Exposure", "Electrification Rate", "Urbanization Rate", "Yrs. School (15-64, M)", "Yrs. School (15-64, F)", "Density", "$Y_{s,t-1}^{M}$"),
+          column.labels = c("Ages 05-09", "Ages 10-13", "Ages 14-19", "Ages 14-19", "Ages 14-19"), 
+          title = "Export Exposure and Human Capital Accumulation", 
+          omit = c("year", "Constant"), omit.stat = c("f", "ser"), no.space=TRUE, header = FALSE)
+```
+
+
 
 \newpage
 

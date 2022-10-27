@@ -143,13 +143,15 @@ data %>%
 data %>%
   group_by(ipum1991, year, sex, groups_lfp1564) %>%
   summarise(lfp = sum(labforce %in% c(2))/ n(),
-            lfp_ind = sum(lfp_ind == 1) / n()) %>%
+            lfp_ind = sum(lfp_ind == 1) / n(),
+            yrschool1564 = mean(yrschool[yrschool < 50])) %>%
   filter(!is.na(groups_lfp1564)) %>% ungroup() -> lfp_1564
   
 
 lfp_1564 %>% 
-  pivot_wider(names_from = sex, values_from = c("lfp", "lfp_ind")) %>%
-  rename(m_lfp1564 = lfp_1, f_lfp1564 = lfp_2, m_lfp_ind1564 =  lfp_ind_1,
+  pivot_wider(names_from = sex, values_from = c("lfp", "lfp_ind", "yrschool1564")) %>%
+  rename(m_yrschool1564 = yrschool1564_1, f_yrschool1564 = yrschool1564_2,
+    m_lfp1564 = lfp_1, f_lfp1564 = lfp_2, m_lfp_ind1564 =  lfp_ind_1,
          f_lfp_ind1564 = lfp_ind_2) %>% select(-groups_lfp1564) -> lfp_1564
 
 # 15 - 29 year olds
@@ -225,7 +227,7 @@ lfp_data <-   left_join(lfp_1520, lfp_1529, by = c("ipum1991", "year")) %>%
 
 rm("lfp_1520", "lfp_1529", "lfp_1564")
 
-lfp_data %>% mutate(ipum1991 = as.integer(ipum1991))
+lfp_data %>% mutate(ipum1991 = as.integer(ipum1991)) -> lfp_data
 
 # add HC
 upazila_data <- left_join(lfp_data, human_cap)
@@ -243,12 +245,23 @@ upazila_data <- left_join(upazila_data, ever_married)
 
 upazila_data <- remove_labels(upazila_data)
 
-factory_upazilas %>%
-  group_by(ipum1991) %>%
-  summarise(area91 = mean(area91)) -> factory_upazilas
 
-upazila_data <- left_join(upazila_data,
-                          factory_upazilas %>%
-                            select(area91, ipum1991))
+# 1991 dataset for area
+
+upazilas91  <- "C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/geo3_bd1991/geo3_bd1991.shp"
+
+upazilas91 <- st_read(upazilas91, quiet = TRUE)
+
+# Convert to Sf and transform to Mercator Gulshan
+upazilas91 <- st_as_sf(upazilas91) %>% st_transform(3106) %>%
+  select(contains("IP")) %>%
+  clean_names() %>%
+  mutate_if(is.character,as.integer) %>%
+  mutate(area91 = st_area(geometry) %>% drop_units(),
+         area91 = area91 / 1000^2) %>%
+  as.data.frame() %>% select(-geometry)
+
+
+upazila_data <- left_join(upazila_data, upazilas91)
 
 save(upazila_data, file = "C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/upazila_data.RData")
