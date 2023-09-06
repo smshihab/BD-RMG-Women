@@ -1,16 +1,17 @@
 ---
-title: "Ready Made Garments, Reproductive Behavior and Human Capital among  Bangladeshi Women"
-subtitle: "SM Shihab Siddiqui"
-author: "`r format(Sys.time(), '%d %B, %Y')`"
+title: "Garment Manufacturing and Women’s Work, Reproduction, and Human Capital Accumulation"
+subtitle: "SM Shihab Siddiqui, University of Oregon"
+author: "University of Oregon"
+date: "`r format(Sys.time(), '%B, %Y')`"
 output:
   xaringan::moon_reader:
-    css: ['default', 'metropolis', 'metropolis-fonts', 'my-css.css']
+    lib_dir: libs
+    css: ['default', 'metropolis', 'metropolis-fonts']
     self_contained: true
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-knit: pagedown::chrome_print
 ---
 
 ```{r setup, include=FALSE}
@@ -132,9 +133,9 @@ read.csv("bgmea.csv") %>%
 ]
 
 ---
-# Could there be a connection?
+# Garments and FLFP
 
-## FLFP
+## A long history
 
 - Textile and affiliated industry always employed relatively more women across different time and place.
 
@@ -151,11 +152,11 @@ read.csv("bgmea.csv") %>%
   - Did this "kick" off an overall FLFP transition in lines of Fogli and Veldkamp (2011)?
 
 ---
-# Could there be a connection?
+# FLFP, Reproduction and HCA
 
 ## Reproductive behavior
 
-- Labor market opportunitieschanges net benefits of marriage and children *(e.g. Aaronson et al 2014; Greenwood et al 2017).*
+- Labor market opportunities changes net benefits of marriage and children *(e.g. Aaronson et al 2014; Greenwood et al 2017).*
 
 --
 
@@ -191,20 +192,6 @@ read.csv("bgmea.csv") %>%
     - A question about sign and magnitude.
 
 ---
-# Why do we care?
-
-1. Adds to the literature on manufacturing- and export-led growth. Especially relevant since:
-
---
-  - General concerns with pre-mature industrialization (Rodrik, 2015)
-  
-  - Reductions in prevalence of women in RMG industry in Bangladesh <footnote>A [Along the lines of what happens as technology improves in a manufacturing sector (Tejani and Kucera, 2021).</footnote>
-
---
-
-2. Adds to the literature focusing on trade and lives of workers (Autor et al (2013), Li (2018) and Autor et al (2019)).
-
----
 # Preview of the paper
 
 ## Methods
@@ -229,7 +216,19 @@ read.csv("bgmea.csv") %>%
 
 -- Results can be rationalized with previous literature under plausible assumptions.
 
+---
+# Why do we care?
 
+1. Adds to the literature on manufacturing- and export-led growth. Especially relevant since:
+
+--
+  - General concerns with pre-mature industrialization (Rodrik, 2015)
+  
+  - Reductions in prevalence of women in RMG industry in Bangladesh <footnote>A [Along the lines of what happens as technology improves in a manufacturing sector (Tejani and Kucera, 2021).</footnote>
+
+--
+
+2. Adds to the literature focusing on trade and lives of workers (Autor et al (2013), Li (2018) and Autor et al (2019)).
 
 ---
 

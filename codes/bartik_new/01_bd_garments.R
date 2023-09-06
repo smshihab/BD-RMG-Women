@@ -25,12 +25,6 @@ bgmea_13 <- read_excel("~/large_datasets/BD Garments/00_bgmea_factory_data_final
   select(name, date_est, fac_type, fac_ad, Latitude, Longitude, upazila)
 
 
-# Loading the NYU
-
-bgmea_NYU <- read.csv("~/large_datasets/BD Garments/00_bangladesh_factory_list_NYU.csv") %>%
-  mutate_if(is.character, ~tolower(.)) %>%
-  filter(str_detect(member_of, "bgmea") | str_detect(member_of_stated, "bgmea") | str_detect(source, "bgmea"))
-  
 # Loading the latest BGMEA file
 
 bgmea_21 <- read.csv("C:/Users/smshi/Dropbox/Research/Data/BD RMG factory data/BGMEA Scrape/facdata.csv") %>%

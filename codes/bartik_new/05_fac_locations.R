@@ -84,6 +84,12 @@ upazilas %>% mutate(across(everything(), ~as.integer(.))) -> upazilas
 
 load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/data_cleaned_indiv.Rdata")
 
+data %>%
+  filter(sex == 2 & age >= 15 & age <= 64) %>%
+  group_by(year) %>%
+  summarise(flfp = mean(labforce),
+            ind = sum(ind == 2) / n())
+
 # creating a common 1991 variable to group by
 data %>%
   filter(year == 1991) -> data1991
@@ -196,12 +202,17 @@ data_fac_loc %>%
 rm("has_fac91", "has_fac01")
 
 data_fac_loc %>%
-  mutate(has_fac = pmax(has_fac91, has_fac01)) -> data_fac_loc
+  mutate(has_fac_by01 = pmax(has_fac91, has_fac01)) -> data_fac_loc
+
+factory_upazilas$ipum1991 %>% unique() -> fac2006
+
+data_fac_loc %>%
+  mutate(has_fac_by06 = ifelse(ipum1991 %in% fac2006, 1, 0)) -> data_fac_loc
 
 data_fac_loc %>%
   filter(year < 2011 & !is.na(ipum1991)) %>%
-  select(year, has_fac, has_fac91, has_fac01, electrification, urban_share, density, density_1564, yrschool) %>%
-  mutate(across(!c(year, has_fac, has_fac91, has_fac01), ~(. - mean(.))/sd(.))) -> 
+  select(year, has_fac_by06, has_fac_by01, has_fac91, has_fac01, electrification, urban_share, density, density_1564, yrschool) %>%
+  mutate(across(!c(year, has_fac_by06, has_fac_by01, has_fac91, has_fac01), ~(. - mean(.))/sd(.))) -> 
   data_fac_loc_standardized
 
 data_fac_loc %>%
@@ -214,7 +225,7 @@ load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/shift_shares.RData")
 left_join(data_share_reg, autor_shares, by =c("ipum1991", "year")) -> data_share_reg
 
 data_share_reg %>%
-  filter(has_fac == 1) -> data_share_reg
+  filter(has_fac_by01 == 1) -> data_share_reg
 
 save(list = c("data_share_reg", "data_fac_loc_standardized"),
      file = "C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fac_location_result1.RData")

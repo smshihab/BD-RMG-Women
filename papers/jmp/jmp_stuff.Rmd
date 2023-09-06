@@ -55,7 +55,7 @@ load("C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS
 # The RMG industry in Bangladesh {#rmghistory}
 
 
-```{r facgrowth, fig.cap = "Expansion of RMG factories 1978:2006", fig.align='center', out.width="70%"}
+```{r facgrowth, fig.cap = "Expansion of RMG factories 1978:2006", fig.align='center'}
 
 all_facs <- rbind(
   matched_data_01 %>% select(bgmea_num, date_est, fac_type),
@@ -69,12 +69,12 @@ all_facs %>%
   labs(x = "Year", y = "Number of factories",
   caption = "Data Source: Various BGMEA datasets") -> facgrowth
 
-#ggsave("figures/facgrowth.png", plot = facgrowth, width = 7)
+ggsave("figures/facgrowth.png", plot = facgrowth, dpi = 600)
 
 rm("facgrowth", "all_facs")
 ```
 
-```{r, knitandwoven, fig.cap = "Knit and Woven Exports Over the Years", fig.align='center', fig.height=3.5, warning=FALSE}
+```{r, knitandwoven, fig.cap = "Knit and Woven Exports Over the Years", fig.align='center' warning=FALSE}
 
 matched_data_01 %>%
   filter(exist91 == 1) %>%
@@ -120,20 +120,20 @@ p2 <- ggplot(export_data, aes(x=year, y = Exports)) +
   
 grid.arrange(p1, p2, nrow =1) -> knitWov
 
-#ggsave("figures/knitWov.png", plot = knitWov, height = 4)
+ggsave("figures/knitWov.png", plot = knitWov, dpi = 600)
 
 rm("export_data", "knit_v_wov", "knitWov", "p1", "p2")
 ```
 
 ## Reproductive Behavior
 
-```{r ageReproduction, fig.cap = "Age specific marriage and own children in household in sample areas", fig.align='center', fig.height=3.5}
+```{r ageReproduction, fig.cap = "Age specific marriage and own children in household in sample areas", fig.align='center'}
 
 data %>%
   filter(geo3_bd1991 %in% ninetyone_sample | geo3_bd2001 %in% twentyone_sample | geo3_bd2011 %in% twenty11_sample) %>%
   filter(sex == 2 & age >= 10 & age <= 40) %>%
   group_by(age, year) %>%
-  summarize(ever_married = round(100*sum(marst %in% c(2,3, 4)) / n(), digits =2)) %>%
+  summarize(ever_married = round(100*sum(marst %in% c(2,3,4)) / n(), digits =2)) %>%
   ggplot(aes(x = age, y = ever_married, col = as.factor(year))) +
   geom_line() +
   labs(x = "Age", y = "Percent Ever Married", col = "Census Year") +
@@ -152,7 +152,7 @@ data %>%
 
 grid.arrange(p1, p2, nrow =1) -> marfert
 
-#ggsave("figures/marfert.png", plot = marfert, height = 4.5)
+ggsave("figures/marfert.png", plot = marfert, dpi = 600)
 
 rm("p1", "p2", "marfert")
 ```
@@ -179,7 +179,7 @@ matched_data_01 %>%
 
 ###  Size dist
 
-```{r, facsize-dist, fig.cap = "Factory Size distribution in 1991 and 2001", fig.align='center', out.width="70%", warning=FALSE}
+```{r, facsize-dist, fig.cap = "Factory Size distribution in 1991 and 2001", fig.align='center', warning=FALSE}
 
 matched_data_01 %>%
   filter(fac_type == 0) %>%
@@ -200,7 +200,7 @@ matched_data_01 %>%
 
 grid.arrange(p1, p2, nrow =1) -> facSizeDist
 
-#ggsave("figures/facSizeDist.png", plot = facSizeDist, height = 4.5)
+ggsave("figures/facSizeDist.png", plot = facSizeDist, dpi = 600)
 
 rm("p1", "p2", "facSizeDist")
 ```
@@ -332,16 +332,20 @@ corstars(cordata, result="latex")
 
 load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fac_location_result1.RData")
 
-reg1 <- lm(has_fac ~ electrification + urban_share + density_1564 + yrschool + factor(year), data_fac_loc_standardized)
+reg91 <- lm(has_fac91 ~ electrification + urban_share + density_1564 + yrschool, data_fac_loc_standardized %>% filter(year == 1991))
 
-reg2 <- lm(has_fac ~ electrification + urban_share + yrschool + factor(year), data_fac_loc_standardized)
+reg91_nodensity <- lm(has_fac91 ~ electrification + urban_share + yrschool, data_fac_loc_standardized %>% filter(year == 1991))
+
+reg01 <- lm(has_fac01 ~ electrification + urban_share + density_1564 + yrschool, data_fac_loc_standardized %>% filter(year == 2001))
+
+reg01_nodensity <- lm(has_fac01 ~ electrification + urban_share + yrschool, data_fac_loc_standardized %>% filter(year == 2001))
 
 
 # Stargazer output
-stargazer(reg1, reg2, type = "latex", digits = 2, 
+stargazer(reg91, reg91_nodensity, reg01, reg01_nodensity, type = "latex", digits = 2, 
           covariate.labels = c("Electrification Rate", "Urbanization Rate", "Density (Age 15-64)", "Yrs. of Schooling"),
-          dep.var.labels = c("Has Factory by 2006"), 
-          title = "LPM Estimating Whether a Sub-district Has Factory by 2006", 
+          dep.var.labels = c("Has Factory by 1991 = 1", "Has Factory by 2001 = 1"),
+          title = "LPM Estimating Whether a Sub-district Has Factory", 
           omit = c("year"), omit.stat = c("f", "ser"), no.space=TRUE, header = FALSE)
 
 rm(reg1, reg2, data_fac_loc_standardized)
@@ -514,7 +518,7 @@ stargazer(reg_enrol0509, reg_enrol1013, reg_enrol1419, reg_lit1419,
 # Appendix 1: Evolution of women's work and fertility in Bangladesh {#appendix1 .unnumbered}
 
 
-```{r, flfp-graph, fig.cap = "Female Labor Force Participation in Bangladesh", fig.width = 10}
+```{r, flfp-graph, fig.cap = "Female Labor Force Participation in Bangladesh"}
 
 flfp <- read.csv("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/flfp.csv", check.names=FALSE) %>%
     pivot_longer(-year, names_to="country", values_to="flfp")
@@ -538,13 +542,13 @@ geom_text_repel(
     ) +
    labs(y = "FLFP Rate (Age 15-64)", col = "Geographical Unit", caption = "Data Source: World Bank (2021)")+ theme(legend.position="bottom") -> flfP_transition
 
-ggsave("figures/flfp_transition.png", plot = flfP_transition, width = 10)
+ggsave("figures/flfp_transition.png", plot = flfP_transition, dpi=600, width = 10)
 
 rm("flfp", "flfp_start", "flfp_end", "flfP_transition")
 
 ```
 
-```{r, fertility-graph, fig.cap = "Fertility in Bangladesh", echo=FALSE, fig.width = 10}
+```{r, fertility-graph, fig.cap = "Fertility in Bangladesh", echo=FALSE}
 
 fertility <- read.csv("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/fertility.csv", check.names=FALSE) %>%
     pivot_longer(-year, names_to="country", values_to="fertility")
@@ -568,12 +572,44 @@ ggplot(fertility, aes(x = year, y = fertility)) +
    labs(y = "Total Fertility Rates", col = "Geographical Units",
         caption = "Data Source: World Bank (2021)") + theme(legend.position="bottom") -> fertility_transition
 
-ggsave("figures/fertility_transition.png", plot = fertility_transition, width = 10)
+ggsave("figures/fertility_transition.png", plot = fertility_transition, dpi = 600, width = 10)
 
 rm(fertility, fertility_start, fertility_end, fertility_transition)
 ```
 
 \newpage 
+
+
+```{r, regwork_flfp, cache=TRUE, results='asis'}
+
+load("C:/Users/smshi/Dropbox/Research/BD-RMG-Women/data/final_data.RData")
+
+reg_flfp1 <- lm(100*dif_f_lfp1564 ~ export_exposure_pcpk -1, data)
+
+reg_flfp2 <- lm(100*dif_f_lfp1564 ~ export_exposure_pcpk + factor(year) -1, data)
+
+
+reg_flfp3 <- lm(100*dif_f_lfp1564 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share -1, data)
+
+
+reg_flfp4 <- lm(100*dif_f_lfp1564 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density -1, data)
+
+reg_flfp5 <- lm(100*dif_f_lfp1564 ~ export_exposure_pcpk + factor(year) +
+  lag_electrification + lag_urban_share + 
+    lag_m_yrschool1564 + lag_f_yrschool1564 + lag_density +
+    + lag_age_1564_pop + lag_m_lfp1564 -1, data)
+
+
+stargazer(reg_flfp1, reg_flfp2, reg_flfp3, reg_flfp4, reg_flfp5, type = "latex", digits = 2, 
+          column.labels = c("FLFP", "FLFP-Ind", "FLFP", "FLFP-Ind", "FLFP", "FLFP-Ind"),
+          covariate.labels = c("$\\Delta$ Export Exposure", "Electrification Rate", "Urbanization Rate", "Yrs. School (15-64, M)", "Yrs. School (15-64, F)", "Density", "Pop (15-64)", "$Y_{s,t-1}^{M}$"),
+          dep.var.labels = c(" Ages 15-64", "Ages 15-29", "Ages 15-20"), 
+          title = "Export Exposure and Female Labor Force Participation", 
+          omit = c("year", "Constant"), omit.stat = c("f", "ser"), no.space=TRUE, header = FALSE)
+```
 
 # Appendix 2: Spread of the RMG industry in Bangladesh {#appendix2 .unnumbered}
 
