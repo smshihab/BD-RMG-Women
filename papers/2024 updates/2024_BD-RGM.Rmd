@@ -1,0 +1,24 @@
+---
+title: "BD-RGM Women"
+author: "SM Shihab Siddiqui and Promise Kamanga"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Loading packages
+
+library(pacman)
+# base packages
+library(conflicted)
+
+p_load(readxl, units, janitor, plm, tidyverse, knitr, gridExtra, stargazer,  cowplot, ggplot2, ggrepel, gtsummary)
+
+# geo packages
+p_load(sf, sp, raster, rgdal, ggmap, rgeos) 
+
+conflict_prefer_all("dplyr")
+options(dplyr.summarise.inform = FALSE)
+```
