@@ -1,4 +1,7 @@
+### SECTION 1 LOADS PACKAGE, CLEANS DATA
+
 library(pacman)
+options("install.lock"=FALSE)
 
 p_load(tidyverse, readxl, janitor, labelled, stringr, fuzzyjoin)
 
@@ -97,30 +100,28 @@ bgmea_13$name <- str_replace_all(bgmea_13$name, "&", " and ")
 
 bgmea_13$name <- str_replace_all(bgmea_13$name, "\\s+", " ")
 
-# obtaining BGMEA 2013 data for matching\
 
-bgmea_13 %>%
-  filter(!duplicated(name)) %>%
-  filter(date_est < 2002) -> bgmea_13_for_matching
+#SECTION 2 BRING IN DATES
 
-rm("bgmea_13")
+# The BGMEA 01 and BGMEA 09 dataset do not have year of establishment
 
-# matching BGMEA 2000-01 dataset with BGMEA 2013 by name
+# Obtaining BGMEA 2013 data for matching
 
-match_01 <- inner_join(bgmea_01, bgmea_13_for_matching, by = "name")
+#bgmea_13 %>%
+#  filter(!duplicated(name)) %>%
+#  filter(date_est < 2002) -> bgmea_13_for_matching
 
-# Extracting the non-matches in 2000-01 dataset
+#rm("bgmea_13")
 
-not_match_01 <- anti_join(bgmea_01, match_01, by = "bgmea_num")
-
-# Using the 2021 BGMEA dataset to match using the BGMEA number
-
-inner_join(not_match_01, bgmea_21 %>% select(-name), by = "bgmea_num") %>%
-  mutate(upazila = NA) %>%
-  rbind(match_01) -> match_01
+# Matching BGMEA 2000-01 dataset with BGMEA 2013 by name
+bgmea_01 %>% 
+  left_join(bgmea_13 %>% select(name, date_est)) -> bgmea_01
+    
+sum(is.na(bgmea_01$date_est))
 
 # Extracting the non-matches in 2000-01 dataset
-not_match_01 <- anti_join(bgmea_01, match_01, by = "bgmea_num")
+
+bgmea_01 %>% filter(is.na(date_est)) -> not_match_01
 
 # Extracting the non-matches in BGMEA 2013 dataset
 updated_bgmea_13_for_matching <- anti_join(bgmea_13_for_matching, match_01, by = "name")
@@ -130,7 +131,6 @@ not_match_01_try_bgmea <- inner_join(not_match_01, bgmea_09 %>% select(bgmea_num
 
 # Separating BGMEA 2000-01 non-matches into factories that are NOT in BGMEA in 2009-10
 not_match_01_try_others <- anti_join(not_match_01, not_match_01_try_bgmea, by = "bgmea_num")
-
 
 ## The following code was used to use soundex to find matches
 
@@ -197,6 +197,7 @@ reg_date <- lm(date_est ~ bgmea_num, has_date)
 
 has_date$predicted_year <- round(reg_date$fitted.values, digits = 0)
 
+
 # obtaining existence estimation error rate.
 
 has_date %>%
@@ -208,6 +209,7 @@ has_date %>%
                                   TRUE ~ 0),
          exist01_pred = case_when(predicted_year <2002 ~ 1,
                                   TRUE ~ 0)) -> has_date
+
 
 #(sum(abs(has_date$exist91 - has_date$exist91_pred)) + sum(abs(has_date$exist01 - has_date$exist01_pred))) / (2*2159)
 
@@ -227,6 +229,9 @@ has_no_date %>%
 has_date %>% select(-c(predicted_year, exist91_pred, exist01_pred)) %>%
   mutate(predicted_date = 0) %>%
   rbind(has_no_date) -> all_matched_data_01
+
+
+
 
 
 # cleaning environment
@@ -324,29 +329,6 @@ anti_join(matching09, matching01, by = "bgmea_num") -> matching09
 all_matched_data_01 <- rbind(matching09 %>% select(-c(exist06)) %>%
                                mutate(exist91 = 0, exist01 = 1),
                              all_matched_data_01)
-
-
-
-# Loading the 2013 file
-
-bgmea_11 <- read_excel("~/large_datasets/BD Garments/00_bgmea_factory_data_final.xlsx", sheet = "bgmea_2015_final") %>%
-  mutate(name = tolower(name)) %>%
-  filter(date_est <2011)
-
-
-# Loading the latest BGMEA file
-
-bgmea_21 <- read.csv("C:/Users/smshi/Dropbox/Research/Data/BD RMG factory data/BGMEA Scrape/facdata.csv") %>%
-  mutate_if(is.character, ~tolower(.)) %>%
-  mutate(bgmea_num = as.numeric(bgmea),
-         fac_type = as.numeric(case_when(type %in% c("sweater", "knit") ~ "1",
-                                         type  == "woven" ~ "0",
-                                         type  == "mixed" ~ "0.5",
-                                         TRUE ~ "NA")))
-
-
-save(list = c("all_matched_data_01", "all_matched_data_09", "bgmea_11", "bgmea_21"), file = "C:/Users/smshi/Dropbox/Research/BD-RMG-Women/factories_2025-01-26.Rdata")
-
 
 #all_matched_data_01 %>% select(-predicted_date) -> all_matched_data_01
 

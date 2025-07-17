@@ -25,30 +25,19 @@ matched_data_11 <- read_excel("~/large_datasets/BD Garments/00_bgmea_factory_dat
   mutate(name = tolower(name), upazila = tolower(upazila)) %>%
   filter(date_est <= 2011)
 
-# Upazilas in 2011
-
-upazilas11  <- "C:/Users/smshi/OneDrive/Documents/large_datasets/BD HH or Micro data/IPUMS-I/geo3_bd2011/geo3_bd2011.shp"
-
-upazilas11 <- st_read(upazilas11, quiet = TRUE)
-
 # Convert to Sf and transform to Mercator Gulshan
-upazilas11 <- st_as_sf(upazilas11) %>% st_transform(3106) %>%
-  select(ADMIN_NAME, contains("IP"), contains("UP"), PARENT) %>%
-  clean_names() %>%
-  mutate_if(is.character,tolower)
-
-upazilas11 <- tibble::rowid_to_column(upazilas11, "id")
+merged_sf <- merged_sf %>% st_transform(3106)
 
 # split matched datasets into ones with and without missing upaz
 
-missing_upz01 <- matched_data_01 %>% filter(is.na(upazila))
+#missing_upz01 <- matched_data_01 %>% filter(is.na(upazila))
 
-missing_upz09 <- matched_data_09 %>% filter(is.na(upazila))
+#missing_upz09 <- matched_data_09 %>% filter(is.na(upazila))
 
 
 # geo-coding missing upzaila data for 01 and combining them to original
 
-coordinates(missing_upz01) <- c("Longitude", "Latitude")
+coordinates(matched_data_01) <- c("Longitude", "Latitude")
 
 # Set projection string
 proj4string(missing_upz01) <- CRS("+init=epsg:4326") 
